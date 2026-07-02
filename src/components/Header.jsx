@@ -4,6 +4,7 @@ import { FaWhatsapp } from 'react-icons/fa';
 // import AnimatedLogo2 from './AnimatedLogo2';
 import AnimatedLogo from './AnimatedLogo';
 // import AnimatedLogo3 from './AnimatedLogo3';
+import StaticLogo from './StaticLogo';
 import { testDatabase } from '../data/testDatabase';
 
 const setLocationHash = (hash) => {
@@ -366,7 +367,8 @@ const Header = ({ isIsoModalOpen, setIsIsoModalOpen }) => {
         {/* Top Left: Animated Logo Block & ISO badge */}
         <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
           <a href="#/" style={{ display: 'flex', alignItems: 'center', height: '42px', position: 'relative', zIndex: 1010 }}>
-            <AnimatedLogo height={42} />
+            {/* <AnimatedLogo height={42} /> */}
+            <StaticLogo height={42} />
           </a>
           <div 
             onClick={() => setIsIsoModalOpen(true)}
