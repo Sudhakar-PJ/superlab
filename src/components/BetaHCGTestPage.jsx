@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { 
   Home, 
   ShoppingCart, 
@@ -17,6 +17,19 @@ import {
 
 const BetaHCGTestPage = () => {
   const [openFaqIndex, setOpenFaqIndex] = useState(null);
+  const [isAdded, setIsAdded] = useState(false);
+
+  useEffect(() => {
+    const checkCart = () => {
+      if (window.getSuperlabCart) {
+        const cart = window.getSuperlabCart();
+        setIsAdded(cart.some(item => item.name === 'Beta HCG Test'));
+      }
+    };
+    checkCart();
+    window.addEventListener('superlab_cart_update', checkCart);
+    return () => window.removeEventListener('superlab_cart_update', checkCart);
+  }, []);
 
   const faqs = [
     {
@@ -97,28 +110,37 @@ const BetaHCGTestPage = () => {
               Beta HCG Test
             </h1>
             <div style={{ display: 'flex', alignItems: 'baseline', gap: '10px', marginTop: '12px' }}>
-              <span style={{ fontSize: '1.8rem', fontWeight: '800', color: 'var(--teal)' }}>₹ 680</span>
+              <span style={{ fontSize: '1.8rem', fontWeight: '800', color: 'var(--teal)' }}>₹ 290</span>
             </div>
           </div>
           <button 
-            onClick={() => alert('Beta HCG Test added to cart!')}
+            onClick={() => {
+              if (isAdded) {
+                if (window.getSuperlabCart) {
+                  const cart = window.getSuperlabCart();
+                  const updated = cart.filter(item => item.name !== 'Beta HCG Test');
+                  localStorage.setItem('superlab_cart', JSON.stringify(updated));
+                  window.dispatchEvent(new Event('superlab_cart_update'));
+                }
+              } else {
+                window.addToSuperlabCart({ id: 2, name: 'Beta HCG Test', category: 'Pregnancy Test', price: 290, originalPrice: 387 });
+              }
+            }}
             style={{
-              backgroundColor: 'var(--orange)',
-              color: '#ffffff',
-              border: 'none',
+              backgroundColor: isAdded ? '#fff3e0' : 'var(--orange)',
+              color: isAdded ? 'var(--orange-dark)' : '#ffffff',
+              border: isAdded ? '1px solid var(--orange)' : 'none',
               borderRadius: '8px',
               padding: '12px 36px',
               fontSize: '1.1rem',
               fontWeight: 'bold',
               cursor: 'pointer',
-              boxShadow: 'var(--shadow-sm)',
+              boxShadow: isAdded ? 'none' : 'var(--shadow-sm)',
               transition: 'background-color 0.2s',
               minWidth: '120px'
             }}
-            onMouseEnter={(e) => e.target.style.backgroundColor = 'var(--orange-dark)'}
-            onMouseLeave={(e) => e.target.style.backgroundColor = 'var(--orange)'}
           >
-            ADD
+            {isAdded ? 'ADDED' : 'ADD'}
           </button>
         </div>
 
@@ -425,7 +447,7 @@ const BetaHCGTestPage = () => {
             </div>
             <div style={{ display: 'flex', flexDirection: 'column', textAlign: 'left', lineHeight: '1.2' }}>
               <span style={{ fontWeight: '800', color: '#0f172a', fontSize: '0.95rem' }}>Division of</span>
-              <span style={{ color: 'var(--muted)', fontSize: '0.85rem' }}>Max Healthcare</span>
+              <span style={{ color: 'var(--muted)', fontSize: '0.85rem' }}>Super Healthcare</span>
             </div>
           </div>
 

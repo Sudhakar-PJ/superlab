@@ -1,14 +1,16 @@
-import { useState, useRef } from 'react';
-import { Phone, MapPin, User, ShoppingCart, Search, Menu, X, ChevronDown } from 'lucide-react';
+import { ChevronDown, MapPin, Menu, Phone, Search, ShoppingCart, User, X } from 'lucide-react';
+import { useEffect, useRef, useState } from 'react';
+import { FaWhatsapp } from 'react-icons/fa';
+// import AnimatedLogo2 from './AnimatedLogo2';
+import AnimatedLogo from './AnimatedLogo';
+// import AnimatedLogo3 from './AnimatedLogo3';
+import { testDatabase } from '../data/testDatabase';
 
-// Custom WhatsApp SVG Icon
-const WhatsAppIcon = () => (
-  <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor" style={{ color: '#25D366', display: 'inline-block', verticalAlign: 'middle' }}>
-    <path d="M12.012 2c-5.506 0-9.989 4.478-9.99 9.984a9.964 9.964 0 001.333 4.993L2 22l5.233-1.371a9.936 9.936 0 004.777 1.219h.005c5.505 0 9.99-4.478 9.99-9.986 0-2.67-1.037-5.18-2.92-7.061A9.925 9.925 0 0012.012 2zM12 18.254h-.005a8.21 8.21 0 01-4.19-1.155l-.301-.18-3.117.818.833-3.042-.196-.314a8.2 8.2 0 01-1.258-4.397c.002-4.53 3.693-8.217 8.225-8.217a8.17 8.17 0 015.82 2.41 8.18 8.18 0 012.41 5.812c-.003 4.532-3.694 8.22-8.227 8.22zm4.512-6.164c-.247-.124-1.464-.722-1.692-.805-.227-.082-.393-.124-.558.124-.166.248-.641.805-.786.969-.145.165-.29.185-.538.062a6.792 6.792 0 01-2.003-1.233 7.487 7.487 0 01-1.385-1.724c-.145-.247-.015-.381.109-.504.111-.11.248-.29.372-.434.124-.145.165-.248.248-.413.083-.165.042-.31-.02-.434-.063-.124-.558-1.343-.765-1.838-.2-.486-.403-.42-.558-.428-.145-.008-.31-.01-.476-.01a.916.916 0 00-.662.31c-.227.248-.868.847-.868 2.065 0 1.22.888 2.396.987 2.53.1.134 1.747 2.668 4.233 3.74.59.255 1.053.408 1.41.52.595.19 1.137.163 1.565.1.477-.07 1.464-.598 1.67-.176.207-.421.207-.784 0-1.105z" />
-  </svg>
-);
+const setLocationHash = (hash) => {
+  window.location.hash = hash;
+};
 
-const Header = () => {
+const Header = ({ isIsoModalOpen, setIsIsoModalOpen }) => {
   const [selectedLocation, setSelectedLocation] = useState('Chennai');
   const [searchQuery, setSearchQuery] = useState('');
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -16,6 +18,35 @@ const Header = () => {
   const [isCheckupMenuOpen, setIsCheckupMenuOpen] = useState(false);
   const [activeCategory, setActiveCategory] = useState('Pregnancy Test');
   const [isLoginOpen, setIsLoginOpen] = useState(false);
+  const [isIsoHovered, setIsIsoHovered] = useState(false);
+
+  const [cartCount, setCartCount] = useState(() => {
+    return window.getSuperlabCart ? window.getSuperlabCart().length : 2;
+  });
+
+  useEffect(() => {
+    const handleCartUpdate = () => {
+      if (window.getSuperlabCart) {
+        setCartCount(window.getSuperlabCart().length);
+      }
+    };
+    window.addEventListener('superlab_cart_update', handleCartUpdate);
+    // Sync initial state
+    handleCartUpdate();
+    return () => window.removeEventListener('superlab_cart_update', handleCartUpdate);
+  }, []);
+
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      if (e.key === 'Escape') {
+        setIsIsoModalOpen(false);
+      }
+    };
+    if (isIsoModalOpen) {
+      window.addEventListener('keydown', handleKeyDown);
+    }
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [isIsoModalOpen, setIsIsoModalOpen]);
 
   const leaveTimeoutRef = useRef(null);
   const checkupTimeoutRef = useRef(null);
@@ -83,10 +114,10 @@ const Header = () => {
       tests: [
         'Dengue Test',
         'Typhidot Test',
-        'Max Fever Panel Advance Test',
-        'Max Fever Panel Basic Test',
+        'Super Fever Panel Advance Test',
+        'Super Fever Panel Basic Test',
         'Monsoon Fever Panel Test',
-        'Max Fever Panel Comprehensive Test',
+        'Super Fever Panel Comprehensive Test',
         'Malaria Test',
         'Urine Culture Test',
         'Widal Test',
@@ -96,7 +127,7 @@ const Header = () => {
         'Dengue IgM Test',
         'H1N1 Test',
         'Chikungunya PCR Test',
-        'Max Fever Panel Fever More Than 1 Week Test',
+        'Super Fever Panel Fever More Than 1 Week Test',
         'Chikungunya IgM Test',
         'H1N1 Test'
       ]
@@ -112,7 +143,7 @@ const Header = () => {
         'FSH Test',
         'Free Testosterone Test',
         'Testosterone Test',
-        'Max Fertility Hormonal Followup Profile Test',
+        'Super Fertility Hormonal Followup Profile Test',
         '17 - Hydroxyprogesterone (17-OHP) Test',
         'Di Hydro Testosterone',
         'Free Beta HCG Test',
@@ -166,7 +197,7 @@ const Header = () => {
         'Pleural Fluid - Grams Stain Test',
         'Pleural Fluid - AFB Stain Test',
         'Pleural Fluid-GeneXpert MTB/RIF Ultra Test',
-        'Max Tuberculosis Profile II Test',
+        'Super Tuberculosis Profile II Test',
         'Endometrial Tissue-GeneXpert MTB/RIF Ultra Test'
       ]
     },
@@ -183,7 +214,7 @@ const Header = () => {
         'PPBS After Lunch Test',
         'Insulin Level Test',
         'C Peptide Fasting Test',
-        'Max Insulin Profile Test',
+        'Super Insulin Profile Test',
         'C Peptide Test',
         'Osmolality, Random Urine Test',
         'Fructosamine Test',
@@ -263,9 +294,41 @@ const Header = () => {
     return `#test-${encodeURIComponent(testName.toLowerCase().replace(/\s+/g, '-'))}`;
   };
 
+  const [showSuggestions, setShowSuggestions] = useState(false);
+  const suggestionsRef = useRef(null);
+
+  const searchDatabase = testDatabase;
+
+  useEffect(() => {
+    const handleOutsideClick = (e) => {
+      if (suggestionsRef.current && !suggestionsRef.current.contains(e.target)) {
+        setShowSuggestions(false);
+      }
+    };
+    document.addEventListener('mousedown', handleOutsideClick);
+    return () => document.removeEventListener('mousedown', handleOutsideClick);
+  }, []);
+
   const handleSearch = (e) => {
     e.preventDefault();
-    alert(`Searching for: ${searchQuery}`);
+    if (searchQuery.trim() !== '') {
+      setShowSuggestions(false);
+      sessionStorage.setItem('superlab_search_query', searchQuery);
+      setLocationHash('#/lab-tests');
+      window.dispatchEvent(new Event('superlab_search_trigger'));
+    }
+  };
+
+  const handleSuggestionClick = (item) => {
+    setSearchQuery(item.name);
+    setShowSuggestions(false);
+    if (item.hash === '#/haemoglobin-estimation' || item.hash === '#/beta-hcg') {
+      setLocationHash(item.hash);
+    } else {
+      sessionStorage.setItem('superlab_search_query', item.name);
+      setLocationHash('#/lab-tests');
+      window.dispatchEvent(new Event('superlab_search_trigger'));
+    }
   };
 
   const handleMouseEnter = () => {
@@ -290,42 +353,125 @@ const Header = () => {
     }, 200);
   };
 
+  const filteredSuggestions = searchQuery.trim() === '' 
+    ? [] 
+    : searchDatabase.filter(item => 
+        item.name.toLowerCase().includes(searchQuery.toLowerCase())
+      );
+
   return (
     <header style={{ width: '100%', fontFamily: 'var(--sans)', position: 'relative', zIndex: 1000 }}>
       {/* 1. TOP ROW: Brand Soft Background */}
       <div className="header-top-bar">
-        {/* Top Left: WhatsApp & Phone */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: '20px' }}>
-          <a href="https://wa.me/917982100200" target="_blank" rel="noopener noreferrer" style={{ display: 'flex', alignItems: 'center' }}>
-            <WhatsAppIcon />
+        {/* Top Left: Animated Logo Block & ISO badge */}
+        <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
+          <a href="#/" style={{ display: 'flex', alignItems: 'center', height: '42px', position: 'relative', zIndex: 1010 }}>
+            <AnimatedLogo height={42} />
           </a>
-          <span style={{ height: '16px', width: '1px', backgroundColor: 'var(--line)' }}></span>
-          <a href="tel:7982100200" style={{ display: 'flex', alignItems: 'center', gap: '8px', color: 'var(--blue)', fontWeight: 'bold', fontSize: '1.05rem', textDecoration: 'none' }}>
-            <Phone size={18} fill="var(--blue)" style={{ color: 'var(--blue)' }} />
-            <span>7982100200</span>
-          </a>
+          <div 
+            onClick={() => setIsIsoModalOpen(true)}
+            onMouseEnter={() => setIsIsoHovered(true)}
+            onMouseLeave={() => setIsIsoHovered(false)}
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: '6px',
+              backgroundColor: isIsoHovered ? '#fef3c7' : '#fffbeb',
+              color: '#b45309',
+              padding: '6px 12px',
+              borderRadius: '20px',
+              fontSize: '0.8rem',
+              fontWeight: 'bold',
+              border: isIsoHovered ? '1px solid #f59e0b' : '1px solid #fde68a',
+              whiteSpace: 'nowrap',
+              cursor: 'pointer',
+              transform: isIsoHovered ? 'translateY(-1px) scale(1.02)' : 'translateY(0) scale(1)',
+              boxShadow: isIsoHovered ? '0 4px 10px rgba(217, 119, 6, 0.15)' : 'none',
+              transition: 'all 0.2s ease-in-out'
+            }} 
+            className="header-iso-badge"
+          >
+            <img 
+              src="/iso-logo.png" 
+              alt="ISO Logo" 
+              style={{ width: '16px', height: '16px', borderRadius: '2px', objectFit: 'contain', marginRight: '4px', flexShrink: 0 }}
+            />
+            <span>ISO 9001:2015 Certified</span>
+          </div>
         </div>
 
         {/* Top Center: Long Search Bar with Search Icon inside on the Right */}
-        <form onSubmit={handleSearch} className="header-top-search">
+        <form onSubmit={handleSearch} className="header-top-search" style={{ position: 'relative' }} ref={suggestionsRef}>
           <div className="header-search-wrapper">
             <input
               type="text"
               placeholder="Search for tests, packages, symptoms..."
               value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
+              onChange={(e) => {
+                setSearchQuery(e.target.value);
+                setShowSuggestions(true);
+              }}
+              onFocus={() => setShowSuggestions(true)}
               className="header-search-input"
             />
             <button type="submit" className="header-search-btn">
               <Search size={18} />
             </button>
           </div>
+
+          {showSuggestions && filteredSuggestions.length > 0 && (
+            <div style={{
+              position: 'absolute',
+              top: '100%',
+              left: '0',
+              right: '0',
+              backgroundColor: '#ffffff',
+              borderRadius: '12px',
+              boxShadow: '0 8px 30px rgba(0, 60, 113, 0.12)',
+              border: '1px solid #e2edf6',
+              zIndex: 1050,
+              marginTop: '8px',
+              maxHeight: '320px',
+              overflowY: 'auto',
+              padding: '6px 0'
+            }}>
+              {filteredSuggestions.map((item, idx) => (
+                <div
+                  key={idx}
+                  onClick={() => handleSuggestionClick(item)}
+                  style={{
+                    padding: '12px 18px',
+                    cursor: 'pointer',
+                    display: 'flex',
+                    justifyContent: 'space-between',
+                    alignItems: 'center',
+                    borderBottom: idx < filteredSuggestions.length - 1 ? '1px solid #f1f5f9' : 'none',
+                    transition: 'background-color 0.2s',
+                    textAlign: 'left'
+                  }}
+                  className="search-suggestion-item"
+                >
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '2px' }}>
+                    <span style={{ fontSize: '0.95rem', fontWeight: '600', color: '#003c71' }}>
+                      {item.name}
+                    </span>
+                    <span style={{ fontSize: '0.75rem', fontWeight: 'bold', color: item.type === 'package' ? '#ff6b00' : '#00a3ad', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
+                      {item.type}
+                    </span>
+                  </div>
+                  <span style={{ fontSize: '0.9rem', fontWeight: '800', color: '#003c71' }}>
+                    ₹{item.price}
+                  </span>
+                </div>
+              ))}
+            </div>
+          )}
         </form>
 
         {/* Top Right: Book a Test Action Button */}
         <div>
           <button 
-            onClick={() => { window.location.hash = '#/lab-tests'; }}
+            onClick={() => { setLocationHash('#/lab-tests'); }}
             className="btn-book-test-header"
           >
             Book a Test
@@ -344,15 +490,17 @@ const Header = () => {
         justifyContent: 'space-between',
         position: 'relative'
       }}>
-        {/* Bottom Left: Brand Logo Block (MAX Lab style) */}
-        <a href="#/" className="header-logo-link">
-          <img
-            src="/super-lab-logo.jpeg"
-            alt="Super Lab Logo"
-            style={{ height: '60px', objectFit: 'contain', borderRadius: '4px', display: 'block', transform: 'scale(2.2)' }}
-            onError={(e) => { e.target.style.display = 'none'; }}
-          />
-        </a>
+        {/* Bottom Left: WhatsApp & Phone */}
+        <div style={{ display: 'flex', alignItems: 'center', gap: '20px' }} className="header-bottom-contacts">
+          <a href="https://wa.me/918754947759" target="_blank" rel="noopener noreferrer" style={{ display: 'flex', alignItems: 'center' }}>
+            <FaWhatsapp size={22} style={{ color: '#25D366' }} />
+          </a>
+          <span style={{ height: '16px', width: '1px', backgroundColor: 'var(--line)' }}></span>
+          <a href="tel:+918754947759" style={{ display: 'flex', alignItems: 'center', gap: '8px', color: 'var(--blue)', fontWeight: 'bold', fontSize: '1.05rem', textDecoration: 'none' }}>
+            <Phone size={18} fill="var(--blue)" style={{ color: 'var(--blue)' }} />
+            <span>+91 8754947759</span>
+          </a>
+        </div>
 
         {/* Bottom Center: Navigation Links */}
         <nav className="nav-menu">
@@ -547,8 +695,8 @@ const Header = () => {
                   <span className="package-badge-green">Most Booked</span>
                 </div>
                 <span className="package-tests-count">Includes 91 Tests</span>
-                <button className="package-details-btn" onClick={() => alert('Wellwise Total Profile Details')}>See Details</button>
-                <button className="package-book-outline-btn" onClick={() => alert('Total Profile Booked!')}>Book Now</button>
+                <button className="package-details-btn" onClick={() => { setLocationHash('#/wellwise-total-profile'); setIsCheckupMenuOpen(false); }}>See Details</button>
+                <button className="package-book-outline-btn" onClick={() => { window.addToSuperlabCart({ id: 1001, name: 'Wellwise Total Profile', category: 'Full Body Health', type: 'package', price: 2279 }); setIsCheckupMenuOpen(false); }}>Book Now</button>
                 <span className="package-price-text">₹2279</span>
               </div>
 
@@ -557,8 +705,8 @@ const Header = () => {
                   <span className="package-name">WellWise Exclusive Profile</span>
                 </div>
                 <span className="package-tests-count">Includes 95 Tests</span>
-                <button className="package-details-btn" onClick={() => alert('WellWise Exclusive Profile Details')}>See Details</button>
-                <button className="package-book-outline-btn" onClick={() => alert('Exclusive Profile Booked!')}>Book Now</button>
+                <button className="package-details-btn" onClick={() => { sessionStorage.setItem('superlab_search_query', 'WellWise Exclusive Profile'); setLocationHash('#/lab-tests'); window.dispatchEvent(new Event('superlab_search_trigger')); setIsCheckupMenuOpen(false); }}>See Details</button>
+                <button className="package-book-outline-btn" onClick={() => { window.addToSuperlabCart({ id: 1002, name: 'WellWise Exclusive Profile', category: 'Full Body Health', type: 'package', price: 3119 }); setIsCheckupMenuOpen(false); }}>Book Now</button>
                 <span className="package-price-text">₹3119</span>
               </div>
 
@@ -567,8 +715,8 @@ const Header = () => {
                   <span className="package-name">Wellwise Platinum</span>
                 </div>
                 <span className="package-tests-count">Includes 103 Tests</span>
-                <button className="package-details-btn" onClick={() => alert('Wellwise Platinum Details')}>See Details</button>
-                <button className="package-book-outline-btn" onClick={() => alert('Platinum Booked!')}>Book Now</button>
+                <button className="package-details-btn" onClick={() => { sessionStorage.setItem('superlab_search_query', 'Wellwise Platinum'); setLocationHash('#/lab-tests'); window.dispatchEvent(new Event('superlab_search_trigger')); setIsCheckupMenuOpen(false); }}>See Details</button>
+                <button className="package-book-outline-btn" onClick={() => { window.addToSuperlabCart({ id: 1003, name: 'Wellwise Platinum', category: 'Full Body Health', type: 'package', price: 4499 }); setIsCheckupMenuOpen(false); }}>Book Now</button>
                 <span className="package-price-text">₹4499</span>
               </div>
 
@@ -577,12 +725,22 @@ const Header = () => {
                   <span className="package-name">Wellwise Advanced Profile</span>
                 </div>
                 <span className="package-tests-count">Includes 81 Tests</span>
-                <button className="package-details-btn" onClick={() => alert('Wellwise Advanced Profile Details')}>See Details</button>
-                <button className="package-book-outline-btn" onClick={() => alert('Advanced Profile Booked!')}>Book Now</button>
+                <button className="package-details-btn" onClick={() => { sessionStorage.setItem('superlab_search_query', 'Wellwise Advanced Profile'); setLocationHash('#/lab-tests'); window.dispatchEvent(new Event('superlab_search_trigger')); setIsCheckupMenuOpen(false); }}>See Details</button>
+                <button className="package-book-outline-btn" onClick={() => { window.addToSuperlabCart({ id: 1004, name: 'Wellwise Advanced Profile', category: 'Full Body Health', type: 'package', price: 1799 }); setIsCheckupMenuOpen(false); }}>Book Now</button>
                 <span className="package-price-text">₹1799</span>
               </div>
 
-              <button className="checkup-view-all-btn" onClick={() => { window.location.hash = '#/lab-tests'; setIsCheckupMenuOpen(false); }}>
+              <div className="checkup-package-row">
+                <div className="package-left">
+                  <span className="package-name">Super Fit Full Body Panel</span>
+                </div>
+                <span className="package-tests-count">Includes 60 Tests</span>
+                <button className="package-details-btn" onClick={() => { sessionStorage.setItem('superlab_search_query', 'Super Fit Full Body Panel'); setLocationHash('#/lab-tests'); window.dispatchEvent(new Event('superlab_search_trigger')); setIsCheckupMenuOpen(false); }}>See Details</button>
+                <button className="package-book-outline-btn" onClick={() => { window.addToSuperlabCart({ id: 1005, name: 'Super Fit Full Body Panel', category: 'Full Body Health', type: 'package', price: 1499 }); setIsCheckupMenuOpen(false); }}>Book Now</button>
+                <span className="package-price-text">₹1499</span>
+              </div>
+
+              <button className="checkup-view-all-btn" onClick={() => { setLocationHash('#/lab-tests'); setIsCheckupMenuOpen(false); }}>
                 VIEW ALL PACKAGES
               </button>
             </div>
@@ -639,7 +797,7 @@ const Header = () => {
           </button>
 
           {/* Shopping Cart Icon */}
-          <a href="#cart" title="Shopping Cart" style={{ color: '#00a3ad', display: 'flex', alignItems: 'center', position: 'relative' }}>
+          <a href="#/cart" title="Shopping Cart" style={{ color: '#00a3ad', display: 'flex', alignItems: 'center', position: 'relative' }}>
             <ShoppingCart size={24} />
             <span style={{
               position: 'absolute',
@@ -655,7 +813,7 @@ const Header = () => {
               alignItems: 'center',
               justifyContent: 'center',
               fontWeight: 'bold'
-            }}>0</span>
+            }}>{cartCount}</span>
           </a>
 
           {/* Mobile Menu Icon */}
@@ -708,9 +866,9 @@ const Header = () => {
               <span>User Account</span>
             </button>
             
-            <a href="#cart" className="mobile-nav-item" style={{ display: 'flex', alignItems: 'center', gap: '8px' }} onClick={() => setIsMobileMenuOpen(false)}>
+            <a href="#/cart" className="mobile-nav-item" style={{ display: 'flex', alignItems: 'center', gap: '8px' }} onClick={() => setIsMobileMenuOpen(false)}>
               <ShoppingCart size={18} style={{ color: '#00a3ad' }} />
-              <span>Shopping Cart (0)</span>
+              <span>Shopping Cart ({cartCount})</span>
             </a>
           </div>
         </div>
@@ -755,6 +913,94 @@ const Header = () => {
             <button className="btn-login-submit" onClick={() => alert('OTP Sent!')}>
               Login
             </button>
+          </div>
+        </div>
+      )}
+      
+      {/* ISO Certificate Modal */}
+      {isIsoModalOpen && (
+        <div 
+          onClick={() => setIsIsoModalOpen(false)}
+          style={{
+            position: 'fixed',
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            backgroundColor: 'rgba(15, 23, 42, 0.6)',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            zIndex: 9999,
+            backdropFilter: 'blur(4px)',
+            animation: 'fadeInISO 0.2s ease-out'
+          }}
+        >
+          <style>{`
+            @keyframes fadeInISO {
+              from { opacity: 0; }
+              to { opacity: 1; }
+            }
+            @keyframes slideUpISO {
+              from { transform: scale(0.95) translateY(20px); opacity: 0; }
+              to { transform: scale(1) translateY(0); opacity: 1; }
+            }
+          `}</style>
+          <div 
+            onClick={(e) => e.stopPropagation()}
+            style={{
+              position: 'relative',
+              backgroundColor: '#ffffff',
+              borderRadius: '16px',
+              padding: '24px',
+              maxWidth: '600px',
+              width: '90%',
+              boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.25)',
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+              animation: 'slideUpISO 0.3s cubic-bezier(0.34, 1.56, 0.64, 1)'
+            }}
+          >
+            <button 
+              onClick={() => setIsIsoModalOpen(false)}
+              style={{
+                position: 'absolute',
+                top: '16px',
+                right: '16px',
+                background: '#f1f5f9',
+                border: 'none',
+                borderRadius: '50%',
+                width: '32px',
+                height: '32px',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                cursor: 'pointer',
+                color: '#64748b',
+                transition: 'background-color 0.2s'
+              }}
+              onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#e2e8f0'}
+              onMouseLeave={(e) => e.currentTarget.style.backgroundColor = '#f1f5f9'}
+            >
+              <X size={18} />
+            </button>
+            
+            <h3 style={{ fontSize: '1.25rem', fontWeight: '800', color: 'var(--blue)', marginTop: 0, marginBottom: '16px', textAlign: 'center' }}>
+              ISO 9001:2015 Certificate
+            </h3>
+            
+            <img 
+              src="/iso-certificate.png" 
+              alt="ISO 9001:2015 Certificate" 
+              style={{ 
+                width: '100%', 
+                maxHeight: '70vh', 
+                objectFit: 'contain', 
+                borderRadius: '8px', 
+                border: '1px solid var(--line)' 
+              }} 
+            />
           </div>
         </div>
       )}

@@ -1,52 +1,58 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
+import { testDatabase } from '../data/testDatabase';
 
 const CircularTestSlider = ({ title, items }) => {
-  // Prepend last 4 and append first 4 to achieve seamless circular loop
-  const paddedItems = [
-    ...items.slice(-4),
-    ...items,
-    ...items.slice(0, 4)
-  ];
+  const scrollRef = useRef(null);
+  const [canScrollLeft, setCanScrollLeft] = useState(false);
+  const [canScrollRight, setCanScrollRight] = useState(true);
+  const [activeDot, setActiveDot] = useState(0);
 
-  const [startIndex, setStartIndex] = useState(4); // Start at the real first element
-  const [isTransitioning, setIsTransitioning] = useState(true);
-
-  const handleNext = () => {
-    if (!isTransitioning) return;
-    setStartIndex((prev) => prev + 1);
-  };
-
-  const handlePrev = () => {
-    if (!isTransitioning) return;
-    setStartIndex((prev) => prev - 1);
-  };
-
-  const handleTransitionEnd = () => {
-    // If we reach the duplicated first elements at the end, snap back to the actual first elements (index 4)
-    if (startIndex >= items.length + 4) {
-      setIsTransitioning(false);
-      setStartIndex(4);
-    }
-    // If we reach the duplicated last elements at the start, snap to the actual last elements
-    else if (startIndex <= 0) {
-      setIsTransitioning(false);
-      setStartIndex(items.length);
+  const checkScroll = () => {
+    if (scrollRef.current) {
+      const { scrollLeft, scrollWidth, clientWidth } = scrollRef.current;
+      setCanScrollLeft(scrollLeft > 5);
+      setCanScrollRight(scrollLeft + clientWidth < scrollWidth - 5);
+      
+      const cardWidthAndGap = 280 + 20;
+      const index = Math.min(
+        Math.round(scrollLeft / cardWidthAndGap),
+        items.length - 1
+      );
+      setActiveDot(index);
     }
   };
 
   useEffect(() => {
-    if (!isTransitioning) {
-      // Re-enable transitions on the next frame so the snap is invisible to the user
-      const timer = setTimeout(() => {
-        setIsTransitioning(true);
-      }, 50);
-      return () => clearTimeout(timer);
+    const el = scrollRef.current;
+    if (el) {
+      el.addEventListener('scroll', checkScroll);
+      checkScroll();
+      const timer = setTimeout(checkScroll, 300);
+      window.addEventListener('resize', checkScroll);
+      return () => {
+        el.removeEventListener('scroll', checkScroll);
+        window.removeEventListener('resize', checkScroll);
+        clearTimeout(timer);
+      };
     }
-  }, [isTransitioning]);
+  }, [items]);
+
+  const handleNext = () => {
+    if (scrollRef.current) {
+      // scroll by roughly 1 item card: 280 + 20 = 300
+      scrollRef.current.scrollBy({ left: 300, behavior: 'smooth' });
+    }
+  };
+
+  const handlePrev = () => {
+    if (scrollRef.current) {
+      scrollRef.current.scrollBy({ left: -300, behavior: 'smooth' });
+    }
+  };
 
   return (
-    <div className="test-slider-category-wrapper">
+    <div className="test-slider-category-wrapper" style={{ marginBottom: '32px' }}>
       {/* Header Row */}
       <div className="section-header-row">
         <h2 className="section-main-title">{title}</h2>
@@ -58,23 +64,25 @@ const CircularTestSlider = ({ title, items }) => {
       {/* Slider viewport */}
       <div className="featured-checkups-grid-wrapper">
         {/* Left Arrow */}
-        <button className="grid-arrow-left-floating" onClick={handlePrev}>
+        <button 
+          className="grid-arrow-left-floating" 
+          onClick={handlePrev}
+          disabled={!canScrollLeft}
+          style={{ opacity: !canScrollLeft ? 0.3 : 1, cursor: !canScrollLeft ? 'not-allowed' : 'pointer' }}
+        >
           <ChevronLeft size={20} />
         </button>
 
         {/* Sliding Grid */}
-        <div className="featured-checkups-grid">
+        <div className="featured-checkups-grid" ref={scrollRef} style={{ overflowX: 'auto', scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
           <div
             className="featured-checkups-track"
-            onTransitionEnd={handleTransitionEnd}
             style={{
               display: 'flex',
-              gap: '20px',
-              transform: `translateX(-${startIndex * (280 + 20)}px)`,
-              transition: isTransitioning ? 'transform 0.5s cubic-bezier(0.16, 1, 0.3, 1)' : 'none'
+              gap: '20px'
             }}
           >
-            {paddedItems.map((item, index) => (
+            {items.map((item, index) => (
               <div key={index} className="test-item-card">
                 <h3 className="test-card-title">{item.name}</h3>
                 
@@ -93,7 +101,13 @@ const CircularTestSlider = ({ title, items }) => {
                     </a>
                     <button
                       className="btn-add-test"
-                      onClick={() => alert(`${item.name} added to cart!`)}
+                      onClick={() => window.addToSuperlabCart({ 
+                        id: item.id || item.name.toLowerCase().replace(/\s+/g, '-'), 
+                        name: item.name, 
+                        category: item.category || 'Diagnostic Test', 
+                        price: item.price || 150, 
+                        originalPrice: item.originalPrice || Math.round((item.price || 150) / 0.75) 
+                      })}
                     >
                       ADD
                     </button>
@@ -105,56 +119,48 @@ const CircularTestSlider = ({ title, items }) => {
         </div>
 
         {/* Right Arrow */}
-        <button className="grid-arrow-right-floating" onClick={handleNext}>
+        <button 
+          className="grid-arrow-right-floating" 
+          onClick={handleNext}
+          disabled={!canScrollRight}
+          style={{ opacity: !canScrollRight ? 0.3 : 1, cursor: !canScrollRight ? 'not-allowed' : 'pointer' }}
+        >
           <ChevronRight size={20} />
         </button>
+      </div>
+
+      {/* Dots Indicator */}
+      <div style={{ display: 'flex', justifyContent: 'center', gap: '8px', marginTop: '16px' }}>
+        {items.map((_, index) => (
+          <button
+            key={index}
+            onClick={() => {
+              if (scrollRef.current) {
+                scrollRef.current.scrollTo({ left: index * (280 + 20), behavior: 'smooth' });
+              }
+            }}
+            style={{
+              width: activeDot === index ? '12px' : '8px',
+              height: '8px',
+              borderRadius: '4px',
+              border: 'none',
+              backgroundColor: activeDot === index ? 'var(--orange)' : 'var(--line)',
+              cursor: 'pointer',
+              padding: 0,
+              transition: 'all 0.2s'
+            }}
+            title={`Go to slide ${index + 1}`}
+          />
+        ))}
       </div>
     </div>
   );
 };
 
 const TestSliders = () => {
-  const pregnancyTests = [
-    { name: 'Haemoglobin Estimation Test', price: 130 },
-    { name: 'Beta HCG Test', price: 680 },
-    { name: 'Urine Culture Test', price: 810 },
-    { name: 'Prolactin Test', price: 600 },
-    { name: 'Haemoglobin HPLC Test', price: 550 },
-    { name: 'STD Panel Test', price: 1800 },
-    { name: 'Double Marker Test', price: 2200 },
-    { name: 'LH-Luteinizing Hormone , Serum Test', price: 500 },
-    { name: 'Estradiol Test', price: 650 },
-    { name: 'Progesterone Test', price: 700 },
-    { name: 'AFP Test', price: 800 },
-    { name: 'Glucose Tolerance Test - (GTT 2 Specimens) After 75gm', price: 350 },
-    { name: 'Quadruple Marker Test', price: 3500 },
-    { name: 'Bile Acid Test', price: 1200 },
-    { name: 'Viral Marker Profile (Elisa) Test', price: 1500 },
-    { name: 'Torch IgG IgM Test', price: 1600 },
-    { name: 'Urine Pregnancy Test', price: 150 },
-    { name: 'Free Testosterone Test', price: 1100 }
-  ];
-
-  const vitaminTests = [
-    { name: 'Vitamin D, 25 - Hydroxy Test (Vit. D3)', price: 1500 },
-    { name: 'Vitamin B12 (Vit- B12), (Cyanocobalamin) Test', price: 1000 },
-    { name: 'Folate , Serum Test', price: 1300 },
-    { name: 'Vitamin B12 & Folate, Serum Test', price: 1600 },
-    { name: 'Vitamin D3 & B12 Combo', price: 2100 },
-    { name: 'Active Vitamin B12 Test', price: 1450 },
-    { name: 'Vitamin A (Retinol) Serum Test', price: 2800 },
-    { name: 'Vitamin E (Tocopherol) Serum Test', price: 2500 }
-  ];
-
-  const hivTests = [
-    { name: 'HIV Rapid Test', price: 350 },
-    { name: 'HIV 1 & 2 Test', price: 500 },
-    { name: 'STD Panel Test', price: 1800 },
-    { name: 'HIV RNA PCR Quantitative Test', price: 3200 },
-    { name: 'CD4 And CD8 Count Test', price: 1650 },
-    { name: 'Western Blot HIV Test', price: 1800 },
-    { name: 'HIV Genotype Test', price: 8500 }
-  ];
+  const pregnancyTests = testDatabase.filter(item => item.category === 'Pregnancy Test' && item.type === 'test');
+  const vitaminTests = testDatabase.filter(item => item.category === 'Vitamin Test' && item.type === 'test');
+  const hivTests = testDatabase.filter(item => item.category === 'HIV Test' && item.type === 'test');
 
   return (
     <section className="test-sliders-section">

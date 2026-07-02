@@ -15,15 +15,32 @@ import {
 } from 'lucide-react';
 import { useEffect, useState } from 'react';
 
-const HaemoglobinTestPage = ({ setIsIsoModalOpen }) => {
+const WellwiseTotalProfilePage = ({ setIsIsoModalOpen }) => {
   const [openFaqIndex, setOpenFaqIndex] = useState(null);
   const [isAdded, setIsAdded] = useState(false);
+  const [openCategories, setOpenCategories] = useState({ 0: true });
+
+  const toggleCategory = (idx) => {
+    setOpenCategories(prev => ({
+      ...prev,
+      [idx]: !prev[idx]
+    }));
+  };
+
+  const packageInfo = {
+    id: 1001,
+    name: 'Wellwise Total Profile',
+    price: 2279,
+    originalPrice: 4500,
+    discount: '49% OFF',
+    testsCount: 91
+  };
 
   useEffect(() => {
     const checkCart = () => {
       if (window.getSuperlabCart) {
         const cart = window.getSuperlabCart();
-        setIsAdded(cart.some(item => item.name === 'Haemoglobin Estimation Test'));
+        setIsAdded(cart.some(item => item.id === packageInfo.id));
       }
     };
     checkCart();
@@ -31,50 +48,67 @@ const HaemoglobinTestPage = ({ setIsIsoModalOpen }) => {
     return () => window.removeEventListener('superlab_cart_update', checkCart);
   }, []);
 
+  const handleToggleCart = () => {
+    if (window.addToSuperlabCart && window.getSuperlabCart) {
+      const cart = window.getSuperlabCart();
+      const exists = cart.some(item => item.id === packageInfo.id);
+      if (exists) {
+        const updatedCart = cart.filter(item => item.id !== packageInfo.id);
+        localStorage.setItem('superlab_cart', JSON.stringify(updatedCart));
+        window.dispatchEvent(new Event('superlab_cart_update'));
+      } else {
+        window.addToSuperlabCart(packageInfo);
+      }
+    }
+  };
+
+  const categories = [
+    {
+      name: "Liver Function Test (LFT) - 11 parameters",
+      tests: ["Bilirubin Total", "Bilirubin Direct", "Bilirubin Indirect", "SGOT (AST)", "SGPT (ALT)", "Alkaline Phosphatase (ALP)", "Total Protein", "Albumin", "Globulin", "A/G Ratio", "Gamma Glutamyl Transferase (GGT)"]
+    },
+    {
+      name: "Kidney Function Test (KFT) - 10 parameters",
+      tests: ["Urea", "Creatinine", "Uric Acid", "BUN (Blood Urea Nitrogen)", "BUN/Creatinine Ratio", "Calcium", "Phosphorus", "Sodium", "Potassium", "Chloride"]
+    },
+    {
+      name: "Lipid Profile (Heart Health) - 8 parameters",
+      tests: ["Total Cholesterol", "Triglycerides", "HDL Cholesterol", "LDL Cholesterol", "VLDL Cholesterol", "Non-HDL Cholesterol", "TC/HDL Ratio", "LDL/HDL Ratio"]
+    },
+    {
+      name: "Thyroid Profile (Ultra-sensitive) - 3 parameters",
+      tests: ["T3 (Triiodothyronine)", "T4 (Thyroxine)", "TSH (Thyroid Stimulating Hormone)"]
+    },
+    {
+      name: "Complete Hemogram (Blood & Immunity) - 28 parameters",
+      tests: ["Hemoglobin", "RBC Count", "WBC Count", "Platelet Count", "Packed Cell Volume (PCV)", "MCV", "MCH", "MCHC", "RDW", "Neutrophils", "Lymphocytes", "Monocytes", "Eosinophils", "Basophils", "Absolute Counts"]
+    },
+    {
+      name: "Diabetes & Urine Parameters - 31 parameters",
+      tests: ["Blood Glucose Fasting", "Urine Routine Analysis", "Urine Microscopic Examination", "Specific Gravity", "Urine pH", "Protein/Albumin", "Urine Glucose", "Ketone Bodies", "Urine Bilirubin", "Urobilinogen", "Pus Cells", "Epithelial Cells"]
+    }
+  ];
+
   const faqs = [
     {
-      q: "What is a Hemoglobin Test?",
-      a: "A hemoglobin test measures the amount of hemoglobin in your red blood cells. Hemoglobin is a protein that carries oxygen from your lungs to the rest of your body."
+      q: "What is the Wellwise Total Profile?",
+      a: "The Wellwise Total Profile is a comprehensive full-body checkup package consisting of 91 test parameters. It covers major vital organs and body systems including your liver, kidneys, thyroid, heart, blood cells, and blood sugar levels."
     },
     {
-      q: "What is the Purpose of Haemoglobin Test?",
-      a: "It helps diagnose conditions like anemia, polycythemia, or track response to treatments for blood-related diseases."
+      q: "Why do I need a full body health checkup?",
+      a: "Routine full body checkups help in early detection of potential health risks or underlying medical conditions such as diabetes, high cholesterol, liver dysfunction, or kidney issues, even before any symptoms appear."
     },
     {
-      q: "Why do I need a haemoglobin test?",
-      a: "You may need it as part of a routine checkup, or if you have symptoms like fatigue, weakness, dizziness, cold hands and feet, or pale skin."
+      q: "Is fasting required for the Wellwise Total Profile?",
+      a: "Yes, a minimum of 10 to 12 hours of overnight fasting is mandatory for this package. You may drink normal water during the fasting period, but avoid coffee, tea, juices, or food."
     },
     {
-      q: "What happens during a haemoglobin test?",
-      a: "A healthcare professional will take a blood sample from a vein in your arm or via a finger prick."
+      q: "How soon will I get my reports?",
+      a: "At Super Lab, we process samples quickly. You will receive your digital reports via email and WhatsApp within 12 hours of sample collection (Same Day)."
     },
     {
-      q: "Do I Need To Prepare for Anything For the haemoglobin test?",
-      a: "No special preparation or fasting is required unless you are having other tests at the same time."
-    },
-    {
-      q: "What do the haemoglobin test results mean?",
-      a: "Low hemoglobin levels indicate anemia, while high levels might indicate erythrocytosis, dehydration, lung disease, or smoking."
-    },
-    {
-      q: "What is a normal haemoglobin level?",
-      a: "For adult males: 13.8 to 17.2 g/dL. For adult females: 12.1 to 15.1 g/dL."
-    },
-    {
-      q: "What happens if haemoglobin is low?",
-      a: "Low levels mean your body isn't getting enough oxygen, causing fatigue, shortness of breath, or headache."
-    },
-    {
-      q: "How Can I Increase my Haemoglobin Level?",
-      a: "Eat iron-rich foods, increase vitamin C intake (to improve iron absorption), and avoid iron-blocking foods/drinks like tea and coffee during meals."
-    },
-    {
-      q: "What are the Foods to Increase Haemoglobin Level?",
-      a: "Spinach, red meat, poultry, seafood, beans, lentils, fortified cereals, dried fruits (raisins, apricots), and citrus fruits."
-    },
-    {
-      q: "What is the Haemoglobin Test Price in Cities?",
-      a: "The price for a Haemoglobin Estimation Test starts at ₹130 and may vary slightly based on the location and home collection charges."
+      q: "What is included in the home collection service?",
+      a: "A highly trained, certified phlebotomist will visit your home at your scheduled time slot to collect your blood and urine samples in a sterile, safe manner using our Zero-Contamination QualiCare Kit."
     }
   ];
 
@@ -85,7 +119,6 @@ const HaemoglobinTestPage = ({ setIsIsoModalOpen }) => {
           display: grid;
           grid-template-columns: 1fr 380px;
           gap: 30px;
-          align-items: start;
         }
         .trust-badge-card {
           display: flex;
@@ -99,8 +132,6 @@ const HaemoglobinTestPage = ({ setIsIsoModalOpen }) => {
           box-shadow: var(--shadow-sm);
           gap: 14px;
         }
-        
-        /* Dashboard Spec Cards */
         .spec-card-grid {
           display: grid;
           grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
@@ -116,12 +147,6 @@ const HaemoglobinTestPage = ({ setIsIsoModalOpen }) => {
           align-items: center;
           gap: 16px;
           box-shadow: var(--shadow-sm);
-          transition: transform 0.2s ease, box-shadow 0.2s ease;
-        }
-        .spec-item-card:hover {
-          transform: translateY(-2px);
-          box-shadow: 0 6px 15px rgba(0, 0, 0, 0.05);
-          border-color: var(--teal);
         }
         .spec-icon-wrapper {
           width: 42px;
@@ -134,8 +159,6 @@ const HaemoglobinTestPage = ({ setIsIsoModalOpen }) => {
           justify-content: center;
           flex-shrink: 0;
         }
-
-        /* Sticky Booking Summary Card */
         .sticky-summary-card {
           background: #ffffff;
           border: 1px solid var(--line);
@@ -146,33 +169,63 @@ const HaemoglobinTestPage = ({ setIsIsoModalOpen }) => {
           top: 20px;
           text-align: left;
         }
-
+        .category-accordion {
+          background: #ffffff;
+          border: 1px solid var(--line);
+          border-radius: 12px;
+          margin-bottom: 12px;
+          overflow: hidden;
+          box-shadow: var(--shadow-sm);
+        }
+        .category-header {
+          width: 100%;
+          padding: 18px 24px;
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          background: #ffffff;
+          border: none;
+          cursor: pointer;
+          font-weight: 700;
+          font-size: 1.05rem;
+          color: var(--blue);
+          text-align: left;
+        }
+        .category-body {
+          padding: 20px 24px;
+          background-color: #fafbfc;
+          border-top: 1px solid var(--line);
+          display: grid;
+          grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+          gap: 12px;
+        }
+        .test-parameter-item {
+          display: flex;
+          align-items: center;
+          gap: 8px;
+          font-size: 0.9rem;
+          color: #475569;
+        }
         @media (max-width: 1024px) {
           .test-grid-layout {
             grid-template-columns: 1fr !important;
           }
-          .test-detail-page-wrapper {
-            padding: 0 !important;
-          }
         }
       `}</style>
       
-      {/* Breadcrumb Header */}
       <div style={{ backgroundColor: '#ffffff', borderBottom: '1px solid var(--line)', padding: '14px 40px' }}>
         <div style={{ maxWidth: '100%', margin: '0 auto', fontSize: '0.9rem', color: 'var(--muted)', display: 'flex', alignItems: 'center', gap: '8px' }}>
-          <a href="#/" style={{ color: 'var(--blue)', fontWeight: 600, display: 'flex', alignItems: 'center', gap: '4px' }}>
+          <a href="#/" style={{ color: 'var(--blue)', fontWeight: 600, display: 'flex', alignItems: 'center', gap: '4px', textDecoration: 'none' }}>
             <Home size={14} /> Home
           </a>
           <span>&gt;</span>
-          <a href="#/" style={{ color: 'var(--blue)', fontWeight: 600 }}>Lab Tests</a>
+          <a href="#/lab-tests" style={{ color: 'var(--blue)', fontWeight: 600, textDecoration: 'none' }}>Health Packages</a>
           <span>&gt;</span>
-          <span style={{ color: 'var(--muted)' }}>Haemoglobin Estimation Test</span>
+          <span style={{ color: 'var(--muted)' }}>Wellwise Total Profile</span>
         </div>
       </div>
 
       <div style={{ maxWidth: '100%', margin: '40px auto', padding: '0 40px' }}>
-        
-        {/* Unified Hero Section */}
         <div style={{
           backgroundColor: '#ffffff',
           borderRadius: '20px',
@@ -188,34 +241,23 @@ const HaemoglobinTestPage = ({ setIsIsoModalOpen }) => {
         }}>
           <div style={{ flex: 1, minWidth: '300px' }}>
             <div style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', backgroundColor: 'var(--teal-soft)', color: 'var(--teal)', padding: '6px 14px', borderRadius: '30px', fontSize: '0.82rem', fontWeight: '800', marginBottom: '14px' }}>
-              <span>Diagnostic Blood Test</span>
+              <span>BEST VALUE Full Body Checkup</span>
             </div>
             <h1 style={{ fontSize: '2.1rem', fontWeight: 800, color: 'var(--blue)', margin: 0, letterSpacing: '-0.3px', lineHeight: 1.2 }}>
-              Haemoglobin Estimation Test
+              Wellwise Total Profile
             </h1>
             <p style={{ color: 'var(--muted)', fontSize: '0.98rem', margin: '6px 0 0 0', fontWeight: '500' }}>
-              Also known as HB Test • Measures oxygen-carrying protein capacity
+              Comprehensive health screening package • Includes 91 vital parameters
             </p>
           </div>
 
           <div style={{ display: 'flex', alignItems: 'center', gap: '30px', flexWrap: 'wrap' }}>
             <div style={{ textAlign: 'right' }}>
               <span style={{ display: 'block', fontSize: '0.85rem', color: 'var(--muted)', fontWeight: '600' }}>Starting from</span>
-              <span style={{ fontSize: '2.2rem', fontWeight: '800', color: 'var(--teal)', lineHeight: 1 }}>₹ 130</span>
+              <span style={{ fontSize: '2.2rem', fontWeight: '800', color: 'var(--teal)', lineHeight: 1 }}>₹ 2279</span>
             </div>
             <button 
-              onClick={() => {
-                if (isAdded) {
-                  if (window.getSuperlabCart) {
-                    const cart = window.getSuperlabCart();
-                    const updated = cart.filter(item => item.name !== 'Haemoglobin Estimation Test');
-                    localStorage.setItem('superlab_cart', JSON.stringify(updated));
-                    window.dispatchEvent(new Event('superlab_cart_update'));
-                  }
-                } else {
-                  window.addToSuperlabCart({ id: 1, name: 'Haemoglobin Estimation Test', category: 'Anemia Test', price: 130, originalPrice: 173 });
-                }
-              }}
+              onClick={handleToggleCart}
               style={{
                 backgroundColor: isAdded ? '#fff3e0' : 'var(--orange)',
                 color: isAdded ? 'var(--orange-dark)' : '#ffffff',
@@ -235,7 +277,6 @@ const HaemoglobinTestPage = ({ setIsIsoModalOpen }) => {
           </div>
         </div>
 
-        {/* Promo Banner */}
         <div style={{
           backgroundColor: 'var(--teal-soft)',
           border: '1px solid #b2ebf2',
@@ -253,98 +294,70 @@ const HaemoglobinTestPage = ({ setIsIsoModalOpen }) => {
           <Info size={16} style={{ cursor: 'pointer' }} />
         </div>
 
-        {/* Main Content Grid */}
         <div className="test-grid-layout">
-          
-          {/* Left Column: Test Specifications Dashboard Grid */}
           <div>
             <div className="spec-card-grid">
-              
               <div className="spec-item-card">
-                <div className="spec-icon-wrapper">
-                  <FileText size={18} />
-                </div>
+                <div className="spec-icon-wrapper"><FileText size={18} /></div>
                 <div>
-                  <span style={{ display: 'block', fontSize: '0.78rem', color: 'var(--muted)', fontWeight: '700', textTransform: 'uppercase' }}>Test Name</span>
-                  <span style={{ fontSize: '0.92rem', fontWeight: '700', color: 'var(--blue)' }}>Haemoglobin Estimation</span>
+                  <span style={{ display: 'block', fontSize: '0.78rem', color: 'var(--muted)', fontWeight: '700', textTransform: 'uppercase' }}>Package Name</span>
+                  <span style={{ fontSize: '0.92rem', fontWeight: '700', color: 'var(--blue)' }}>Wellwise Total Profile</span>
                 </div>
               </div>
-
               <div className="spec-item-card">
-                <div className="spec-icon-wrapper">
-                  <Layers size={18} />
-                </div>
+                <div className="spec-icon-wrapper"><Layers size={18} /></div>
                 <div>
-                  <span style={{ display: 'block', fontSize: '0.78rem', color: 'var(--muted)', fontWeight: '700', textTransform: 'uppercase' }}>Also Known as</span>
-                  <span style={{ fontSize: '0.92rem', fontWeight: '700', color: 'var(--blue)' }}>HB Test</span>
+                  <span style={{ display: 'block', fontSize: '0.78rem', color: 'var(--muted)', fontWeight: '700', textTransform: 'uppercase' }}>Package Type</span>
+                  <span style={{ fontSize: '0.92rem', fontWeight: '700', color: 'var(--blue)' }}>Full Body checkup</span>
                 </div>
               </div>
-
               <div className="spec-item-card">
-                <div className="spec-icon-wrapper">
-                  <Droplet size={18} />
-                </div>
+                <div className="spec-icon-wrapper"><Droplet size={18} /></div>
                 <div>
                   <span style={{ display: 'block', fontSize: '0.78rem', color: 'var(--muted)', fontWeight: '700', textTransform: 'uppercase' }}>Sample Type</span>
-                  <span style={{ fontSize: '0.92rem', fontWeight: '700', color: 'var(--blue)' }}>Blood</span>
+                  <span style={{ fontSize: '0.92rem', fontWeight: '700', color: 'var(--blue)' }}>Blood & Urine</span>
                 </div>
               </div>
-
               <div className="spec-item-card">
-                <div className="spec-icon-wrapper">
-                  <Users size={18} />
-                </div>
+                <div className="spec-icon-wrapper"><Users size={18} /></div>
                 <div>
                   <span style={{ display: 'block', fontSize: '0.78rem', color: 'var(--muted)', fontWeight: '700', textTransform: 'uppercase' }}>Gender</span>
                   <span style={{ fontSize: '0.92rem', fontWeight: '700', color: 'var(--blue)' }}>Both</span>
                 </div>
               </div>
-
               <div className="spec-item-card">
-                <div className="spec-icon-wrapper">
-                  <Calendar size={18} />
-                </div>
+                <div className="spec-icon-wrapper"><Calendar size={18} /></div>
                 <div>
                   <span style={{ display: 'block', fontSize: '0.78rem', color: 'var(--muted)', fontWeight: '700', textTransform: 'uppercase' }}>Age group</span>
                   <span style={{ fontSize: '0.92rem', fontWeight: '700', color: 'var(--blue)' }}>All Age Groups</span>
                 </div>
               </div>
-
               <div className="spec-item-card">
-                <div className="spec-icon-wrapper">
-                  <Info size={18} />
-                </div>
+                <div className="spec-icon-wrapper"><Info size={18} /></div>
                 <div>
                   <span style={{ display: 'block', fontSize: '0.78rem', color: 'var(--muted)', fontWeight: '700', textTransform: 'uppercase' }}>Fasting Required</span>
-                  <span style={{ fontSize: '0.92rem', fontWeight: '700', color: 'var(--blue)' }}>No Fasting Required</span>
+                  <span style={{ fontSize: '0.92rem', fontWeight: '700', color: 'var(--blue)' }}>10-12 Hrs Fasting</span>
                 </div>
               </div>
-
               <div className="spec-item-card">
-                <div className="spec-icon-wrapper">
-                  <Clock size={18} />
-                </div>
+                <div className="spec-icon-wrapper"><Clock size={18} /></div>
                 <div>
                   <span style={{ display: 'block', fontSize: '0.78rem', color: 'var(--muted)', fontWeight: '700', textTransform: 'uppercase' }}>Turnaround Time</span>
-                  <span style={{ fontSize: '0.92rem', fontWeight: '700', color: 'var(--blue)' }}>Within 24 Hours</span>
+                  <span style={{ fontSize: '0.92rem', fontWeight: '700', color: 'var(--blue)' }}>Within 12 Hours</span>
                 </div>
               </div>
-
               <div className="spec-item-card">
-                <div className="spec-icon-wrapper">
-                  <FileText size={18} />
-                </div>
+                <div className="spec-icon-wrapper"><FileText size={18} /></div>
                 <div>
                   <span style={{ display: 'block', fontSize: '0.78rem', color: 'var(--muted)', fontWeight: '700', textTransform: 'uppercase' }}>Test Components</span>
                   <span 
                     style={{ fontSize: '0.92rem', fontWeight: '700', color: 'var(--teal)', cursor: 'pointer', textDecoration: 'underline' }} 
-                    onClick={() => alert('Showing Test Components!')}
+                    onClick={() => alert('Scroll down to view parameters!')}
                   >
-                    View (1 Parameter)
+                    View (91 Parameters)
                   </span>
                 </div>
               </div>
-
             </div>
 
             {/* Collection Availability Badge */}
@@ -416,16 +429,15 @@ const HaemoglobinTestPage = ({ setIsIsoModalOpen }) => {
                   color: 'var(--teal)'
                 }}>
                   {[
-                    'Overview of the Haemoglobin Estimation Test',
-                    'Why Doctors Recommend Haemoglobin Estimation Test',
-                    'Preparations Before the Haemoglobin Estimation Test',
+                    'Overview of the Wellwise Total Profile checkup',
+                    'Key Test Parameters and Vital Organs Evaluated',
+                    'Preparations Before the Wellwise Total Profile checkup',
                     'What to Expect During the Procedure',
-                    'Understanding the Test Results',
-                    'Factors That Can Influence Haemoglobin Levels in the Body?',
-                    'Ways to Improve Haemoglobin Levels Naturally and Safely'
+                    'Understanding the Test Reports',
+                    'Health Benefits of a Regular Full Body Checkup'
                   ].map((item, idx) => (
                     <li key={idx}>
-                      <a href={`#section-${idx}`} style={{ color: 'var(--teal)', fontWeight: '600', textDecoration: 'none', transition: 'color 0.2s' }} onMouseEnter={(e) => e.target.style.color = 'var(--blue)'} onMouseLeave={(e) => e.target.style.color = 'var(--teal)'}>
+                      <a href={`#section-${idx}`} style={{ color: 'var(--teal)', fontWeight: '600', textDecoration: 'none', transition: 'color 0.2s' }}>
                         {item}
                       </a>
                     </li>
@@ -439,33 +451,27 @@ const HaemoglobinTestPage = ({ setIsIsoModalOpen }) => {
                   Description
                 </h3>
                 <p style={{ fontSize: '1rem', color: 'var(--muted)', lineHeight: '1.7', margin: 0 }}>
-                  Haemoglobin, also known as Hgb or Hb, is a crucial protein that transports iron and is a major component of the red blood cells in the body. As this iron can store oxygen, transporting it from the lungs to other parts of the body, haemoglobin is a crucial component of blood. If the haemoglobin levels are low, it can indicate anaemia, and in the case of high levels, it can indicate the body needs an increased capacity to carry oxygen. It is extremely convenient.
+                  The Wellwise Total Profile is a premium, complete health screening profile designed to provide a comprehensive analysis of your overall health. It checks the health of your liver, kidneys, heart, thyroid, blood cells, and detects diabetes early. Perfect for all adults who want to proactively track their wellness, it helps you detect critical conditions before they display any symptoms.
                   <span style={{ color: 'var(--teal)', fontWeight: '700', cursor: 'pointer', marginLeft: '4px' }} onClick={() => alert('Read More clicked!')}>Read More</span>
                 </p>
               </div>
             </div>
           </div>
 
-          {/* Right Column: Sidebar containing Sticky Summary Card */}
           <div style={{ display: 'flex', flexDirection: 'column', gap: '24px', height: '100%' }}>
-            
-            {/* Sticky Booking Summary Card */}
             <div className="sticky-summary-card">
               <h3 style={{ fontSize: '1.15rem', fontWeight: 800, color: 'var(--blue)', margin: '0 0 16px 0' }}>
                 Booking Summary
               </h3>
-              
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderBottom: '1px solid var(--line)', paddingBottom: '14px', marginBottom: '14px' }}>
                 <div>
-                  <span style={{ fontSize: '0.85rem', color: 'var(--muted)', fontWeight: '600' }}>Price per test</span>
-                  <span style={{ display: 'block', fontSize: '1.5rem', fontWeight: '800', color: 'var(--teal)', marginTop: '2px' }}>₹ 130</span>
+                  <span style={{ fontSize: '0.85rem', color: 'var(--muted)', fontWeight: '600' }}>Price per package</span>
+                  <span style={{ display: 'block', fontSize: '1.5rem', fontWeight: '800', color: 'var(--teal)', marginTop: '2px' }}>₹ 2279</span>
                 </div>
                 <span style={{ backgroundColor: '#e8f5e9', color: '#2e7d32', padding: '4px 10px', borderRadius: '30px', fontSize: '0.75rem', fontWeight: '700' }}>
                   Best Deal
                 </span>
               </div>
-
-              {/* Package Inclusions */}
               <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', marginBottom: '20px' }}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '0.85rem', color: 'var(--muted)' }}>
                   <Check size={14} color="var(--teal)" strokeWidth={3} />
@@ -477,23 +483,11 @@ const HaemoglobinTestPage = ({ setIsIsoModalOpen }) => {
                 </div>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '0.85rem', color: 'var(--muted)' }}>
                   <Check size={14} color="var(--teal)" strokeWidth={3} />
-                  <span>Quality reports in 24 hours</span>
+                  <span>Quality reports in 12 hours</span>
                 </div>
               </div>
-
               <button 
-                onClick={() => {
-                  if (isAdded) {
-                    if (window.getSuperlabCart) {
-                      const cart = window.getSuperlabCart();
-                      const updated = cart.filter(item => item.name !== 'Haemoglobin Estimation Test');
-                      localStorage.setItem('superlab_cart', JSON.stringify(updated));
-                      window.dispatchEvent(new Event('superlab_cart_update'));
-                    }
-                  } else {
-                    window.addToSuperlabCart({ id: 1, name: 'Haemoglobin Estimation Test', category: 'Anemia Test', price: 130, originalPrice: 173 });
-                  }
-                }}
+                onClick={handleToggleCart}
                 style={{
                   width: '100%',
                   backgroundColor: isAdded ? '#fff3e0' : 'var(--orange)',
@@ -512,7 +506,6 @@ const HaemoglobinTestPage = ({ setIsIsoModalOpen }) => {
               </button>
             </div>
             
-            {/* Sample Report Card */}
             <div style={{
               backgroundColor: '#ffffff',
               border: '1px solid var(--line)',
@@ -522,7 +515,7 @@ const HaemoglobinTestPage = ({ setIsIsoModalOpen }) => {
               textAlign: 'left'
             }}>
               <h3 style={{ fontSize: '1rem', fontWeight: '800', color: 'var(--teal)', marginTop: 0, marginBottom: '12px', letterSpacing: '0.5px' }}>
-                HAEMOGLOBIN ESTIMATION TEST SAMPLE REPORT
+                WELLWISE TOTAL PROFILE SAMPLE REPORT
               </h3>
               <p style={{ color: 'var(--blue)', fontWeight: '700', fontSize: '0.95rem', marginBottom: '20px', lineHeight: '1.4' }}>
                 Track and manage your health better with SAMPLE REPORT
@@ -545,15 +538,12 @@ const HaemoglobinTestPage = ({ setIsIsoModalOpen }) => {
                   cursor: 'pointer',
                   transition: 'background-color 0.2s'
                 }}
-                onMouseEnter={(e) => e.target.style.backgroundColor = 'var(--orange-dark)'}
-                onMouseLeave={(e) => e.target.style.backgroundColor = 'var(--orange)'}
               >
                 <FileText size={18} />
                 <span>View Sample Report</span>
               </button>
             </div>
 
-            {/* Recommended Tests & FAQs links */}
             <div style={{ display: 'flex', justifyContent: 'space-between', gap: '16px' }}>
               <a href="#/recommended-tests" style={{
                 flex: 1,
@@ -567,7 +557,8 @@ const HaemoglobinTestPage = ({ setIsIsoModalOpen }) => {
                 color: 'var(--blue)',
                 fontWeight: '700',
                 fontSize: '0.9rem',
-                boxShadow: 'var(--shadow-sm)'
+                boxShadow: 'var(--shadow-sm)',
+                textDecoration: 'none'
               }}>
                 <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', width: '28px', height: '28px', borderRadius: '50%', backgroundColor: 'var(--teal-soft)', color: 'var(--teal)' }}>
                   <ShoppingCart size={14} />
@@ -587,7 +578,8 @@ const HaemoglobinTestPage = ({ setIsIsoModalOpen }) => {
                 color: 'var(--blue)',
                 fontWeight: '700',
                 fontSize: '0.9rem',
-                boxShadow: 'var(--shadow-sm)'
+                boxShadow: 'var(--shadow-sm)',
+                textDecoration: 'none'
               }}>
                 <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', width: '28px', height: '28px', borderRadius: '50%', backgroundColor: 'var(--teal-soft)', color: 'var(--teal)' }}>
                   <HelpCircle size={14} />
@@ -596,7 +588,6 @@ const HaemoglobinTestPage = ({ setIsIsoModalOpen }) => {
               </a>
             </div>
 
-            {/* Quick Summary box */}
             <div style={{
               backgroundColor: '#e6f2ff',
               borderLeft: '5px solid #0056b3',
@@ -608,9 +599,8 @@ const HaemoglobinTestPage = ({ setIsIsoModalOpen }) => {
               textAlign: 'left',
               flexGrow: 1
             }}>
-              <strong>Quick Summary:</strong> The Haemoglobin Estimation is a diagnostic test, for both men and women across all age groups, with reports available within 24hrs * — currently offered at ₹130 . Home Sample Collection is available. This test is essential for checking your overall health, diagnosing anemia or polycythemia, and monitoring how well your body is transporting oxygen to vital tissues. With Superlab's highly certified phlebotomists collecting samples right from your doorstep, you get absolute safety, reliability, and digital reports delivered directly to your device within 24 hours.
+              <strong>Quick Summary:</strong> The Wellwise Total Profile is a comprehensive health screening package, for both men and women across all age groups, with reports available within 12hrs * — currently offered at ₹2279. Home Sample Collection is available. This package is ideal for regular health monitoring, ensuring that vital organs function optimally and detecting early warning signs of chronic illnesses like diabetes, kidney disease, or liver complications. With our certified phlebotomists and fast testing, you receive accurate reports delivered straight to your WhatsApp and email.
             </div>
-
           </div>
         </div>
       </div>
@@ -627,21 +617,30 @@ const HaemoglobinTestPage = ({ setIsIsoModalOpen }) => {
         }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '16px', marginBottom: '20px' }}>
             <h2 style={{ fontSize: '1.5rem', fontWeight: '800', color: 'var(--teal)', margin: 0 }}>Test Components</h2>
-            <button 
-              onClick={() => alert('Showing Test Components!')}
-              style={{
-                backgroundColor: 'var(--orange)',
-                color: '#ffffff',
-                border: 'none',
-                borderRadius: '6px',
-                padding: '6px 16px',
-                fontWeight: 'bold',
-                cursor: 'pointer',
-                fontSize: '0.9rem'
-              }}
-            >
-              View
-            </button>
+          </div>
+
+          <div style={{ textAlign: 'left', marginBottom: '20px' }}>
+            {categories.map((cat, idx) => {
+              const isOpen = !!openCategories[idx];
+              return (
+                <div key={idx} className="category-accordion">
+                  <button className="category-header" onClick={() => toggleCategory(idx)}>
+                    <span>{cat.name}</span>
+                    {isOpen ? <ChevronUp size={18} /> : <ChevronDown size={18} />}
+                  </button>
+                  {isOpen && (
+                    <div className="category-body">
+                      {cat.tests.map((test, tIdx) => (
+                        <div key={tIdx} className="test-parameter-item">
+                          <span style={{ color: 'var(--teal)', display: 'flex' }}><Check size={14} strokeWidth={3} /></span>
+                          <span>{test}</span>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              );
+            })}
           </div>
 
           <div style={{
@@ -742,7 +741,7 @@ const HaemoglobinTestPage = ({ setIsIsoModalOpen }) => {
       {/* FAQ Section (Full Width) */}
       <div style={{ maxWidth: '100%', margin: '40px auto 0 auto', padding: '0 40px', textAlign: 'left' }}>
         <h2 style={{ fontSize: '1.8rem', fontWeight: '800', color: 'var(--blue)', marginBottom: '24px' }}>
-          Frequently Asked Questions (FAQ's) About Haemoglobin Estimation
+          Frequently Asked Questions (FAQ's) About Wellwise Total Profile
         </h2>
         <div style={{ display: 'flex', flexDirection: 'column', backgroundColor: '#ffffff', border: '1px solid var(--line)', borderRadius: '16px', padding: '24px 32px', boxShadow: 'var(--shadow-sm)', marginBottom: '40px' }}>
           {faqs.map((faq, idx) => {
@@ -792,16 +791,12 @@ const HaemoglobinTestPage = ({ setIsIsoModalOpen }) => {
         </div>
       </div>
 
-      {/* How Does Home Sample Collection work? */}
-      <div style={{ maxWidth: '100%', margin: '60px auto 0 auto', padding: '0 40px', textAlign: 'left' }}>
+      <div style={{ maxWidth: '100%', margin: '60px auto 0 auto', padding: '0 40px', textAlign: 'left', paddingBottom: '80px' }}>
         <h2 style={{ fontSize: '1.8rem', fontWeight: '800', color: 'var(--blue)', marginBottom: '40px' }}>
           How Does Home Sample Collection work?
         </h2>
         
-        {/* Steps container */}
         <div style={{ position: 'relative', display: 'flex', flexDirection: 'column', gap: '30px', backgroundColor: '#f0f9fa', borderRadius: '24px', padding: '40px 30px', boxShadow: 'var(--shadow-sm)', overflow: 'hidden' }}>
-          
-          {/* Wave connector line */}
           <div style={{
             position: 'absolute',
             top: '110px',
@@ -813,7 +808,6 @@ const HaemoglobinTestPage = ({ setIsIsoModalOpen }) => {
             zIndex: 1
           }} />
 
-          {/* Circles row */}
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', zIndex: 2, position: 'relative', gap: '10px', flexWrap: 'wrap' }}>
             {[
               {
@@ -892,7 +886,6 @@ const HaemoglobinTestPage = ({ setIsIsoModalOpen }) => {
             ))}
           </div>
 
-          {/* Colored banner row */}
           <div style={{ display: 'flex', borderRadius: '16px', overflow: 'hidden', marginTop: '20px', flexWrap: 'wrap' }}>
             {[
               { text: "Select Your Test", bg: "#74b9d0" },
@@ -924,9 +917,8 @@ const HaemoglobinTestPage = ({ setIsIsoModalOpen }) => {
           </div>
         </div>
       </div>
-
     </div>
   );
 };
 
-export default HaemoglobinTestPage;
+export default WellwiseTotalProfilePage;

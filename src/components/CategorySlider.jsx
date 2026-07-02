@@ -1,5 +1,5 @@
-import { useState, useEffect } from 'react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
+import { useState, useEffect, useRef } from 'react';
 
 const CategorySlider = () => {
   const baseCategories = [
@@ -54,46 +54,55 @@ const CategorySlider = () => {
     { name: 'INFLUENZA TEST', img: '/tests/influenza test.png' }
   ];
 
-  // Prepend last 7 and append first 7 to achieve seamless circular loop for visible items
   const itemsVisible = 7;
-  const categories = [
-    ...baseCategories.slice(-itemsVisible),
-    ...baseCategories,
-    ...baseCategories.slice(0, itemsVisible)
-  ];
+  const categories = baseCategories;
+  const scrollRef = useRef(null);
+  const [canScrollLeft, setCanScrollLeft] = useState(false);
+  const [canScrollRight, setCanScrollRight] = useState(true);
+  const [activeDot, setActiveDot] = useState(0);
 
-  const [startIndex, setStartIndex] = useState(itemsVisible); // Start at the real first element
-  const [isTransitioning, setIsTransitioning] = useState(true);
-
-  const handleNext = () => {
-    if (!isTransitioning) return;
-    setStartIndex((prev) => prev + 1);
-  };
-
-  const handlePrev = () => {
-    if (!isTransitioning) return;
-    setStartIndex((prev) => prev - 1);
-  };
-
-  const handleTransitionEnd = () => {
-    if (startIndex >= baseCategories.length + itemsVisible) {
-      setIsTransitioning(false);
-      setStartIndex(itemsVisible);
-    }
-    else if (startIndex <= 0) {
-      setIsTransitioning(false);
-      setStartIndex(baseCategories.length);
+  const checkScroll = () => {
+    if (scrollRef.current) {
+      const { scrollLeft, scrollWidth, clientWidth } = scrollRef.current;
+      setCanScrollLeft(scrollLeft > 5);
+      setCanScrollRight(scrollLeft + clientWidth < scrollWidth - 5);
+      
+      const cardWidthAndGap = 180 + 16;
+      const index = Math.min(
+        Math.round(scrollLeft / cardWidthAndGap),
+        categories.length - 1
+      );
+      setActiveDot(index);
     }
   };
 
   useEffect(() => {
-    if (!isTransitioning) {
-      const timer = setTimeout(() => {
-        setIsTransitioning(true);
-      }, 50);
-      return () => clearTimeout(timer);
+    const el = scrollRef.current;
+    if (el) {
+      el.addEventListener('scroll', checkScroll);
+      checkScroll();
+      const timer = setTimeout(checkScroll, 300);
+      window.addEventListener('resize', checkScroll);
+      return () => {
+        el.removeEventListener('scroll', checkScroll);
+        window.removeEventListener('resize', checkScroll);
+        clearTimeout(timer);
+      };
     }
-  }, [isTransitioning]);
+  }, []);
+
+  const handleNext = () => {
+    if (scrollRef.current) {
+      // scroll by roughly 2 items: (180 + 16) * 2 = 392
+      scrollRef.current.scrollBy({ left: 392, behavior: 'smooth' });
+    }
+  };
+
+  const handlePrev = () => {
+    if (scrollRef.current) {
+      scrollRef.current.scrollBy({ left: -392, behavior: 'smooth' });
+    }
+  };
 
   return (
     <section className="category-slider-section">
@@ -110,20 +119,22 @@ const CategorySlider = () => {
         {/* Viewport & Controls */}
         <div className="featured-checkups-grid-wrapper">
           {/* Left Arrow */}
-          <button className="grid-arrow-left-floating" onClick={handlePrev}>
+          <button 
+            className="grid-arrow-left-floating" 
+            onClick={handlePrev} 
+            disabled={!canScrollLeft}
+            style={{ opacity: !canScrollLeft ? 0.3 : 1, cursor: !canScrollLeft ? 'not-allowed' : 'pointer' }}
+          >
             <ChevronLeft size={20} />
           </button>
 
           {/* Track container */}
-          <div className="featured-checkups-grid">
+          <div className="featured-checkups-grid" ref={scrollRef} style={{ overflowX: 'auto', scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
             <div 
               className="featured-checkups-track"
-              onTransitionEnd={handleTransitionEnd}
               style={{
                 display: 'flex',
-                gap: '16px',
-                transform: `translateX(-${startIndex * (180 + 16)}px)`,
-                transition: isTransitioning ? 'transform 0.5s cubic-bezier(0.16, 1, 0.3, 1)' : 'none'
+                gap: '16px'
               }}
             >
               {categories.map((cat, index) => (
@@ -134,7 +145,6 @@ const CategorySlider = () => {
                       alt={cat.name} 
                       className="category-img-icon"
                       onError={(e) => {
-                        // Fallback in case there is any typo or load error
                         e.target.style.display = 'none';
                       }}
                     />
@@ -146,9 +156,47 @@ const CategorySlider = () => {
           </div>
 
           {/* Right Arrow */}
-          <button className="grid-arrow-right-floating" onClick={handleNext}>
+          <button 
+            className="grid-arrow-right-floating" 
+            onClick={handleNext}
+            disabled={!canScrollRight}
+            style={{ opacity: !canScrollRight ? 0.3 : 1, cursor: !canScrollRight ? 'not-allowed' : 'pointer' }}
+          >
             <ChevronRight size={20} />
           </button>
+        </div>
+
+        {/* Dots Indicator */}
+        <div style={{ display: 'flex', justifyContent: 'center', gap: '8px', marginTop: '20px', flexWrap: 'wrap', padding: '0 20px' }}>
+          {categories.map((_, index) => {
+            // Since there are 50 categories, rendering 50 dots might be too many.
+            // Let's render a dot for every 2 items to keep it clean and readable.
+            if (index % 2 !== 0) return null;
+            const dotIndex = Math.floor(index / 2);
+            const activeDotIndex = Math.floor(activeDot / 2);
+            return (
+              <button
+                key={index}
+                onClick={() => {
+                  if (scrollRef.current) {
+                    scrollRef.current.scrollTo({ left: index * (180 + 16), behavior: 'smooth' });
+                  }
+                }}
+                style={{
+                  width: activeDotIndex === dotIndex ? '12px' : '8px',
+                  height: '8px',
+                  borderRadius: '4px',
+                  border: 'none',
+                  backgroundColor: activeDotIndex === dotIndex ? 'var(--orange)' : 'var(--line)',
+                  cursor: 'pointer',
+                  padding: 0,
+                  transition: 'all 0.2s',
+                  marginBottom: '6px'
+                }}
+                title={`Go to category ${index + 1}`}
+              />
+            );
+          })}
         </div>
 
       </div>

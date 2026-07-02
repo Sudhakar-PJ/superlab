@@ -1,163 +1,68 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { ChevronRight, ChevronLeft } from 'lucide-react';
+import { testDatabase } from '../data/testDatabase';
 
 const FeaturedCheckups = () => {
-  const baseCheckups = [
-    // Group 1
-    {
-      name: 'Wellwise Total Profile',
-      testCount: 91,
-      originalPrice: 3799,
-      discountedPrice: 2279,
-      discount: '40% off',
-      badge: 'Most Booked',
-      link: '#details-total'
-    },
-    {
-      name: 'WellWise Exclusive Profile- Male',
-      testCount: 95,
-      originalPrice: 5199,
-      discountedPrice: 3119,
-      discount: '40% off',
-      badge: null,
-      link: '#details-exclusive-male'
-    },
-    {
-      name: 'Wellwise Platinum - Male',
-      testCount: 103,
-      originalPrice: 7499,
-      discountedPrice: 4499,
-      discount: '40% off',
-      badge: null,
-      link: '#details-platinum-male'
-    },
-    {
-      name: 'Wellwise Advanced Profile',
-      testCount: 81,
-      originalPrice: 2999,
-      discountedPrice: 1799,
-      discount: '40% off',
-      badge: null,
-      link: '#details-advanced'
-    },
-    // Group 2
-    {
-      name: 'WellWise Exclusive Profile-Female',
-      testCount: 95,
-      originalPrice: 5199,
-      discountedPrice: 3119,
-      discount: '40% off',
-      badge: null,
-      link: '#details-exclusive-female'
-    },
-    {
-      name: 'Wellwise Platinum - Female',
-      testCount: 103,
-      originalPrice: 7499,
-      discountedPrice: 4499,
-      discount: '40% off',
-      badge: null,
-      link: '#details-platinum-female'
-    },
-    {
-      name: 'Wellwise Premium - Male',
-      testCount: 111,
-      originalPrice: 12999,
-      discountedPrice: 7799,
-      discount: '40% off',
-      badge: null,
-      link: '#details-premium-male'
-    },
-    {
-      name: 'Wellwise Premium - Female',
-      testCount: 111,
-      originalPrice: 12999,
-      discountedPrice: 7799,
-      discount: '40% off',
-      badge: null,
-      link: '#details-premium-female'
-    },
-    // Group 3
-    {
-      name: 'Wellwise Essential Profile',
-      testCount: 54,
-      originalPrice: 1599,
-      discountedPrice: 959,
-      discount: '40% off',
-      badge: null,
-      link: '#details-essential'
-    },
-    {
-      name: 'Max Care Health Check 2',
-      testCount: 61,
-      originalPrice: 2084,
-      discountedPrice: 1250,
-      discount: '40% off',
-      badge: null,
-      link: '#details-maxcare-2'
-    },
-    {
-      name: 'Max Care Health Check 3',
-      testCount: 62,
-      originalPrice: 3750,
-      discountedPrice: 2250,
-      discount: '40% off',
-      badge: null,
-      link: '#details-maxcare-3'
-    },
-    {
-      name: 'Max Care Health Check 4',
-      testCount: 80,
-      originalPrice: 4500,
-      discountedPrice: 2700,
-      discount: '40% off',
-      badge: null,
-      link: '#details-maxcare-4'
-    }
-  ];
+  const baseCheckups = testDatabase
+    .filter(item => item.type === 'package')
+    .map(pkg => ({
+      id: pkg.id,
+      name: pkg.name,
+      testCount: pkg.testsIncluded,
+      originalPrice: pkg.originalPrice,
+      discountedPrice: pkg.price,
+      discount: pkg.discount,
+      badge: pkg.popular ? 'Most Booked' : null,
+      link: pkg.hash
+    }));
 
-  // Prepend last 4 and append first 4 to achieve seamless circular loop
-  const checkups = [
-    ...baseCheckups.slice(-4),
-    ...baseCheckups,
-    ...baseCheckups.slice(0, 4)
-  ];
+  const scrollRef = useRef(null);
+  const [canScrollLeft, setCanScrollLeft] = useState(false);
+  const [canScrollRight, setCanScrollRight] = useState(true);
+  const [activeDot, setActiveDot] = useState(0);
 
-  const [startIndex, setStartIndex] = useState(4); // Start at the real first element
-  const [isTransitioning, setIsTransitioning] = useState(true);
-
-  const handleNext = () => {
-    if (!isTransitioning) return;
-    setStartIndex((prev) => prev + 1);
-  };
-
-  const handlePrev = () => {
-    if (!isTransitioning) return;
-    setStartIndex((prev) => prev - 1);
-  };
-
-  const handleTransitionEnd = () => {
-    // If we reach the duplicated first elements at the end, snap back to the actual first elements (index 4)
-    if (startIndex >= baseCheckups.length + 4) {
-      setIsTransitioning(false);
-      setStartIndex(4);
-    }
-    // If we reach the duplicated last elements at the start, snap to the actual last elements (index 12)
-    else if (startIndex <= 0) {
-      setIsTransitioning(false);
-      setStartIndex(baseCheckups.length);
+  const checkScroll = () => {
+    if (scrollRef.current) {
+      const { scrollLeft, scrollWidth, clientWidth } = scrollRef.current;
+      setCanScrollLeft(scrollLeft > 5);
+      setCanScrollRight(scrollLeft + clientWidth < scrollWidth - 5);
+      
+      const cardWidthAndGap = 300 + 20;
+      const index = Math.min(
+        Math.round(scrollLeft / cardWidthAndGap),
+        baseCheckups.length - 1
+      );
+      setActiveDot(index);
     }
   };
 
   useEffect(() => {
-    if (!isTransitioning) {
-      // Re-enable transitions on the next frame so the snap is invisible to the user
-      const timer = setTimeout(() => {
-        setIsTransitioning(true);
-      }, 50);
-      return () => clearTimeout(timer);
+    const el = scrollRef.current;
+    if (el) {
+      el.addEventListener('scroll', checkScroll);
+      checkScroll();
+      // Wait for layout/images load
+      const timer = setTimeout(checkScroll, 300);
+      window.addEventListener('resize', checkScroll);
+      return () => {
+        el.removeEventListener('scroll', checkScroll);
+        window.removeEventListener('resize', checkScroll);
+        clearTimeout(timer);
+      };
     }
-  }, [isTransitioning]);
+  }, []);
+
+  const handleNext = () => {
+    if (scrollRef.current) {
+      scrollRef.current.scrollBy({ left: 320, behavior: 'smooth' });
+    }
+  };
+
+  const handlePrev = () => {
+    if (scrollRef.current) {
+      scrollRef.current.scrollBy({ left: -320, behavior: 'smooth' });
+    }
+  };
 
   return (
     <section className="featured-checkups-section">
@@ -173,23 +78,25 @@ const FeaturedCheckups = () => {
         {/* Cards Row Grid Wrapper */}
         <div className="featured-checkups-grid-wrapper">
           {/* Left Floating Arrow */}
-          <button className="grid-arrow-left-floating" onClick={handlePrev}>
+          <button 
+            className="grid-arrow-left-floating" 
+            onClick={handlePrev}
+            disabled={!canScrollLeft}
+            style={{ opacity: !canScrollLeft ? 0.3 : 1, cursor: !canScrollLeft ? 'not-allowed' : 'pointer' }}
+          >
             <ChevronLeft size={20} />
           </button>
 
           {/* Sliding Grid Viewport */}
-          <div className="featured-checkups-grid">
+          <div className="featured-checkups-grid" ref={scrollRef} style={{ overflowX: 'auto', scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
             <div 
               className="featured-checkups-track"
-              onTransitionEnd={handleTransitionEnd}
               style={{
                 display: 'flex',
-                gap: '20px',
-                transform: `translateX(-${startIndex * (300 + 20)}px)`,
-                transition: isTransitioning ? 'transform 0.5s cubic-bezier(0.16, 1, 0.3, 1)' : 'none'
+                gap: '20px'
               }}
             >
-              {checkups.map((check, index) => (
+              {baseCheckups.map((check, index) => (
                 <div key={index} className="checkup-card">
                   {/* Badges top bar */}
                   <div className="checkup-card-badges">
@@ -222,7 +129,13 @@ const FeaturedCheckups = () => {
                     </a>
                     <button 
                       className="btn-book-checkup" 
-                      onClick={() => alert(`${check.name} added to booking request!`)}
+                      onClick={() => window.addToSuperlabCart({ 
+                        id: check.id || check.name.toLowerCase().replace(/\s+/g, '-'), 
+                        name: check.name, 
+                        category: 'Health Checkup', 
+                        price: check.discountedPrice || 999, 
+                        originalPrice: check.originalPrice || Math.round((check.discountedPrice || 999) / 0.75) 
+                      })}
                     >
                       BOOK
                     </button>
@@ -233,9 +146,39 @@ const FeaturedCheckups = () => {
           </div>
 
           {/* Right Floating Arrow */}
-          <button className="grid-arrow-right-floating" onClick={handleNext}>
+          <button 
+            className="grid-arrow-right-floating" 
+            onClick={handleNext}
+            disabled={!canScrollRight}
+            style={{ opacity: !canScrollRight ? 0.3 : 1, cursor: !canScrollRight ? 'not-allowed' : 'pointer' }}
+          >
             <ChevronRight size={20} />
           </button>
+        </div>
+
+        {/* Dots Indicator */}
+        <div style={{ display: 'flex', justifyContent: 'center', gap: '8px', marginTop: '20px' }}>
+          {baseCheckups.map((_, index) => (
+            <button
+              key={index}
+              onClick={() => {
+                if (scrollRef.current) {
+                  scrollRef.current.scrollTo({ left: index * (300 + 20), behavior: 'smooth' });
+                }
+              }}
+              style={{
+                width: activeDot === index ? '12px' : '8px',
+                height: '8px',
+                borderRadius: '4px',
+                border: 'none',
+                backgroundColor: activeDot === index ? 'var(--orange)' : 'var(--line)',
+                cursor: 'pointer',
+                padding: 0,
+                transition: 'all 0.2s'
+              }}
+              title={`Go to slide ${index + 1}`}
+            />
+          ))}
         </div>
       </div>
     </section>

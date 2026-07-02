@@ -1,6 +1,11 @@
 import React, { useState } from 'react';
+// import AnimatedLogo2 from './AnimatedLogo2';
+import AnimatedLogo from './AnimatedLogo';
+// import AnimatedLogo3 from './AnimatedLogo3';
 
-const Footer = () => {
+
+
+const Footer = ({ isIsoModalOpen }) => {
   const [activeTab, setActiveTab] = useState('tests');
 
   const tabContent = {
@@ -66,10 +71,19 @@ const Footer = () => {
         
         {/* Footer Top Header: Brand, Socials, App Download */}
         <div className="footer-header-row">
-          {/* Logo / Brand Name */}
-          <div className="footer-brand">
-            <span className="footer-logo-text-blue">Super</span>
-            <span className="footer-logo-text-orange">Lab</span>
+          <div className="footer-brand" style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
+            <div>
+              <span className="footer-logo-text-blue">Super</span>
+              <span className="footer-logo-text-orange">Lab</span>
+            </div>
+            <span style={{ fontSize: '0.75rem', color: '#d97706', fontWeight: 'bold', display: 'flex', alignItems: 'center', gap: '6px' }}>
+              <img 
+                src="/iso-logo.png" 
+                alt="ISO Logo" 
+                style={{ width: '16px', height: '16px', borderRadius: '2px', objectFit: 'contain', flexShrink: 0 }}
+              />
+              ISO 9001:2015 Certified Lab
+            </span>
           </div>
 
           {/* Social Links */}
@@ -94,17 +108,10 @@ const Footer = () => {
             </div>
           </div>
 
-          {/* App Downloads */}
-          <div className="footer-app-col">
-            <span className="footer-column-heading">Download Super Lab App</span>
-            <div className="footer-app-badges-row">
-              <a href="#appstore" className="footer-badge-link">
-                <img src="https://upload.wikimedia.org/wikipedia/commons/3/3c/Download_on_the_App_Store_Badge.svg" alt="App Store" className="app-badge-img" />
-              </a>
-              <a href="#googleplay" className="footer-badge-link">
-                <img src="https://upload.wikimedia.org/wikipedia/commons/7/78/Google_Play_Store_badge_EN.svg" alt="Google Play" className="app-badge-img" />
-              </a>
-            </div>
+          <div className="footer-app-col" style={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-end' }}>
+            <a href="#/" style={{ textDecoration: 'none' }}>
+              <AnimatedLogo height={50} dark={true} />
+            </a>
           </div>
         </div>
 
@@ -158,15 +165,17 @@ const Footer = () => {
       </div>
 
       {/* Sticky Bottom Callback Action Bar */}
-      <div className="footer-sticky-bar">
-        <div className="sticky-bar-container">
-          <span className="sticky-bar-text">Get a Call Back from our Health Advisor</span>
-          <button className="btn-sticky-callback" onClick={() => alert('Call back requested!')}>
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="sticky-call-icon"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
-            Call me now
-          </button>
+      {!isIsoModalOpen && (
+        <div className="footer-sticky-bar">
+          <div className="sticky-bar-container">
+            <span className="sticky-bar-text">Get a Call Back from our Health Advisor</span>
+            <button className="btn-sticky-callback" onClick={() => alert('Call back requested!')}>
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="sticky-call-icon"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+              Call me now
+            </button>
+          </div>
         </div>
-      </div>
+      )}
 
     </footer>
   );

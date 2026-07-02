@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { 
   Search, 
   ChevronDown, 
@@ -7,35 +7,10 @@ import {
   Filter, 
   ArrowUpDown, 
   BookOpen, 
-  Check, 
-  ShoppingCart,
-  Percent
-} from 'lucide-react';
+  Check} from 'lucide-react';
+import { testDatabase } from '../data/testDatabase';
 
 const LabTestsPage = () => {
-  // Database of tests and packages
-  const testDatabase = [
-    { id: 1, name: 'Haemoglobin Estimation Test', category: 'Anemia Test', type: 'test', price: 130, popular: true, hash: '#/haemoglobin-estimation' },
-    { id: 2, name: 'Beta HCG Test', category: 'Pregnancy Test', type: 'test', price: 680, popular: true, hash: '#/beta-hcg' },
-    { id: 3, name: 'Urine Culture Test', category: 'Urine Test', type: 'test', price: 810, popular: false },
-    { id: 4, name: 'Prolactin Test', category: 'Hormone Test', type: 'test', price: 600, popular: false },
-    { id: 5, name: 'Lipid Profile Test', category: 'Cardiology Test', type: 'test', price: 450, popular: true },
-    { id: 6, name: 'Troponin I Test', category: 'Cardiology Test', type: 'test', price: 990, popular: false },
-    { id: 7, name: 'Thyroid Profile Test', category: 'Thyroid Test', type: 'test', price: 399, popular: true },
-    { id: 8, name: 'Vitamin D (25-Hydroxy) Test', category: 'Vitamin Test', type: 'test', price: 1199, popular: true },
-    { id: 9, name: 'Vitamin B12 Test', category: 'Vitamin Test', type: 'test', price: 799, popular: true },
-    { id: 10, name: 'Complete Blood Count (CBC) Test', category: 'General Health', type: 'test', price: 290, popular: true },
-    { id: 11, name: 'HbA1c (Glycated Haemoglobin) Test', category: 'Diabetes Test', type: 'test', price: 299, popular: true },
-    { id: 12, name: 'Kidney Function Test (KFT)', category: 'Kidney Test', type: 'test', price: 699, popular: true },
-    { id: 13, name: 'Liver Function Test (LFT)', category: 'Liver Test', type: 'test', price: 599, popular: true },
-    
-    // Packages
-    { id: 101, name: 'Wellwise Total Profile', category: 'Full Body Health', type: 'package', price: 2279, originalPrice: 4500, discount: '49% OFF', testsIncluded: 91, popular: true },
-    { id: 102, name: 'WellWise Exclusive Profile', category: 'Full Body Health', type: 'package', price: 3119, originalPrice: 6000, discount: '48% OFF', testsIncluded: 95, popular: true },
-    { id: 103, name: 'Wellwise Platinum', category: 'Full Body Health', type: 'package', price: 4499, originalPrice: 9000, discount: '50% OFF', testsIncluded: 103, popular: false },
-    { id: 104, name: 'Wellwise Advanced Profile', category: 'Full Body Health', type: 'package', price: 1799, originalPrice: 3500, discount: '48% OFF', testsIncluded: 81, popular: true },
-    { id: 105, name: 'Max Fit Full Body Panel', category: 'Full Body Health', type: 'package', price: 1499, originalPrice: 3000, discount: '50% OFF', testsIncluded: 60, popular: false }
-  ];
 
   // States
   const [viewType, setViewType] = useState('all'); // 'all', 'test', 'package'
@@ -47,6 +22,36 @@ const LabTestsPage = () => {
   // Accordion toggle states
   const [isSortOpen, setIsSortOpen] = useState(true);
   const [isCategoryOpen, setIsCategoryOpen] = useState(true);
+
+  // Sync addedItems state with localStorage cart on load & updates
+  useEffect(() => {
+    const syncAddedItems = () => {
+      if (window.getSuperlabCart) {
+        const cart = window.getSuperlabCart();
+        const dbIdsInCart = testDatabase
+          .filter(dbItem => cart.some(cartItem => cartItem.name === dbItem.name))
+          .map(dbItem => dbItem.id);
+        setAddedItems(dbIdsInCart);
+      }
+    };
+    window.addEventListener('superlab_cart_update', syncAddedItems);
+    syncAddedItems();
+    return () => window.removeEventListener('superlab_cart_update', syncAddedItems);
+  }, []);
+
+  // Sync search query from global header search redirect
+  useEffect(() => {
+    const syncSearchQuery = () => {
+      const query = sessionStorage.getItem('superlab_search_query');
+      if (query) {
+        setSearchQuery(query);
+        sessionStorage.removeItem('superlab_search_query');
+      }
+    };
+    window.addEventListener('superlab_search_trigger', syncSearchQuery);
+    syncSearchQuery();
+    return () => window.removeEventListener('superlab_search_trigger', syncSearchQuery);
+  }, []);
 
   // Extract unique categories for filter list
   const categoriesList = [...new Set(testDatabase.map(item => item.category))];
@@ -97,12 +102,31 @@ const LabTestsPage = () => {
     }
   };
 
-  const handleItemToggle = (itemId, itemName) => {
-    if (addedItems.includes(itemId)) {
-      setAddedItems(addedItems.filter(id => id !== itemId));
+  const handleItemToggle = (itemId) => {
+    const item = testDatabase.find(t => t.id === itemId);
+    if (!item) return;
+
+    const cartId = item.id || item.name.toLowerCase().replace(/\s+/g, '-');
+    const cart = window.getSuperlabCart ? window.getSuperlabCart() : [];
+    const exists = cart.some(i => i.id === cartId);
+
+    if (exists) {
+      const updated = cart.filter(i => i.id !== cartId);
+      localStorage.setItem('superlab_cart', JSON.stringify(updated));
+      window.dispatchEvent(new Event('superlab_cart_update'));
     } else {
-      setAddedItems([...addedItems, itemId]);
-      alert(`${itemName} added to your cart!`);
+      const newItem = {
+        id: cartId,
+        name: item.name,
+        category: item.category,
+        price: item.price,
+        originalPrice: item.originalPrice || Math.round(item.price / 0.75),
+        quantity: 1
+      };
+      cart.push(newItem);
+      localStorage.setItem('superlab_cart', JSON.stringify(cart));
+      window.dispatchEvent(new Event('superlab_cart_update'));
+      alert(`${item.name} added to your cart!`);
     }
   };
 
@@ -406,13 +430,20 @@ const LabTestsPage = () => {
                         </div>
 
                         <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-                          {item.hash && (
-                            <a href={item.hash} style={{ fontSize: '0.85rem', color: 'var(--muted)', fontWeight: '600', textDecoration: 'underline' }}>
-                              Know More
-                            </a>
-                          )}
+                          <a 
+                            href={item.hash || '#'} 
+                            onClick={(e) => {
+                              if (!item.hash) {
+                                e.preventDefault();
+                                alert(`Detailed page for ${item.name} is coming soon!`);
+                              }
+                            }}
+                            style={{ fontSize: '0.85rem', color: 'var(--muted)', fontWeight: '600', textDecoration: 'underline' }}
+                          >
+                            Know More
+                          </a>
                           <button
-                            onClick={() => handleItemToggle(item.id, item.name)}
+                            onClick={() => handleItemToggle(item.id)}
                             style={{
                               backgroundColor: isAdded ? '#fff3e0' : 'var(--orange)',
                               color: isAdded ? 'var(--orange-dark)' : '#ffffff',
