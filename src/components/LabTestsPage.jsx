@@ -176,19 +176,20 @@ const LabTestsPage = () => {
           border-radius: 8px;
           padding: 4px;
           margin-bottom: 24px;
-          max-width: 320px;
+          width: max-content;
         }
         .view-type-toggle-btn {
           flex: 1;
           border: none;
           background: none;
-          padding: 8px 12px;
+          padding: 10px 24px;
           border-radius: 6px;
           font-weight: 700;
-          font-size: 0.9rem;
+          font-size: 1.05rem;
           color: var(--muted);
           cursor: pointer;
           transition: all 0.2s;
+          white-space: nowrap;
         }
         .view-type-toggle-btn.active {
           background-color: #ffffff;
@@ -259,34 +260,14 @@ const LabTestsPage = () => {
       <div style={{ maxWidth: '100%', margin: '40px auto', padding: '0 40px' }}>
         
         {/* Header Section */}
-        <div style={{ marginBottom: '32px', textAlign: 'left', display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', flexWrap: 'wrap', gap: '20px' }}>
-          <div>
-            <h1 style={{ fontSize: '2.4rem', fontWeight: 800, color: 'var(--blue)', margin: 0 }}>
-              Book Lab Tests & Health Packages
-            </h1>
-            <p style={{ color: 'var(--muted)', fontSize: '1.1rem', marginTop: '8px', margin: '8px 0 0 0' }}>
-              Select from our curated list of tests and body checkups with home sample collection.
-            </p>
-          </div>
-          
-          {/* Inner Search bar */}
-          <div style={{ position: 'relative', width: '300px' }}>
-            <Search style={{ position: 'absolute', left: '12px', top: '50%', transform: 'translateY(-50%)', color: 'var(--muted)' }} size={18} />
-            <input 
-              type="text" 
-              placeholder="Search tests or packages..." 
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              style={{
-                width: '100%',
-                padding: '10px 12px 10px 38px',
-                border: '1px solid var(--line)',
-                borderRadius: '8px',
-                outline: 'none',
-                fontSize: '0.95rem'
-              }}
-            />
-          </div>
+        {/* Header Section */}
+        <div style={{ marginBottom: '32px', textAlign: 'left' }}>
+          <h1 style={{ fontSize: '2.4rem', fontWeight: 800, color: 'var(--blue)', margin: 0 }}>
+            Book Lab Tests & Health Packages
+          </h1>
+          <p style={{ color: 'var(--muted)', fontSize: '1.1rem', marginTop: '8px', margin: '8px 0 0 0' }}>
+            Select from our curated list of tests and body checkups with home sample collection.
+          </p>
         </div>
 
         {/* Layout */}
@@ -367,26 +348,49 @@ const LabTestsPage = () => {
           {/* Right Panel: Content Grid */}
           <main style={{ textAlign: 'left' }}>
             
-            {/* View Type Toggle */}
-            <div className="view-type-toggle-bar">
-              <button 
-                className={`view-type-toggle-btn ${viewType === 'all' ? 'active' : ''}`}
-                onClick={() => setViewType('all')}
-              >
-                All
-              </button>
-              <button 
-                className={`view-type-toggle-btn ${viewType === 'test' ? 'active' : ''}`}
-                onClick={() => setViewType('test')}
-              >
-                Individual Tests
-              </button>
-              <button 
-                className={`view-type-toggle-btn ${viewType === 'package' ? 'active' : ''}`}
-                onClick={() => setViewType('package')}
-              >
-                Health Packages
-              </button>
+            {/* View Type Toggle and Search Bar row */}
+            <div style={{ display: 'flex', alignItems: 'center', gap: '20px', marginBottom: '24px', width: '100%', flexWrap: 'wrap' }}>
+              {/* View Type Toggle */}
+              <div className="view-type-toggle-bar" style={{ marginBottom: 0 }}>
+                <button 
+                  className={`view-type-toggle-btn ${viewType === 'all' ? 'active' : ''}`}
+                  onClick={() => setViewType('all')}
+                >
+                  All
+                </button>
+                <button 
+                  className={`view-type-toggle-btn ${viewType === 'test' ? 'active' : ''}`}
+                  onClick={() => setViewType('test')}
+                >
+                  Individual Tests
+                </button>
+                <button 
+                  className={`view-type-toggle-btn ${viewType === 'package' ? 'active' : ''}`}
+                  onClick={() => setViewType('package')}
+                >
+                  Health Packages
+                </button>
+              </div>
+
+              {/* Inner Search bar */}
+              <div style={{ position: 'relative', flex: 1, minWidth: '280px' }}>
+                <Search style={{ position: 'absolute', left: '12px', top: '50%', transform: 'translateY(-50%)', color: 'var(--muted)' }} size={18} />
+                <input 
+                  type="text" 
+                  placeholder="Search tests or packages..." 
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  style={{
+                    width: '100%',
+                    padding: '10px 12px 10px 38px',
+                    border: '1px solid var(--line)',
+                    borderRadius: '8px',
+                    outline: 'none',
+                    fontSize: '0.95rem',
+                    boxSizing: 'border-box'
+                  }}
+                />
+              </div>
             </div>
 
             {/* Result Stats */}

@@ -24,6 +24,7 @@ import MakeYourOwnPackagePage from './components/MakeYourOwnPackagePage';
 import LabTestsPage from './components/LabTestsPage';
 import CartPage from './components/CartPage';
 import WellwiseTotalProfilePage from './components/WellwiseTotalProfilePage';
+import ProfilePage from './components/ProfilePage';
 
 const App = () => {
   const [currentHash, setCurrentHash] = useState(window.location.hash);
@@ -92,6 +93,8 @@ const App = () => {
       return <CartPage />;
     } else if (currentHash === '#/wellwise-total-profile') {
       return <WellwiseTotalProfilePage setIsIsoModalOpen={setIsIsoModalOpen} />;
+    } else if (currentHash === '#/profile') {
+      return <ProfilePage />;
     }
 
     // Default Home Page content

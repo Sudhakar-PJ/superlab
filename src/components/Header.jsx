@@ -1,10 +1,10 @@
 import { ChevronDown, MapPin, Menu, Phone, Search, ShoppingCart, User, X } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
 import { FaWhatsapp } from 'react-icons/fa';
-// import AnimatedLogo2 from './AnimatedLogo2';
-// import AnimatedLogo from './AnimatedLogo';
+
+import AnimatedLogo from './AnimatedLogo';
 // import AnimatedLogo3 from './AnimatedLogo3';
-import StaticLogo from './StaticLogo';
+// import StaticLogo from './StaticLogo';
 import { testDatabase } from '../data/testDatabase';
 
 const setLocationHash = (hash) => {
@@ -19,6 +19,13 @@ const Header = ({ isIsoModalOpen, setIsIsoModalOpen }) => {
   const [isCheckupMenuOpen, setIsCheckupMenuOpen] = useState(false);
   const [activeCategory, setActiveCategory] = useState('Pregnancy Test');
   const [isLoginOpen, setIsLoginOpen] = useState(false);
+  const [authMode, setAuthMode] = useState('login');
+  const [registerName, setRegisterName] = useState('');
+  const [registerEmail, setRegisterEmail] = useState('');
+  const [registerMobile, setRegisterMobile] = useState('');
+  const [registerAge, setRegisterAge] = useState('');
+  const [registerGender, setRegisterGender] = useState('Male');
+  const [registerBloodGroup, setRegisterBloodGroup] = useState('Unknown');
   const [isIsoHovered, setIsIsoHovered] = useState(false);
 
   const [cartCount, setCartCount] = useState(() => {
@@ -367,8 +374,8 @@ const Header = ({ isIsoModalOpen, setIsIsoModalOpen }) => {
         {/* Top Left: Animated Logo Block & ISO badge */}
         <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
           <a href="#/" style={{ display: 'flex', alignItems: 'center', height: '42px', position: 'relative', zIndex: 1010 }}>
-            {/* <AnimatedLogo height={42} /> */}
-            <StaticLogo height={42} />
+            <AnimatedLogo height={42} />
+            {/* <StaticLogo height={42} /> */}
           </a>
           <div 
             onClick={() => setIsIsoModalOpen(true)}
@@ -780,7 +787,7 @@ const Header = ({ isIsoModalOpen, setIsIsoModalOpen }) => {
           {/* User Account Circular Icon */}
           <button 
             title="User Account" 
-            onClick={() => setIsLoginOpen(true)}
+            onClick={() => { setIsLoginOpen(true); setAuthMode('login'); }}
             style={{
               display: 'flex',
               alignItems: 'center',
@@ -862,6 +869,7 @@ const Header = ({ isIsoModalOpen, setIsIsoModalOpen }) => {
               onClick={() => {
                 setIsMobileMenuOpen(false);
                 setIsLoginOpen(true);
+                setAuthMode('login');
               }}
             >
               <User size={18} style={{ color: '#00a3ad' }} />
@@ -878,43 +886,160 @@ const Header = ({ isIsoModalOpen, setIsIsoModalOpen }) => {
 
       {/* Login / Sign Up Modal */}
       {isLoginOpen && (
-        <div className="login-modal-backdrop" onClick={() => setIsLoginOpen(false)}>
+        <div className="login-modal-backdrop" onClick={() => { setIsLoginOpen(false); setAuthMode('login'); }}>
           <div className="login-modal-card" onClick={(e) => e.stopPropagation()}>
             <div className="login-modal-header">
-              <h3 className="login-modal-title">Login/Sign Up</h3>
-              <button className="login-modal-close-btn" onClick={() => setIsLoginOpen(false)}>
+              <h3 className="login-modal-title">{authMode === 'register' ? 'Register' : 'Login/Sign Up'}</h3>
+              <button className="login-modal-close-btn" onClick={() => { setIsLoginOpen(false); setAuthMode('login'); }}>
                 <X size={20} />
               </button>
             </div>
             
-            <p className="login-modal-subtitle">Please enter your Mobile Number to proceed</p>
-            
-            <div className="login-input-group">
-              <div className="login-country-code">
-                <span>+91</span>
-                <ChevronDown size={14} />
-              </div>
-              <input 
-                type="tel" 
-                placeholder="Enter Mobile Number" 
-                className="login-mobile-input" 
-                maxLength="10"
-              />
-            </div>
-            
-            <label className="login-whatsapp-consent">
-              <input type="checkbox" defaultChecked />
-              <span className="consent-checkbox-custom"></span>
-              <span className="consent-text">Share health tips, appointment details and offers with me on Whatsapp</span>
-            </label>
-            
-            <p className="login-terms-text">
-              By clicking Continue, you agree to Super Lab's <a href="#privacy">Privacy Policy</a> & <a href="#terms">Terms and Conditions</a>
-            </p>
-            
-            <button className="btn-login-submit" onClick={() => alert('OTP Sent!')}>
-              Login
-            </button>
+            {authMode === 'login' ? (
+              <>
+                <p className="login-modal-subtitle">Please enter your Mobile Number to proceed</p>
+                
+                <div className="login-input-group">
+                  <div className="login-country-code">
+                    <span>+91</span>
+                    <ChevronDown size={14} />
+                  </div>
+                  <input 
+                    type="tel" 
+                    placeholder="Enter Mobile Number" 
+                    className="login-mobile-input" 
+                    maxLength="10"
+                  />
+                </div>
+                
+                <label className="login-whatsapp-consent">
+                  <input type="checkbox" defaultChecked />
+                  <span className="consent-checkbox-custom"></span>
+                  <span className="consent-text">Share health tips, appointment details and offers with me on Whatsapp</span>
+                </label>
+                
+                <p className="login-terms-text">
+                  By clicking Continue, you agree to Super Lab's <a href="#privacy">Privacy Policy</a> & <a href="#terms">Terms and Conditions</a>
+                </p>
+                       <button className="btn-login-submit" onClick={() => {
+                  alert('Logged in successfully!');
+                  setIsLoginOpen(false);
+                  window.location.hash = '#/profile';
+                }}>
+                  Login
+                </button>
+                
+                <p style={{ textAlign: 'center', marginTop: '20px', fontSize: '0.9rem', color: 'var(--muted)', fontWeight: '600' }}>
+                  Don't have an account?{' '}
+                  <span 
+                    style={{ color: 'var(--teal)', fontWeight: '700', cursor: 'pointer', borderBottom: '1px dashed var(--teal)' }}
+                    onClick={() => setAuthMode('register')}
+                  >
+                    Register
+                  </span>
+                </p>
+              </>
+            ) : (
+              <>
+                <p className="login-modal-subtitle">Join us for a better health journey</p>
+                
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', marginBottom: '20px' }}>
+                  <div>
+                    <input 
+                      type="text" 
+                      placeholder="Full Name" 
+                      style={{ border: '1.5px solid #cbd5e1', borderRadius: '8px', padding: '10px 14px', width: '100%', boxSizing: 'border-box', fontWeight: '600', fontSize: '0.95rem' }}
+                      value={registerName}
+                      onChange={(e) => setRegisterName(e.target.value)}
+                    />
+                  </div>
+
+                  <div>
+                    <input 
+                      type="email" 
+                      placeholder="Email Address" 
+                      style={{ border: '1.5px solid #cbd5e1', borderRadius: '8px', padding: '10px 14px', width: '100%', boxSizing: 'border-box', fontWeight: '600', fontSize: '0.95rem' }}
+                      value={registerEmail}
+                      onChange={(e) => setRegisterEmail(e.target.value)}
+                    />
+                  </div>
+
+                  <div className="login-input-group" style={{ marginBottom: 0 }}>
+                    <div className="login-country-code" style={{ padding: '10px 14px' }}>
+                      <span>+91</span>
+                      <ChevronDown size={14} />
+                    </div>
+                    <input 
+                      type="tel" 
+                      placeholder="Mobile Number" 
+                      className="login-mobile-input" 
+                      maxLength="10"
+                      style={{ padding: '10px 14px' }}
+                      value={registerMobile}
+                      onChange={(e) => setRegisterMobile(e.target.value)}
+                    />
+                  </div>
+
+                  <div style={{ display: 'grid', gridTemplateColumns: '1fr 1.2fr 1fr', gap: '8px' }}>
+                    <input 
+                      type="number" 
+                      placeholder="Age" 
+                      style={{ border: '1.5px solid #cbd5e1', borderRadius: '8px', padding: '10px', width: '100%', boxSizing: 'border-box', fontWeight: '600', fontSize: '0.9rem' }}
+                      value={registerAge}
+                      onChange={(e) => setRegisterAge(e.target.value)}
+                    />
+                    <select 
+                      style={{ border: '1.5px solid #cbd5e1', borderRadius: '8px', padding: '10px', width: '100%', boxSizing: 'border-box', backgroundColor: '#fff', fontWeight: '600', fontSize: '0.9rem', color: '#334155' }}
+                      value={registerGender}
+                      onChange={(e) => setRegisterGender(e.target.value)}
+                    >
+                      <option value="Male">Male</option>
+                      <option value="Female">Female</option>
+                      <option value="Other">Other</option>
+                    </select>
+                    <select 
+                      style={{ border: '1.5px solid #cbd5e1', borderRadius: '8px', padding: '10px', width: '100%', boxSizing: 'border-box', backgroundColor: '#fff', fontWeight: '600', fontSize: '0.9rem', color: '#334155' }}
+                      value={registerBloodGroup}
+                      onChange={(e) => setRegisterBloodGroup(e.target.value)}
+                    >
+                      <option value="Unknown">Blood</option>
+                      <option value="A+">A+</option>
+                      <option value="A-">A-</option>
+                      <option value="B+">B+</option>
+                      <option value="B-">B-</option>
+                      <option value="AB+">AB+</option>
+                      <option value="AB-">AB-</option>
+                      <option value="O+">O+</option>
+                      <option value="O-">O-</option>
+                    </select>
+                  </div>
+                </div>
+
+                <label className="login-whatsapp-consent" style={{ marginBottom: '16px' }}>
+                  <input type="checkbox" defaultChecked />
+                  <span className="consent-checkbox-custom"></span>
+                  <span className="consent-text" style={{ fontSize: '0.78rem' }}>Share health tips, reports and offers on Whatsapp</span>
+                </label>
+                
+                <button className="btn-login-submit" onClick={() => {
+                  alert('Registration Successful! Redirecting to your profile...');
+                  setIsLoginOpen(false);
+                  window.location.hash = '#/profile';
+                }}>
+                  Register
+                </button>
+
+                <p style={{ textAlign: 'center', marginTop: '16px', fontSize: '0.9rem', color: 'var(--muted)', fontWeight: '600' }}>
+                  Already have an account?{' '}
+                  <span 
+                    style={{ color: 'var(--teal)', fontWeight: '700', cursor: 'pointer', borderBottom: '1px dashed var(--teal)' }}
+                    onClick={() => setAuthMode('login')}
+                  >
+                    Login
+                  </span>
+                </p>
+              </>
+            )}
           </div>
         </div>
       )}

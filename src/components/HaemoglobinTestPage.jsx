@@ -2,6 +2,7 @@ import {
   Calendar,
   Check,
   ChevronDown,
+  ChevronRight,
   ChevronUp,
   Clock,
   Droplet,
@@ -157,18 +158,203 @@ const HaemoglobinTestPage = ({ setIsIsoModalOpen }) => {
         }
       `}</style>
       
-      {/* Breadcrumb Header */}
+      {/* ========================================================= */}
+      {/* METHOD A: Minimalist Modern with ChevronRight separator & interactive hover transitions (COMMENTED OUT) */}
+      {/* 
       <div style={{ backgroundColor: '#ffffff', borderBottom: '1px solid var(--line)', padding: '14px 40px' }}>
-        <div style={{ maxWidth: '100%', margin: '0 auto', fontSize: '0.9rem', color: 'var(--muted)', display: 'flex', alignItems: 'center', gap: '8px' }}>
-          <a href="#/" style={{ color: 'var(--blue)', fontWeight: 600, display: 'flex', alignItems: 'center', gap: '4px' }}>
+        <div style={{ maxWidth: '100%', margin: '0 auto', fontSize: '0.88rem', color: '#64748b', display: 'flex', alignItems: 'center', gap: '8px', flexWrap: 'wrap' }}>
+          <a href="#/" style={{ color: '#003c71', fontWeight: 600, display: 'flex', alignItems: 'center', gap: '4px', textDecoration: 'none', transition: 'color 0.2s' }} onMouseOver={(e) => e.currentTarget.style.color = '#00a3ad'} onMouseOut={(e) => e.currentTarget.style.color = '#003c71'}>
             <Home size={14} /> Home
           </a>
-          <span>&gt;</span>
-          <a href="#/" style={{ color: 'var(--blue)', fontWeight: 600 }}>Lab Tests</a>
-          <span>&gt;</span>
-          <span style={{ color: 'var(--muted)' }}>Haemoglobin Estimation Test</span>
+          <ChevronRight size={12} style={{ color: '#cbd5e1' }} />
+          <a href="#/lab-tests" style={{ color: '#003c71', fontWeight: 600, textDecoration: 'none', transition: 'color 0.2s' }} onMouseOver={(e) => e.currentTarget.style.color = '#00a3ad'} onMouseOut={(e) => e.currentTarget.style.color = '#003c71'}>Lab Tests</a>
+          <ChevronRight size={12} style={{ color: '#cbd5e1' }} />
+          <span style={{ color: '#64748b', fontWeight: 500 }}>Haemoglobin Estimation Test</span>
         </div>
       </div>
+      */}
+
+      {/* METHOD B: Soft Pill Badge Backgrounds (COMMENTED OUT) */}
+      {/* 
+      <div style={{ backgroundColor: '#ffffff', borderBottom: '1px solid var(--line)', padding: '14px 40px' }}>
+        <div style={{ maxWidth: '100%', margin: '0 auto', fontSize: '0.85rem', display: 'flex', alignItems: 'center', gap: '8px', flexWrap: 'wrap' }}>
+          <a href="#/" style={{ display: 'flex', alignItems: 'center', gap: '4px', padding: '6px 12px', borderRadius: '20px', backgroundColor: '#f1f5f9', color: '#003c71', fontWeight: 600, textDecoration: 'none', transition: 'all 0.2s' }} onMouseOver={(e) => { e.currentTarget.style.backgroundColor = '#e2edf6'; e.currentTarget.style.color = '#00a3ad'; }} onMouseOut={(e) => { e.currentTarget.style.backgroundColor = '#f1f5f9'; e.currentTarget.style.color = '#003c71'; }}>
+            <Home size={13} /> Home
+          </a>
+          <ChevronRight size={12} style={{ color: '#94a3b8' }} />
+          <a href="#/lab-tests" style={{ padding: '6px 12px', borderRadius: '20px', backgroundColor: '#f1f5f9', color: '#003c71', fontWeight: 600, textDecoration: 'none', transition: 'all 0.2s' }} onMouseOver={(e) => { e.currentTarget.style.backgroundColor = '#e2edf6'; e.currentTarget.style.color = '#00a3ad'; }} onMouseOut={(e) => { e.currentTarget.style.backgroundColor = '#f1f5f9'; e.currentTarget.style.color = '#003c71'; }}>
+            Lab Tests
+          </a>
+          <ChevronRight size={12} style={{ color: '#94a3b8' }} />
+          <span style={{ padding: '6px 14px', borderRadius: '20px', backgroundColor: '#f8fafc', border: '1px solid #e2e8f0', color: '#64748b', fontWeight: 500 }}>
+            Haemoglobin Estimation Test
+          </span>
+        </div>
+      </div>
+      */}
+
+      {/* METHOD C: Glassmorphic floating bar with active status dot (COMMENTED OUT) */}
+      {/* 
+      <div style={{ backgroundColor: 'rgba(255, 255, 255, 0.7)', backdropFilter: 'blur(10px)', borderBottom: '1px solid rgba(226, 237, 246, 0.8)', padding: '14px 40px' }}>
+        <div style={{ maxWidth: '100%', margin: '0 auto', fontSize: '0.88rem', color: '#64748b', display: 'flex', alignItems: 'center', gap: '10px', flexWrap: 'wrap' }}>
+          <a href="#/" style={{ color: '#003c71', fontWeight: 600, display: 'flex', alignItems: 'center', gap: '4px', textDecoration: 'none' }}>
+            <Home size={14} /> Home
+          </a>
+          <span style={{ color: '#94a3b8', fontSize: '0.75rem' }}>/</span>
+          <a href="#/lab-tests" style={{ color: '#003c71', fontWeight: 600, textDecoration: 'none' }}>Lab Tests</a>
+          <span style={{ color: '#94a3b8', fontSize: '0.75rem' }}>/</span>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+            <span style={{ width: '6px', height: '6px', borderRadius: '50%', backgroundColor: '#00a3ad' }}></span>
+            <span style={{ color: '#1e293b', fontWeight: 600 }}>Haemoglobin Estimation Test</span>
+          </div>
+        </div>
+      </div>
+      */}
+      {/* METHOD D: Glowing Tech Stepper Track (COMMENTED OUT - REUSABLE) */}
+      {/* 
+      <div style={{ padding: '20px 40px 0 40px', textAlign: 'left' }}>
+        <div style={{ 
+          display: 'inline-flex', 
+          alignItems: 'center', 
+          backgroundColor: 'rgba(0, 60, 113, 0.03)', 
+          border: '1px solid rgba(0, 163, 173, 0.15)',
+          borderRadius: '30px', 
+          padding: '6px 16px',
+          gap: '12px',
+          boxShadow: 'inset 0 2px 4px rgba(0,0,0,0.02)'
+        }}>
+          <a href="#/" style={{ display: 'flex', alignItems: 'center', gap: '6px', textDecoration: 'none', color: '#003c71', fontWeight: '800', fontSize: '0.82rem', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
+            <span style={{ width: '22px', height: '22px', borderRadius: '50%', backgroundColor: '#003c71', color: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '0.72rem', fontWeight: 'bold' }}>H</span>
+            Home
+          </a>
+          
+          <div style={{ width: '20px', height: '2px', backgroundColor: 'rgba(0, 163, 173, 0.3)' }} />
+          
+          <a href="#/lab-tests" style={{ display: 'flex', alignItems: 'center', gap: '6px', textDecoration: 'none', color: '#003c71', fontWeight: '800', fontSize: '0.82rem', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
+            <span style={{ width: '22px', height: '22px', borderRadius: '50%', backgroundColor: '#003c71', color: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '0.72rem', fontWeight: 'bold' }}>T</span>
+            Tests
+          </a>
+          
+          <div style={{ width: '20px', height: '2px', backgroundColor: '#00a3ad' }} />
+          
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '0.82rem', fontWeight: '800', color: '#00a3ad', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
+            <span style={{ 
+              width: '22px', 
+              height: '22px', 
+              borderRadius: '50%', 
+              backgroundColor: '#00a3ad', 
+              color: 'white', 
+              display: 'flex', 
+              alignItems: 'center', 
+              justifyContent: 'center', 
+              fontSize: '0.72rem', 
+              fontWeight: 'bold', 
+              boxShadow: '0 0 8px rgba(0,163,173,0.5)'
+            }}>H</span>
+            Hemoglobin Test
+          </div>
+        </div>
+      </div>
+      */}
+
+      {/* METHOD E: Futuristic Overlapping Chevron Ribbons (COMMENTED OUT - REUSABLE) */}
+      {/* 
+      <div style={{ backgroundColor: 'transparent', padding: '16px 40px 0 40px', textAlign: 'left' }}>
+        <div style={{ display: 'inline-flex', alignItems: 'center', gap: '2px', maxWidth: '100%', overflowX: 'auto', paddingBottom: '4px' }}>
+          <a href="#/" style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', padding: '10px 24px 10px 18px', backgroundColor: '#003c71', color: '#ffffff', fontWeight: 'bold', fontSize: '0.82rem', borderRadius: '8px 0 0 8px', clipPath: 'polygon(0% 0%, 90% 0%, 100% 50%, 90% 100%, 0% 100%)', textDecoration: 'none' }}>
+            <Home size={14} /> Home
+          </a>
+          <a href="#/lab-tests" style={{ display: 'inline-flex', alignItems: 'center', padding: '10px 24px 10px 24px', backgroundColor: '#e2edf6', color: '#003c71', fontWeight: 'bold', fontSize: '0.82rem', clipPath: 'polygon(0% 0%, 90% 0%, 100% 50%, 90% 100%, 10% 100%, 0% 50%, 10% 0%)', textDecoration: 'none', marginLeft: '-8px' }}>
+            Lab Tests
+          </a>
+          <div style={{ display: 'inline-flex', alignItems: 'center', padding: '10px 24px 10px 24px', backgroundColor: '#f0fdfa', color: '#00a3ad', fontWeight: 'bold', fontSize: '0.82rem', borderRadius: '0 8px 8px 0', clipPath: 'polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%, 10% 50%)', marginLeft: '-8px' }}>
+            Haemoglobin Test
+          </div>
+        </div>
+      </div>
+      */}
+
+      {/* METHOD F: Rounded-Cap Interlocking Chevron Ribbons (ACTIVE) */}
+      <div style={{ backgroundColor: 'transparent', padding: '16px 40px 0 40px', textAlign: 'left' }}>
+        <div style={{ display: 'inline-flex', alignItems: 'center', maxWidth: '100%', overflowX: 'auto', padding: '10px 0' }}>
+          {/* Segment 1: HOME */}
+          <a href="#/" style={{ 
+            position: 'relative', 
+            display: 'inline-flex', 
+            alignItems: 'center', 
+            padding: '12px 0', 
+            color: '#ffffff', 
+            fontWeight: '900', 
+            fontSize: '0.85rem', 
+            textTransform: 'uppercase', 
+            letterSpacing: '1px',
+            textDecoration: 'none',
+            width: '125px',
+            justifyContent: 'center',
+            marginRight: '-10px',
+            isolation: 'isolate'
+          }}>
+            <svg viewBox="0 0 100 40" preserveAspectRatio="none" style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', zIndex: -1 }}>
+              {/* White outer stroke path */}
+              <path d="M12,1 h78 l10,19 l-10,19 h-78 a19,19 0 0,1 0,-38 z" fill="#ffffff" />
+              {/* Brand blue filled path */}
+              <path d="M12,3 h76 l9,17 l-9,17 h-76 a17,17 0 0,1 0,-34 z" fill="#003c71" />
+            </svg>
+            HOME
+          </a>
+
+          {/* Segment 2: CATALOG */}
+          <a href="#/lab-tests" style={{ 
+            position: 'relative', 
+            display: 'inline-flex', 
+            alignItems: 'center', 
+            padding: '12px 0', 
+            color: '#ffffff', 
+            fontWeight: '900', 
+            fontSize: '0.85rem', 
+            textTransform: 'uppercase', 
+            letterSpacing: '1px',
+            textDecoration: 'none',
+            width: '125px',
+            justifyContent: 'center',
+            marginRight: '-12px',
+            isolation: 'isolate'
+          }}>
+            <svg viewBox="0 0 100 40" preserveAspectRatio="none" style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', zIndex: -1 }}>
+              {/* White outer stroke path */}
+              <path d="M2,1 h86 l10,19 l-10,19 h-86 l10,-19 z" fill="#ffffff" />
+              {/* Brand blue filled path */}
+              <path d="M3,3 h83 l9,17 l-9,17 h-83 l9,-17 z" fill="#003c71" />
+            </svg>
+            CATALOG
+          </a>
+
+          {/* Segment 3: PRODUCT */}
+          <div style={{ 
+            position: 'relative', 
+            display: 'inline-flex', 
+            alignItems: 'center', 
+            padding: '12px 0', 
+            color: '#ffffff', 
+            fontWeight: '900', 
+            fontSize: '0.85rem', 
+            textTransform: 'uppercase', 
+            letterSpacing: '1px',
+            width: '125px',
+            justifyContent: 'center',
+            isolation: 'isolate'
+          }}>
+            <svg viewBox="0 0 100 40" preserveAspectRatio="none" style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', zIndex: -1 }}>
+              {/* White outer stroke path */}
+              <path d="M2,1 h86 a19,19 0 0,1 0,38 h-86 l10,-19 z" fill="#ffffff" />
+              {/* Brand teal filled path */}
+              <path d="M3,3 h80 a17,17 0 0,1 0,34 h-80 l9,-17 z" fill="#00a3ad" />
+            </svg>
+            PRODUCT
+          </div>
+        </div>
+      </div>
+      {/* ========================================================= */}
 
       <div style={{ maxWidth: '100%', margin: '40px auto', padding: '0 40px' }}>
         

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-// import AnimatedLogo2 from './AnimatedLogo2';
-import AnimatedLogo from './AnimatedLogo';
-// import AnimatedLogo3 from './AnimatedLogo3';
+
+// import AnimatedLogo from './AnimatedLogo';
+import AnimatedLogo3 from './AnimatedLogo3';
 
 
 
@@ -110,7 +110,7 @@ const Footer = ({ isIsoModalOpen }) => {
 
           <div className="footer-app-col" style={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-end' }}>
             <a href="#/" style={{ textDecoration: 'none' }}>
-              <AnimatedLogo height={50} dark={true} />
+              <AnimatedLogo3 height={50} dark={true} />
             </a>
           </div>
         </div>
