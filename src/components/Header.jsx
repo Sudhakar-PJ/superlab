@@ -2,7 +2,7 @@ import { ChevronDown, MapPin, Menu, Phone, Search, ShoppingCart, User, X } from 
 import { useEffect, useRef, useState } from 'react';
 import { FaWhatsapp } from 'react-icons/fa';
 // import AnimatedLogo2 from './AnimatedLogo2';
-import AnimatedLogo from './AnimatedLogo';
+// import AnimatedLogo from './AnimatedLogo';
 // import AnimatedLogo3 from './AnimatedLogo3';
 import StaticLogo from './StaticLogo';
 import { testDatabase } from '../data/testDatabase';
@@ -374,7 +374,7 @@ const Header = ({ isIsoModalOpen, setIsIsoModalOpen }) => {
             onClick={() => setIsIsoModalOpen(true)}
             onMouseEnter={() => setIsIsoHovered(true)}
             onMouseLeave={() => setIsIsoHovered(false)}
-            style={{
+            style={{marginLeft: '30px' ,
               display: 'flex',
               alignItems: 'center',
               gap: '6px',
