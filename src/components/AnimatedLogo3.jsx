@@ -1,4 +1,3 @@
-import React from 'react';
 
 const AnimatedLogo3 = ({ height = 40, showText = true, dark = false }) => {
   const primaryColor = dark ? '#ffffff' : '#003c71';
@@ -39,6 +38,8 @@ const AnimatedLogo3 = ({ height = 40, showText = true, dark = false }) => {
   const orangeFill9 = '#fcd0a0';
   const orangeFill10 = '#fabd87';
 
+  const glowColor = dark ? 'rgba(0, 229, 242, 0.6)' : 'rgba(7, 137, 250, 0.92)';
+
   return (
     <div 
       className="animated-logo-container-pulse"
@@ -67,30 +68,6 @@ const AnimatedLogo3 = ({ height = 40, showText = true, dark = false }) => {
             strokeMiterlimit: 2
           }}
         >
-          {/* Concentric Heartbeat Ripple Circles behind the logo */}
-          <circle 
-            cx="492" 
-            cy="799" 
-            r="150" 
-            fill="none" 
-            stroke="rgba(0, 229, 242, 0.5)" 
-            style={{
-              animation: 'rippleWave 3s infinite cubic-bezier(0.1, 0.8, 0.3, 1)',
-              transformOrigin: '492px 799px'
-            }}
-          />
-          <circle 
-            cx="492" 
-            cy="799" 
-            r="150" 
-            fill="none" 
-            stroke="rgba(0, 229, 242, 0.3)" 
-            style={{
-              animation: 'rippleWave 3s infinite cubic-bezier(0.1, 0.8, 0.3, 1)',
-              animationDelay: '0.4s',
-              transformOrigin: '492px 799px'
-            }}
-          />
 
           {/* Top-Left Star (Orange) */}
           <g style={{ animation: 'starPulse 3s infinite ease-in-out', transformOrigin: '307px 110px' }}>
@@ -179,35 +156,19 @@ const AnimatedLogo3 = ({ height = 40, showText = true, dark = false }) => {
         @keyframes heartbeat {
           0%, 30%, 100% {
             transform: scale(1);
-            filter: drop-shadow(0 0 2px rgba(0, 229, 242, 0.05));
+            filter: drop-shadow(0 0 2px ${glowColor});
           }
           10% {
             transform: scale(1.03);
-            filter: drop-shadow(0 0 10px rgba(0, 229, 242, 0.4));
+            filter: drop-shadow(0 0 10px ${glowColor});
           }
           20% {
             transform: scale(1.015);
-            filter: drop-shadow(0 0 5px rgba(0, 229, 242, 0.2));
+            filter: drop-shadow(0 0 5px ${glowColor});
           }
           25% {
             transform: scale(1.035);
-            filter: drop-shadow(0 0 12px rgba(0, 229, 242, 0.45));
-          }
-        }
-        @keyframes rippleWave {
-          0% {
-            r: 150px;
-            opacity: 0.7;
-            stroke-width: 8px;
-          }
-          25% {
-            r: 250px;
-            opacity: 0.8;
-          }
-          100% {
-            r: 750px;
-            opacity: 0;
-            stroke-width: 1px;
+            filter: drop-shadow(0 0 12px ${glowColor});
           }
         }
         @keyframes starPulse {
