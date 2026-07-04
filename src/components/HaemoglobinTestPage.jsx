@@ -2,7 +2,6 @@ import {
   Calendar,
   Check,
   ChevronDown,
-  ChevronRight,
   ChevronUp,
   Clock,
   Droplet,
@@ -373,7 +372,7 @@ const HaemoglobinTestPage = ({ setIsIsoModalOpen }) => {
           gap: '24px'
         }}>
           <div style={{ flex: 1, minWidth: '300px' }}>
-            <div style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', backgroundColor: 'var(--teal-soft)', color: 'var(--teal)', padding: '6px 14px', borderRadius: '30px', fontSize: '0.82rem', fontWeight: '800', marginBottom: '14px' }}>
+            <div style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', backgroundColor: 'var(--teal-soft)', color: 'var(--teal)', padding: '6px 14px', borderRadius: '10px', fontSize: '0.82rem', fontWeight: '800', marginBottom: '14px' }}>
               <span>Diagnostic Blood Test</span>
             </div>
             <h1 style={{ fontSize: '2.1rem', fontWeight: 800, color: 'var(--blue)', margin: 0, letterSpacing: '-0.3px', lineHeight: 1.2 }}>
@@ -407,7 +406,7 @@ const HaemoglobinTestPage = ({ setIsIsoModalOpen }) => {
                 color: isAdded ? 'var(--orange-dark)' : '#ffffff',
                 border: isAdded ? '1px solid var(--orange)' : 'none',
                 borderRadius: '10px',
-                padding: '14px 36px',
+                padding: '10px 36px',
                 fontSize: '1.05rem',
                 fontWeight: '800',
                 cursor: 'pointer',
@@ -534,22 +533,11 @@ const HaemoglobinTestPage = ({ setIsIsoModalOpen }) => {
             </div>
 
             {/* Collection Availability Badge */}
-            <div style={{
-              backgroundColor: '#e8f5e9',
-              border: '1px solid #c8e6c9',
-              borderRadius: '12px',
-              padding: '16px 24px',
-              display: 'flex',
-              alignItems: 'center',
-              gap: '10px',
-              color: '#2e7d32',
-              fontWeight: '700',
-              fontSize: '0.95rem',
-              marginBottom: '30px'
-            }}>
-              <Home size={18} />
-              <span>Home Sample Collection Available</span>
+            <div className="shining-speciality-badge">
+              <Home size={20} className="badge-icon-pulse" />
+              <span style={{ position: 'relative', zIndex: 2 }}>Home Sample Collection Available</span>
             </div>
+
 
             {/* Description & Table of Contents Card */}
             <div style={{
