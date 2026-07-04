@@ -219,7 +219,7 @@ const WellwiseTotalProfilePage = ({ setIsIsoModalOpen }) => {
         <div className="ribbon-breadcrumbs">
           <a href="#/" className="ribbon-breadcrumb-item">HOME</a>
           <a href="#/lab-tests" className="ribbon-breadcrumb-item">CATALOG</a>
-          <div className="ribbon-breadcrumb-item active">PRODUCT</div>
+          <div className="ribbon-breadcrumb-item active">WELLWISE TOTAL PROFILE</div>
         </div>
       </div>
 
@@ -249,17 +249,23 @@ const WellwiseTotalProfilePage = ({ setIsIsoModalOpen }) => {
             </p>
           </div>
 
-          <div style={{ display: 'flex', alignItems: 'center', gap: '30px', flexWrap: 'wrap' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '24px', flexWrap: 'wrap' }}>
             <div style={{ textAlign: 'right' }}>
               <span style={{ display: 'block', fontSize: '0.85rem', color: 'var(--muted)', fontWeight: '600' }}>Starting from</span>
               <span style={{ fontSize: '2.2rem', fontWeight: '800', color: 'var(--teal)', lineHeight: 1 }}>₹ 2279</span>
+              <span style={{ display: 'block', fontSize: '0.75rem', color: 'var(--muted)', marginTop: '4px' }}>All taxes included</span>
             </div>
-            <button 
-              onClick={handleToggleCart}
-              className={`btn-add-main ${isAdded ? 'added' : ''}`}
-            >
-              {isAdded ? 'ADDED' : 'ADD'}
-            </button>
+            
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', textAlign: 'left' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '8px', padding: '6px 12px', backgroundColor: '#e8f5e9', border: '1px solid #c8e6c9', borderRadius: '20px', fontSize: '0.8rem', fontWeight: '700', color: '#2e7d32' }}>
+                <span style={{ display: 'inline-block', width: '6px', height: '6px', backgroundColor: '#2e7d32', borderRadius: '50%' }}></span>
+                <span>NABL Accredited Lab Partner</span>
+              </div>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '8px', padding: '6px 12px', backgroundColor: '#e0f7fa', border: '1px solid #b2ebf2', borderRadius: '20px', fontSize: '0.8rem', fontWeight: '700', color: '#006064' }}>
+                <span style={{ display: 'inline-block', width: '6px', height: '6px', backgroundColor: '#006064', borderRadius: '50%' }}></span>
+                <span>ISO 9001:2015 Certified</span>
+              </div>
+            </div>
           </div>
         </div>
 

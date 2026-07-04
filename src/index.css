@@ -2861,7 +2861,13 @@ a {
   letter-spacing: -0.5px;
 }
 
-.footer-socials-col,
+.footer-socials-col {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
 .footer-app-col {
   display: flex;
   flex-direction: column;
