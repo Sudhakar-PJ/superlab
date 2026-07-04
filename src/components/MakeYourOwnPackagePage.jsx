@@ -1,13 +1,9 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { 
   Search, 
   Trash2, 
   Check, 
-  Info, 
-  Home, 
   Sparkles, 
-  HelpCircle,
-  Plus,
   ShoppingBag,
   Percent
 } from 'lucide-react';
@@ -181,14 +177,10 @@ const MakeYourOwnPackagePage = () => {
         }
       `}</style>
 
-      {/* Breadcrumbs */}
-      <div style={{ backgroundColor: '#ffffff', borderBottom: '1px solid var(--line)', padding: '14px 40px' }}>
-        <div style={{ maxWidth: '100%', margin: '0 auto', fontSize: '0.9rem', color: 'var(--muted)', display: 'flex', alignItems: 'center', gap: '8px' }}>
-          <a href="#/" style={{ color: 'var(--blue)', fontWeight: 600, display: 'flex', alignItems: 'center', gap: '4px' }}>
-            <Home size={14} /> Home
-          </a>
-          <span>&gt;</span>
-          <span style={{ color: 'var(--muted)' }}>Make Your Own Package</span>
+      <div style={{ backgroundColor: 'transparent', padding: '16px 40px 0 40px', textAlign: 'left' }}>
+        <div className="ribbon-breadcrumbs">
+          <a href="#/" className="ribbon-breadcrumb-item">HOME</a>
+          <div className="ribbon-breadcrumb-item active">CUSTOM PACKAGE</div>
         </div>
       </div>
 

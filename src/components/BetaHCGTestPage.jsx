@@ -89,16 +89,11 @@ const BetaHCGTestPage = () => {
         }
       `}</style>
       
-      {/* Breadcrumb Header */}
-      <div style={{ backgroundColor: '#ffffff', borderBottom: '1px solid var(--line)', padding: '14px 40px' }}>
-        <div style={{ maxWidth: '100%', margin: '0 auto', fontSize: '0.9rem', color: 'var(--muted)', display: 'flex', alignItems: 'center', gap: '8px' }}>
-          <a href="#/" style={{ color: 'var(--blue)', fontWeight: 600, display: 'flex', alignItems: 'center', gap: '4px' }}>
-            <Home size={14} /> Home
-          </a>
-          <span>&gt;</span>
-          <a href="#/" style={{ color: 'var(--blue)', fontWeight: 600 }}>Lab Tests</a>
-          <span>&gt;</span>
-          <span style={{ color: 'var(--muted)' }}>Beta HCG Test</span>
+      <div style={{ backgroundColor: 'transparent', padding: '16px 40px 0 40px', textAlign: 'left' }}>
+        <div className="ribbon-breadcrumbs">
+          <a href="#/" className="ribbon-breadcrumb-item">HOME</a>
+          <a href="#/lab-tests" className="ribbon-breadcrumb-item">CATALOG</a>
+          <div className="ribbon-breadcrumb-item active">PRODUCT</div>
         </div>
       </div>
 
