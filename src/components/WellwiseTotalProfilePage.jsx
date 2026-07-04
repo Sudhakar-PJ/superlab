@@ -48,7 +48,7 @@ const WellwiseTotalProfilePage = ({ setIsIsoModalOpen }) => {
     checkCart();
     window.addEventListener('superlab_cart_update', checkCart);
     return () => window.removeEventListener('superlab_cart_update', checkCart);
-  }, []);
+  }, [packageInfo.id]);
 
   const handleToggleCart = () => {
     if (window.addToSuperlabCart && window.getSuperlabCart) {
