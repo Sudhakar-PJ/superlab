@@ -1107,7 +1107,7 @@ a {
   font-size: 0.65rem;
   font-weight: 800;
   padding: 3px 10px;
-  border-radius: 20px;
+  border-radius: 5px;
   text-transform: uppercase;
   letter-spacing: 0.5px;
   white-space: nowrap;
@@ -1442,7 +1442,7 @@ a {
   font-size: 0.65rem;
   font-weight: 800;
   padding: 3px 10px;
-  border-radius: 20px;
+  border-radius: 5px;
   text-transform: uppercase;
   letter-spacing: 0.5px;
   box-shadow: 0 2px 6px rgba(0, 178, 178, 0.2);
@@ -3525,3 +3525,300 @@ a {
   0% { transform: translateY(0); }
   100% { transform: translateY(-2px); }
 }
+
+/* Reusable Ribbon Breadcrumbs */
+.ribbon-breadcrumbs {
+  display: inline-flex;
+  align-items: center;
+  max-width: 100%;
+  overflow-x: auto;
+  padding: 10px 0;
+  gap: 0;
+}
+
+.ribbon-breadcrumb-item {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 12px 24px 12px 34px;
+  color: #ffffff;
+  font-weight: 800;
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  text-decoration: none;
+  background-color: var(--blue);
+  /* Chevron ribbon clip path shape */
+  clip-path: polygon(0% 0%, calc(100% - 15px) 0%, 100% 50%, calc(100% - 15px) 100%, 0% 100%, 15px 50%);
+  margin-left: -12px;
+  transition: all 0.2s ease;
+  min-width: 125px;
+}
+
+/* First item: rounded left, no cutout */
+.ribbon-breadcrumb-item:first-child {
+  clip-path: polygon(0% 0%, calc(100% - 15px) 0%, 100% 50%, calc(100% - 15px) 100%, 0% 100%);
+  border-radius: 8px 0 0 8px;
+  padding-left: 24px;
+  margin-left: 0;
+  z-index: 3;
+}
+
+.ribbon-breadcrumb-item:nth-child(2) {
+  z-index: 2;
+}
+
+.ribbon-breadcrumb-item:nth-child(3) {
+  z-index: 1;
+}
+
+/* Active item has a teal background */
+.ribbon-breadcrumb-item.active {
+  background-color: var(--teal);
+  pointer-events: none;
+}
+
+/* Hover state */
+.ribbon-breadcrumb-item:hover:not(.active) {
+  background-color: var(--blue-dark);
+  color: #ffffff;
+  z-index: 10;
+}
+
+/* Reusable Page Buttons */
+.btn-add-main {
+  background-color: var(--orange);
+  color: #ffffff;
+  border: none;
+  border-radius: 10px;
+  padding: 10px 36px;
+  font-size: 1.05rem;
+  font-weight: 800;
+  cursor: pointer;
+  box-shadow: 0 4px 10px rgba(255, 107, 0, 0.2);
+  transition: all 0.2s ease;
+  min-width: 130px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.btn-add-main:hover {
+  background-color: var(--orange-dark);
+  box-shadow: 0 6px 15px rgba(255, 107, 0, 0.3);
+}
+
+.btn-add-main.added {
+  background-color: #fff3e0;
+  color: var(--orange-dark);
+  border: 1px solid var(--orange);
+  box-shadow: none;
+}
+
+.btn-add-main.added:hover {
+  background-color: #ffe0b2;
+}
+
+/* Sidebar action block buttons */
+.btn-action-block {
+  width: 100%;
+  background-color: var(--orange);
+  color: #ffffff;
+  border: none;
+  border-radius: 8px;
+  padding: 12px 20px;
+  font-size: 0.95rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-decoration: none;
+  box-sizing: border-box;
+}
+
+.btn-action-block:hover {
+  background-color: var(--orange-dark);
+}
+
+.btn-action-block.added {
+  background-color: #fff3e0;
+  color: var(--orange-dark);
+  border: 1px solid var(--orange);
+}
+
+.btn-action-block.added:hover {
+  background-color: #ffe0b2;
+}
+
+/* Home Collection Workflow CSS System */
+.workflow-section {
+  max-width: 100%;
+  margin: 60px auto 0 auto;
+  padding: 0 40px 60px 40px;
+  text-align: left;
+}
+
+.workflow-section h2 {
+  font-size: 1.8rem;
+  font-weight: 800;
+  color: var(--blue);
+  margin-bottom: 40px;
+}
+
+.workflow-container {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+  background-color: #f0f9fa;
+  border-radius: 24px;
+  padding: 60px 30px 40px 30px;
+  box-shadow: var(--shadow-sm);
+  overflow: visible;
+}
+
+.workflow-line {
+  position: absolute;
+  top: 148px;
+  left: 8%;
+  right: 8%;
+  height: 2px;
+  border-top: 2px dashed #00a3ad;
+  opacity: 0.3;
+  z-index: 1;
+}
+
+.workflow-steps-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  z-index: 2;
+  position: relative;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.workflow-step-item {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex: 1;
+  min-width: 120px;
+}
+
+.workflow-step-num {
+  font-size: 1.2rem;
+  font-weight: 800;
+  color: var(--blue);
+  margin-bottom: 12px;
+}
+
+.workflow-circle {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  background-color: #ffffff;
+  border: 6px solid #e0f2f1;
+  box-shadow: 0 8px 16px rgba(0, 163, 173, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--ink);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.workflow-circle:hover {
+  transform: scale(1.05);
+  box-shadow: 0 10px 20px rgba(0, 163, 173, 0.15);
+}
+
+.workflow-circle.step-1 {
+  background-image: url('/workflow_step_1.png');
+  background-size: 44px;
+}
+
+.workflow-circle.step-2 {
+  background-image: url('/workflow_step_2.png');
+  background-size: 40px;
+}
+
+.workflow-circle.step-3 {
+  background-image: url('/workflow_step_3.png');
+  background-size: 44px;
+}
+
+.workflow-circle.step-4 {
+  background-image: url('/workflow_step_4.png');
+  background-size: 44px;
+}
+
+.workflow-circle.step-5 {
+  background-image: url('/workflow_step_5.png');
+  background-size: 40px;
+}
+
+.workflow-circle.step-6 {
+  background-image: url('/workflow_step_6.png');
+  background-size: 40px;
+}
+
+.workflow-circle.step-7 {
+  background-image: url('/workflow_step_7.png');
+  background-size: 40px;
+}
+
+/* Tooltip popup styling */
+.workflow-tooltip {
+  position: absolute;
+  top: -55px; /* Displayed above the number */
+  background-color: var(--blue-dark);
+  color: #ffffff;
+  padding: 8px 14px;
+  border-radius: 8px;
+  font-size: 0.82rem;
+  font-weight: 700;
+  white-space: nowrap;
+  box-shadow: 0 6px 20px rgba(0, 60, 113, 0.25);
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(8px) scale(0.95);
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  z-index: 100;
+  pointer-events: none;
+}
+
+/* Tooltip Caret Arrow */
+.workflow-tooltip::after {
+  content: '';
+  position: absolute;
+  bottom: -6px;
+  left: 50%;
+  transform: translateX(-50%);
+  border-width: 6px 6px 0;
+  border-style: solid;
+  border-color: var(--blue-dark) transparent;
+  display: block;
+  width: 0;
+}
+
+/* Hover trigger state */
+.workflow-step-item:hover .workflow-tooltip {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0) scale(1);
+}
+
+
+
+
+
+
+
+

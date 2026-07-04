@@ -14,10 +14,39 @@ import {
   Users
 } from 'lucide-react';
 import { useEffect, useState } from 'react';
+import HomeCollectionWorkflow from './HomeCollectionWorkflow';
+
 
 const HaemoglobinTestPage = ({ setIsIsoModalOpen }) => {
   const [openFaqIndex, setOpenFaqIndex] = useState(null);
+  const [openCategories, setOpenCategories] = useState({ 0: true });
   const [isAdded, setIsAdded] = useState(false);
+
+  const toggleCategory = (idx) => {
+    setOpenCategories(prev => ({
+      ...prev,
+      [idx]: !prev[idx]
+    }));
+  };
+
+  const categories = [
+    {
+      name: "Primary Parameter - 1 test",
+      tests: [
+        "Haemoglobin (Hb) - Measures the concentration of the oxygen-binding protein in blood."
+      ]
+    },
+    {
+      name: "Why it is measured (Clinical Significance)",
+      tests: [
+        "Detecting and monitoring Anemia (low hemoglobin levels)",
+        "Checking for Polycythemia (abnormally high red blood cell counts)",
+        "Evaluating general wellness, nutrition levels, and oxygen-carrying capacity",
+        "Monitoring response to iron supplements or erythropoietin treatment"
+      ]
+    }
+  ];
+
 
   useEffect(() => {
     const checkCart = () => {
@@ -47,34 +76,6 @@ const HaemoglobinTestPage = ({ setIsIsoModalOpen }) => {
     {
       q: "What happens during a haemoglobin test?",
       a: "A healthcare professional will take a blood sample from a vein in your arm or via a finger prick."
-    },
-    {
-      q: "Do I Need To Prepare for Anything For the haemoglobin test?",
-      a: "No special preparation or fasting is required unless you are having other tests at the same time."
-    },
-    {
-      q: "What do the haemoglobin test results mean?",
-      a: "Low hemoglobin levels indicate anemia, while high levels might indicate erythrocytosis, dehydration, lung disease, or smoking."
-    },
-    {
-      q: "What is a normal haemoglobin level?",
-      a: "For adult males: 13.8 to 17.2 g/dL. For adult females: 12.1 to 15.1 g/dL."
-    },
-    {
-      q: "What happens if haemoglobin is low?",
-      a: "Low levels mean your body isn't getting enough oxygen, causing fatigue, shortness of breath, or headache."
-    },
-    {
-      q: "How Can I Increase my Haemoglobin Level?",
-      a: "Eat iron-rich foods, increase vitamin C intake (to improve iron absorption), and avoid iron-blocking foods/drinks like tea and coffee during meals."
-    },
-    {
-      q: "What are the Foods to Increase Haemoglobin Level?",
-      a: "Spinach, red meat, poultry, seafood, beans, lentils, fortified cereals, dried fruits (raisins, apricots), and citrus fruits."
-    },
-    {
-      q: "What is the Haemoglobin Test Price in Cities?",
-      a: "The price for a Haemoglobin Estimation Test starts at ₹130 and may vary slightly based on the location and home collection charges."
     }
   ];
 
@@ -145,6 +146,44 @@ const HaemoglobinTestPage = ({ setIsIsoModalOpen }) => {
           position: sticky;
           top: 20px;
           text-align: left;
+        }
+
+        .category-accordion {
+          background: #ffffff;
+          border: 1px solid var(--line);
+          border-radius: 12px;
+          margin-bottom: 12px;
+          overflow: hidden;
+          box-shadow: var(--shadow-sm);
+        }
+        .category-header {
+          width: 100%;
+          padding: 18px 24px;
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          background: #ffffff;
+          border: none;
+          cursor: pointer;
+          font-weight: 700;
+          font-size: 1.05rem;
+          color: var(--blue);
+          text-align: left;
+        }
+        .category-body {
+          padding: 20px 24px;
+          background-color: #fafbfc;
+          border-top: 1px solid var(--line);
+          display: grid;
+          grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+          gap: 12px;
+        }
+        .test-parameter-item {
+          display: flex;
+          align-items: center;
+          gap: 8px;
+          font-size: 0.9rem;
+          color: #475569;
         }
 
         @media (max-width: 1024px) {
@@ -275,84 +314,13 @@ const HaemoglobinTestPage = ({ setIsIsoModalOpen }) => {
 
       {/* METHOD F: Rounded-Cap Interlocking Chevron Ribbons (ACTIVE) */}
       <div style={{ backgroundColor: 'transparent', padding: '16px 40px 0 40px', textAlign: 'left' }}>
-        <div style={{ display: 'inline-flex', alignItems: 'center', maxWidth: '100%', overflowX: 'auto', padding: '10px 0' }}>
-          {/* Segment 1: HOME */}
-          <a href="#/" style={{ 
-            position: 'relative', 
-            display: 'inline-flex', 
-            alignItems: 'center', 
-            padding: '12px 0', 
-            color: '#ffffff', 
-            fontWeight: '900', 
-            fontSize: '0.85rem', 
-            textTransform: 'uppercase', 
-            letterSpacing: '1px',
-            textDecoration: 'none',
-            width: '125px',
-            justifyContent: 'center',
-            marginRight: '-10px',
-            isolation: 'isolate'
-          }}>
-            <svg viewBox="0 0 100 40" preserveAspectRatio="none" style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', zIndex: -1 }}>
-              {/* White outer stroke path */}
-              <path d="M12,1 h78 l10,19 l-10,19 h-78 a19,19 0 0,1 0,-38 z" fill="#ffffff" />
-              {/* Brand blue filled path */}
-              <path d="M12,3 h76 l9,17 l-9,17 h-76 a17,17 0 0,1 0,-34 z" fill="#003c71" />
-            </svg>
-            HOME
-          </a>
-
-          {/* Segment 2: CATALOG */}
-          <a href="#/lab-tests" style={{ 
-            position: 'relative', 
-            display: 'inline-flex', 
-            alignItems: 'center', 
-            padding: '12px 0', 
-            color: '#ffffff', 
-            fontWeight: '900', 
-            fontSize: '0.85rem', 
-            textTransform: 'uppercase', 
-            letterSpacing: '1px',
-            textDecoration: 'none',
-            width: '125px',
-            justifyContent: 'center',
-            marginRight: '-12px',
-            isolation: 'isolate'
-          }}>
-            <svg viewBox="0 0 100 40" preserveAspectRatio="none" style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', zIndex: -1 }}>
-              {/* White outer stroke path */}
-              <path d="M2,1 h86 l10,19 l-10,19 h-86 l10,-19 z" fill="#ffffff" />
-              {/* Brand blue filled path */}
-              <path d="M3,3 h83 l9,17 l-9,17 h-83 l9,-17 z" fill="#003c71" />
-            </svg>
-            CATALOG
-          </a>
-
-          {/* Segment 3: PRODUCT */}
-          <div style={{ 
-            position: 'relative', 
-            display: 'inline-flex', 
-            alignItems: 'center', 
-            padding: '12px 0', 
-            color: '#ffffff', 
-            fontWeight: '900', 
-            fontSize: '0.85rem', 
-            textTransform: 'uppercase', 
-            letterSpacing: '1px',
-            width: '125px',
-            justifyContent: 'center',
-            isolation: 'isolate'
-          }}>
-            <svg viewBox="0 0 100 40" preserveAspectRatio="none" style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', zIndex: -1 }}>
-              {/* White outer stroke path */}
-              <path d="M2,1 h86 a19,19 0 0,1 0,38 h-86 l10,-19 z" fill="#ffffff" />
-              {/* Brand teal filled path */}
-              <path d="M3,3 h80 a17,17 0 0,1 0,34 h-80 l9,-17 z" fill="#00a3ad" />
-            </svg>
-            PRODUCT
-          </div>
+        <div className="ribbon-breadcrumbs">
+          <a href="#/" className="ribbon-breadcrumb-item">HOME</a>
+          <a href="#/lab-tests" className="ribbon-breadcrumb-item">CATALOG</a>
+          <div className="ribbon-breadcrumb-item active">PRODUCT</div>
         </div>
       </div>
+
       {/* ========================================================= */}
 
       <div style={{ maxWidth: '100%', margin: '40px auto', padding: '0 40px' }}>
@@ -372,7 +340,7 @@ const HaemoglobinTestPage = ({ setIsIsoModalOpen }) => {
           gap: '24px'
         }}>
           <div style={{ flex: 1, minWidth: '300px' }}>
-            <div style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', backgroundColor: 'var(--teal-soft)', color: 'var(--teal)', padding: '6px 14px', borderRadius: '10px', fontSize: '0.82rem', fontWeight: '800', marginBottom: '14px' }}>
+            <div style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', background: 'linear-gradient(135deg, #00b2b2 0%, #008080 100%)', color: 'white', padding: '6px 14px', borderRadius: '10px', fontSize: '0.82rem', fontWeight: '800', marginBottom: '14px' }}>
               <span>Diagnostic Blood Test</span>
             </div>
             <h1 style={{ fontSize: '2.1rem', fontWeight: 800, color: 'var(--blue)', margin: 0, letterSpacing: '-0.3px', lineHeight: 1.2 }}>
@@ -401,19 +369,7 @@ const HaemoglobinTestPage = ({ setIsIsoModalOpen }) => {
                   window.addToSuperlabCart({ id: 1, name: 'Haemoglobin Estimation Test', category: 'Anemia Test', price: 130, originalPrice: 173 });
                 }
               }}
-              style={{
-                backgroundColor: isAdded ? '#fff3e0' : 'var(--orange)',
-                color: isAdded ? 'var(--orange-dark)' : '#ffffff',
-                border: isAdded ? '1px solid var(--orange)' : 'none',
-                borderRadius: '10px',
-                padding: '10px 36px',
-                fontSize: '1.05rem',
-                fontWeight: '800',
-                cursor: 'pointer',
-                boxShadow: isAdded ? 'none' : '0 4px 10px rgba(255, 107, 0, 0.2)',
-                transition: 'all 0.2s ease',
-                minWidth: '130px'
-              }}
+              className={`btn-add-main ${isAdded ? 'added' : ''}`}
             >
               {isAdded ? 'ADDED' : 'ADD'}
             </button>
@@ -634,7 +590,7 @@ const HaemoglobinTestPage = ({ setIsIsoModalOpen }) => {
                   <span style={{ fontSize: '0.85rem', color: 'var(--muted)', fontWeight: '600' }}>Price per test</span>
                   <span style={{ display: 'block', fontSize: '1.5rem', fontWeight: '800', color: 'var(--teal)', marginTop: '2px' }}>₹ 130</span>
                 </div>
-                <span style={{ backgroundColor: '#e8f5e9', color: '#2e7d32', padding: '4px 10px', borderRadius: '30px', fontSize: '0.75rem', fontWeight: '700' }}>
+                <span style={{ backgroundColor: '#e8f5e9', color: '#2e7d32', padding: '4px 10px', borderRadius: '8px', fontSize: '0.75rem', fontWeight: '700' }}>
                   Best Deal
                 </span>
               </div>
@@ -668,19 +624,7 @@ const HaemoglobinTestPage = ({ setIsIsoModalOpen }) => {
                     window.addToSuperlabCart({ id: 1, name: 'Haemoglobin Estimation Test', category: 'Anemia Test', price: 130, originalPrice: 173 });
                   }
                 }}
-                style={{
-                  width: '100%',
-                  backgroundColor: isAdded ? '#fff3e0' : 'var(--orange)',
-                  color: isAdded ? 'var(--orange-dark)' : '#ffffff',
-                  border: isAdded ? '1px solid var(--orange)' : 'none',
-                  borderRadius: '10px',
-                  padding: '12px 20px',
-                  fontSize: '0.98rem',
-                  fontWeight: '800',
-                  cursor: 'pointer',
-                  boxShadow: isAdded ? 'none' : 'var(--shadow-sm)',
-                  transition: 'all 0.2s'
-                }}
+                className={`btn-action-block ${isAdded ? 'added' : ''}`}
               >
                 {isAdded ? 'ADDED (REMOVE)' : 'Add to Cart'}
               </button>
@@ -702,25 +646,8 @@ const HaemoglobinTestPage = ({ setIsIsoModalOpen }) => {
                 Track and manage your health better with SAMPLE REPORT
               </p>
               <button 
-                onClick={() => alert('Downloading Sample Report PDF...')}
-                style={{
-                  width: '100%',
-                  backgroundColor: 'var(--orange)',
-                  color: '#ffffff',
-                  border: 'none',
-                  borderRadius: '8px',
-                  padding: '12px 20px',
-                  fontSize: '0.95rem',
-                  fontWeight: '700',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  gap: '8px',
-                  cursor: 'pointer',
-                  transition: 'background-color 0.2s'
-                }}
-                onMouseEnter={(e) => e.target.style.backgroundColor = 'var(--orange-dark)'}
-                onMouseLeave={(e) => e.target.style.backgroundColor = 'var(--orange)'}
+                onClick={() => window.open('/sample_blood_report.pdf', '_blank')}
+                className="btn-action-block"
               >
                 <FileText size={18} />
                 <span>View Sample Report</span>
@@ -801,21 +728,30 @@ const HaemoglobinTestPage = ({ setIsIsoModalOpen }) => {
         }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '16px', marginBottom: '20px' }}>
             <h2 style={{ fontSize: '1.5rem', fontWeight: '800', color: 'var(--teal)', margin: 0 }}>Test Components</h2>
-            <button 
-              onClick={() => alert('Showing Test Components!')}
-              style={{
-                backgroundColor: 'var(--orange)',
-                color: '#ffffff',
-                border: 'none',
-                borderRadius: '6px',
-                padding: '6px 16px',
-                fontWeight: 'bold',
-                cursor: 'pointer',
-                fontSize: '0.9rem'
-              }}
-            >
-              View
-            </button>
+          </div>
+
+          <div style={{ textAlign: 'left', marginBottom: '20px' }}>
+            {categories.map((cat, idx) => {
+              const isOpen = !!openCategories[idx];
+              return (
+                <div key={idx} className="category-accordion">
+                  <button className="category-header" onClick={() => toggleCategory(idx)}>
+                    <span>{cat.name}</span>
+                    {isOpen ? <ChevronUp size={18} /> : <ChevronDown size={18} />}
+                  </button>
+                  {isOpen && (
+                    <div className="category-body" style={{ gridTemplateColumns: '1fr' }}>
+                      {cat.tests.map((test, tIdx) => (
+                        <div key={tIdx} className="test-parameter-item">
+                          <span style={{ color: 'var(--teal)', display: 'flex' }}><Check size={14} strokeWidth={3} /></span>
+                          <span>{test}</span>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              );
+            })}
           </div>
 
           <div style={{
@@ -967,137 +903,7 @@ const HaemoglobinTestPage = ({ setIsIsoModalOpen }) => {
       </div>
 
       {/* How Does Home Sample Collection work? */}
-      <div style={{ maxWidth: '100%', margin: '60px auto 0 auto', padding: '0 40px', textAlign: 'left' }}>
-        <h2 style={{ fontSize: '1.8rem', fontWeight: '800', color: 'var(--blue)', marginBottom: '40px' }}>
-          How Does Home Sample Collection work?
-        </h2>
-        
-        {/* Steps container */}
-        <div style={{ position: 'relative', display: 'flex', flexDirection: 'column', gap: '30px', backgroundColor: '#f0f9fa', borderRadius: '24px', padding: '40px 30px', boxShadow: 'var(--shadow-sm)', overflow: 'hidden' }}>
-          
-          {/* Wave connector line */}
-          <div style={{
-            position: 'absolute',
-            top: '110px',
-            left: '8%',
-            right: '8%',
-            height: '2px',
-            borderTop: '2px dashed #00a3ad',
-            opacity: 0.3,
-            zIndex: 1
-          }} />
-
-          {/* Circles row */}
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', zIndex: 2, position: 'relative', gap: '10px', flexWrap: 'wrap' }}>
-            {[
-              {
-                num: "01.",
-                icon: (
-                  <svg viewBox="0 0 24 24" width="36" height="36" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                    <path d="M8 3h8" />
-                    <path d="M9 3v13a3 3 0 0 0 6 0V3" />
-                    <path d="M9 9h6v7a3 3 0 0 1-6 0V9z" fill="currentColor" opacity="0.2" stroke="none" />
-                    <line x1="9" y1="9" x2="15" y2="9" />
-                  </svg>
-                )
-              },
-              {
-                num: "02.",
-                icon: (
-                  <svg viewBox="0 0 24 24" width="36" height="36" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                    <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
-                    <polyline points="9 22 9 12 15 12 15 22"/>
-                  </svg>
-                )
-              },
-              {
-                num: "03.",
-                icon: (
-                  <svg viewBox="0 0 24 24" width="36" height="36" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                    <rect x="2" y="5" width="20" height="14" rx="2" ry="2"/>
-                    <line x1="2" y1="10" x2="22" y2="10"/>
-                  </svg>
-                )
-              },
-              {
-                num: "04.",
-                icon: (
-                  <svg viewBox="0 0 24 24" width="36" height="36" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                    <circle cx="5.5" cy="18.5" r="2.5"/>
-                    <circle cx="18.5" cy="18.5" r="2.5"/>
-                    <path d="M3 17h12v-5l-3-4H9l-2 4H3v5z"/>
-                  </svg>
-                )
-              },
-              {
-                num: "05.",
-                icon: (
-                  <svg viewBox="0 0 24 24" width="36" height="36" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                    <path d="M10 2v7.31M14 2v7.31M8.5 2h7M14 11.5a4 4 0 1 1-4 0M12 15h.01M6.5 12a10.5 10.5 0 0 0 11 0M12 2v20"/>
-                  </svg>
-                )
-              },
-              {
-                num: "06.",
-                icon: (
-                  <svg viewBox="0 0 24 24" width="36" height="36" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/>
-                  </svg>
-                )
-              }
-            ].map((step, idx) => (
-              <div key={idx} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', flex: '1', minWidth: '120px' }}>
-                <span style={{ fontSize: '1.2rem', fontWeight: '800', color: 'var(--blue)', marginBottom: '12px' }}>{step.num}</span>
-                <div style={{
-                  width: '100px',
-                  height: '100px',
-                  borderRadius: '50%',
-                  backgroundColor: '#ffffff',
-                  border: '6px solid #e0f2f1',
-                  boxShadow: '0 8px 16px rgba(0, 163, 173, 0.1)',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  color: 'var(--ink)'
-                }}>
-                  {step.icon}
-                </div>
-              </div>
-            ))}
-          </div>
-
-          {/* Colored banner row */}
-          <div style={{ display: 'flex', borderRadius: '16px', overflow: 'hidden', marginTop: '20px', flexWrap: 'wrap' }}>
-            {[
-              { text: "Select Your Test", bg: "#74b9d0" },
-              { text: "Select Home Collection Option", bg: "#5a9cb8" },
-              { text: "Select Time, Date & Pay Online", bg: "#4680a3" },
-              { text: "Our Collection Agent Visits You", bg: "#25638c" },
-              { text: "Testing Done At Lab", bg: "#104975" },
-              { text: "View/ Download Your Report Online", bg: "#003c71" }
-            ].map((item, idx) => (
-              <div 
-                key={idx} 
-                style={{ 
-                  flex: '1', 
-                  minWidth: '150px',
-                  backgroundColor: item.bg, 
-                  color: '#ffffff', 
-                  padding: '14px 10px', 
-                  textAlign: 'center', 
-                  fontWeight: '700', 
-                  fontSize: '0.85rem',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center'
-                }}
-              >
-                {item.text}
-              </div>
-            ))}
-          </div>
-        </div>
-      </div>
+      <HomeCollectionWorkflow />
 
     </div>
   );

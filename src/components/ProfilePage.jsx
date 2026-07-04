@@ -7,8 +7,8 @@ const ProfilePage = () => {
   // Simulated patient data
   const patient = {
     id: "SL-90823",
-    name: "Sudhakar P J",
-    email: "sudhakar.pj@example.com",
+    name: "Jayakumar B",
+    email: "[EMAIL_ADDRESS]",
     phone: "+91 98765 43210",
     age: 28,
     gender: "Male",

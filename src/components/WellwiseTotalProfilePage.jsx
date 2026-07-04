@@ -14,6 +14,8 @@ import {
   Users
 } from 'lucide-react';
 import { useEffect, useState } from 'react';
+import HomeCollectionWorkflow from './HomeCollectionWorkflow';
+
 
 const WellwiseTotalProfilePage = ({ setIsIsoModalOpen }) => {
   const [openFaqIndex, setOpenFaqIndex] = useState(null);
@@ -213,15 +215,11 @@ const WellwiseTotalProfilePage = ({ setIsIsoModalOpen }) => {
         }
       `}</style>
       
-      <div style={{ backgroundColor: '#ffffff', borderBottom: '1px solid var(--line)', padding: '14px 40px' }}>
-        <div style={{ maxWidth: '100%', margin: '0 auto', fontSize: '0.9rem', color: 'var(--muted)', display: 'flex', alignItems: 'center', gap: '8px' }}>
-          <a href="#/" style={{ color: 'var(--blue)', fontWeight: 600, display: 'flex', alignItems: 'center', gap: '4px', textDecoration: 'none' }}>
-            <Home size={14} /> Home
-          </a>
-          <span>&gt;</span>
-          <a href="#/lab-tests" style={{ color: 'var(--blue)', fontWeight: 600, textDecoration: 'none' }}>Health Packages</a>
-          <span>&gt;</span>
-          <span style={{ color: 'var(--muted)' }}>Wellwise Total Profile</span>
+      <div style={{ backgroundColor: 'transparent', padding: '16px 40px 0 40px', textAlign: 'left' }}>
+        <div className="ribbon-breadcrumbs">
+          <a href="#/" className="ribbon-breadcrumb-item">HOME</a>
+          <a href="#/lab-tests" className="ribbon-breadcrumb-item">CATALOG</a>
+          <div className="ribbon-breadcrumb-item active">PRODUCT</div>
         </div>
       </div>
 
@@ -240,7 +238,7 @@ const WellwiseTotalProfilePage = ({ setIsIsoModalOpen }) => {
           gap: '24px'
         }}>
           <div style={{ flex: 1, minWidth: '300px' }}>
-            <div style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', backgroundColor: 'var(--teal-soft)', color: 'var(--teal)', padding: '6px 14px', borderRadius: '30px', fontSize: '0.82rem', fontWeight: '800', marginBottom: '14px' }}>
+            <div style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', background: 'linear-gradient(135deg, #00b2b2 0%, #008080 100%)', color: 'white', padding: '6px 14px', borderRadius: '10px', fontSize: '0.82rem', fontWeight: '800', marginBottom: '14px' }}>
               <span>BEST VALUE Full Body Checkup</span>
             </div>
             <h1 style={{ fontSize: '2.1rem', fontWeight: 800, color: 'var(--blue)', margin: 0, letterSpacing: '-0.3px', lineHeight: 1.2 }}>
@@ -258,19 +256,7 @@ const WellwiseTotalProfilePage = ({ setIsIsoModalOpen }) => {
             </div>
             <button 
               onClick={handleToggleCart}
-              style={{
-                backgroundColor: isAdded ? '#fff3e0' : 'var(--orange)',
-                color: isAdded ? 'var(--orange-dark)' : '#ffffff',
-                border: isAdded ? '1px solid var(--orange)' : 'none',
-                borderRadius: '10px',
-                padding: '14px 36px',
-                fontSize: '1.05rem',
-                fontWeight: '800',
-                cursor: 'pointer',
-                boxShadow: isAdded ? 'none' : '0 4px 10px rgba(255, 107, 0, 0.2)',
-                transition: 'all 0.2s ease',
-                minWidth: '130px'
-              }}
+              className={`btn-add-main ${isAdded ? 'added' : ''}`}
             >
               {isAdded ? 'ADDED' : 'ADD'}
             </button>
@@ -361,21 +347,9 @@ const WellwiseTotalProfilePage = ({ setIsIsoModalOpen }) => {
             </div>
 
             {/* Collection Availability Badge */}
-            <div style={{
-              backgroundColor: '#e8f5e9',
-              border: '1px solid #c8e6c9',
-              borderRadius: '12px',
-              padding: '16px 24px',
-              display: 'flex',
-              alignItems: 'center',
-              gap: '10px',
-              color: '#2e7d32',
-              fontWeight: '700',
-              fontSize: '0.95rem',
-              marginBottom: '30px'
-            }}>
-              <Home size={18} />
-              <span>Home Sample Collection Available</span>
+            <div className="shining-speciality-badge">
+              <Home size={20} className="badge-icon-pulse" />
+              <span style={{ position: 'relative', zIndex: 2 }}>Home Sample Collection Available</span>
             </div>
 
             {/* Description & Table of Contents Card */}
@@ -468,7 +442,7 @@ const WellwiseTotalProfilePage = ({ setIsIsoModalOpen }) => {
                   <span style={{ fontSize: '0.85rem', color: 'var(--muted)', fontWeight: '600' }}>Price per package</span>
                   <span style={{ display: 'block', fontSize: '1.5rem', fontWeight: '800', color: 'var(--teal)', marginTop: '2px' }}>₹ 2279</span>
                 </div>
-                <span style={{ backgroundColor: '#e8f5e9', color: '#2e7d32', padding: '4px 10px', borderRadius: '30px', fontSize: '0.75rem', fontWeight: '700' }}>
+                <span style={{ backgroundColor: '#e8f5e9', color: '#2e7d32', padding: '4px 10px', borderRadius: '8px', fontSize: '0.75rem', fontWeight: '700' }}>
                   Best Deal
                 </span>
               </div>
@@ -488,19 +462,7 @@ const WellwiseTotalProfilePage = ({ setIsIsoModalOpen }) => {
               </div>
               <button 
                 onClick={handleToggleCart}
-                style={{
-                  width: '100%',
-                  backgroundColor: isAdded ? '#fff3e0' : 'var(--orange)',
-                  color: isAdded ? 'var(--orange-dark)' : '#ffffff',
-                  border: isAdded ? '1px solid var(--orange)' : 'none',
-                  borderRadius: '10px',
-                  padding: '12px 20px',
-                  fontSize: '0.98rem',
-                  fontWeight: '800',
-                  cursor: 'pointer',
-                  boxShadow: isAdded ? 'none' : 'var(--shadow-sm)',
-                  transition: 'all 0.2s'
-                }}
+                className={`btn-action-block ${isAdded ? 'added' : ''}`}
               >
                 {isAdded ? 'ADDED (REMOVE)' : 'Add to Cart'}
               </button>
@@ -521,23 +483,8 @@ const WellwiseTotalProfilePage = ({ setIsIsoModalOpen }) => {
                 Track and manage your health better with SAMPLE REPORT
               </p>
               <button 
-                onClick={() => alert('Downloading Sample Report PDF...')}
-                style={{
-                  width: '100%',
-                  backgroundColor: 'var(--orange)',
-                  color: '#ffffff',
-                  border: 'none',
-                  borderRadius: '8px',
-                  padding: '12px 20px',
-                  fontSize: '0.95rem',
-                  fontWeight: '700',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  gap: '8px',
-                  cursor: 'pointer',
-                  transition: 'background-color 0.2s'
-                }}
+                onClick={() => window.open('/sample_blood_report.pdf', '_blank')}
+                className="btn-action-block"
               >
                 <FileText size={18} />
                 <span>View Sample Report</span>
@@ -791,132 +738,8 @@ const WellwiseTotalProfilePage = ({ setIsIsoModalOpen }) => {
         </div>
       </div>
 
-      <div style={{ maxWidth: '100%', margin: '60px auto 0 auto', padding: '0 40px', textAlign: 'left', paddingBottom: '80px' }}>
-        <h2 style={{ fontSize: '1.8rem', fontWeight: '800', color: 'var(--blue)', marginBottom: '40px' }}>
-          How Does Home Sample Collection work?
-        </h2>
-        
-        <div style={{ position: 'relative', display: 'flex', flexDirection: 'column', gap: '30px', backgroundColor: '#f0f9fa', borderRadius: '24px', padding: '40px 30px', boxShadow: 'var(--shadow-sm)', overflow: 'hidden' }}>
-          <div style={{
-            position: 'absolute',
-            top: '110px',
-            left: '8%',
-            right: '8%',
-            height: '2px',
-            borderTop: '2px dashed #00a3ad',
-            opacity: 0.3,
-            zIndex: 1
-          }} />
-
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', zIndex: 2, position: 'relative', gap: '10px', flexWrap: 'wrap' }}>
-            {[
-              {
-                num: "01.",
-                icon: (
-                  <svg viewBox="0 0 24 24" width="36" height="36" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                    <path d="M8 3h8" />
-                    <path d="M9 3v13a3 3 0 0 0 6 0V3" />
-                    <path d="M9 9h6v7a3 3 0 0 1-6 0V9z" fill="currentColor" opacity="0.2" stroke="none" />
-                    <line x1="9" y1="9" x2="15" y2="9" />
-                  </svg>
-                )
-              },
-              {
-                num: "02.",
-                icon: (
-                  <svg viewBox="0 0 24 24" width="36" height="36" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                    <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
-                    <polyline points="9 22 9 12 15 12 15 22"/>
-                  </svg>
-                )
-              },
-              {
-                num: "03.",
-                icon: (
-                  <svg viewBox="0 0 24 24" width="36" height="36" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                    <rect x="2" y="5" width="20" height="14" rx="2" ry="2"/>
-                    <line x1="2" y1="10" x2="22" y2="10"/>
-                  </svg>
-                )
-              },
-              {
-                num: "04.",
-                icon: (
-                  <svg viewBox="0 0 24 24" width="36" height="36" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                    <circle cx="5.5" cy="18.5" r="2.5"/>
-                    <circle cx="18.5" cy="18.5" r="2.5"/>
-                    <path d="M3 17h12v-5l-3-4H9l-2 4H3v5z"/>
-                  </svg>
-                )
-              },
-              {
-                num: "05.",
-                icon: (
-                  <svg viewBox="0 0 24 24" width="36" height="36" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                    <path d="M10 2v7.31M14 2v7.31M8.5 2h7M14 11.5a4 4 0 1 1-4 0M12 15h.01M6.5 12a10.5 10.5 0 0 0 11 0M12 2v20"/>
-                  </svg>
-                )
-              },
-              {
-                num: "06.",
-                icon: (
-                  <svg viewBox="0 0 24 24" width="36" height="36" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/>
-                  </svg>
-                )
-              }
-            ].map((step, idx) => (
-              <div key={idx} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', flex: '1', minWidth: '120px' }}>
-                <span style={{ fontSize: '1.2rem', fontWeight: '800', color: 'var(--blue)', marginBottom: '12px' }}>{step.num}</span>
-                <div style={{
-                  width: '100px',
-                  height: '100px',
-                  borderRadius: '50%',
-                  backgroundColor: '#ffffff',
-                  border: '6px solid #e0f2f1',
-                  boxShadow: '0 8px 16px rgba(0, 163, 173, 0.1)',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  color: 'var(--ink)'
-                }}>
-                  {step.icon}
-                </div>
-              </div>
-            ))}
-          </div>
-
-          <div style={{ display: 'flex', borderRadius: '16px', overflow: 'hidden', marginTop: '20px', flexWrap: 'wrap' }}>
-            {[
-              { text: "Select Your Test", bg: "#74b9d0" },
-              { text: "Select Home Collection Option", bg: "#5a9cb8" },
-              { text: "Select Time, Date & Pay Online", bg: "#4680a3" },
-              { text: "Our Collection Agent Visits You", bg: "#25638c" },
-              { text: "Testing Done At Lab", bg: "#104975" },
-              { text: "View/ Download Your Report Online", bg: "#003c71" }
-            ].map((item, idx) => (
-              <div 
-                key={idx} 
-                style={{ 
-                  flex: '1', 
-                  minWidth: '150px',
-                  backgroundColor: item.bg, 
-                  color: '#ffffff', 
-                  padding: '14px 10px', 
-                  textAlign: 'center', 
-                  fontWeight: '700', 
-                  fontSize: '0.85rem',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center'
-                }}
-              >
-                {item.text}
-              </div>
-            ))}
-          </div>
-        </div>
-      </div>
+      {/* How Does Home Sample Collection work? */}
+      <HomeCollectionWorkflow />
     </div>
   );
 };
