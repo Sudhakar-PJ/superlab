@@ -19,7 +19,7 @@ import BookBanner from './components/BookBanner';
 import ExpandingFootprints from './components/ExpandingFootprints';
 import Footer from './components/Footer';
 import HaemoglobinTestPage from './components/HaemoglobinTestPage';
-import BetaHCGTestPage from './components/BetaHCGTestPage';
+// import BetaHCGTestPage from './components/BetaHCGTestPage';
 import MakeYourOwnPackagePage from './components/MakeYourOwnPackagePage';
 import LabTestsPage from './components/LabTestsPage';
 import CartPage from './components/CartPage';
@@ -83,8 +83,6 @@ const App = () => {
   const renderContent = () => {
     if (currentHash === '#/haemoglobin-estimation') {
       return <HaemoglobinTestPage setIsIsoModalOpen={setIsIsoModalOpen} />;
-    } else if (currentHash === '#/beta-hcg') {
-      return <BetaHCGTestPage />;
     } else if (currentHash === '#/make-package') {
       return <MakeYourOwnPackagePage />;
     } else if (currentHash === '#/lab-tests') {

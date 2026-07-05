@@ -30,7 +30,7 @@ const HomeCollectionWorkflow = () => {
             {
               num: "04.",
               className: "workflow-circle step-4",
-              text: "Our Certified Phlebotomist Visits You"
+              text: "Our Expert Visits You"
             },
             {
               num: "05.",
