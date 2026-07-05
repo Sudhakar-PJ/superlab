@@ -45,6 +45,27 @@ const App = () => {
       }
     };
 
+    window.showSuperlabToast = (message) => {
+      const oldToast = document.querySelector('.superlab-toast');
+      if (oldToast) {
+        oldToast.remove();
+      }
+      const toast = document.createElement('div');
+      toast.className = 'superlab-toast';
+      toast.innerHTML = `
+        <div class="superlab-toast-success-icon">✓</div>
+        <span>${message}</span>
+      `;
+      document.body.appendChild(toast);
+      // force reflow
+      toast.offsetHeight;
+      toast.classList.add('show');
+      setTimeout(() => {
+        toast.classList.remove('show');
+        setTimeout(() => toast.remove(), 300);
+      }, 3000);
+    };
+
     window.addToSuperlabCart = (item) => {
       const cart = window.getSuperlabCart();
       const exists = cart.find(i => i.id === item.id || i.name === item.name);
@@ -52,9 +73,9 @@ const App = () => {
         cart.push({ ...item, quantity: 1 });
         localStorage.setItem('superlab_cart', JSON.stringify(cart));
         window.dispatchEvent(new Event('superlab_cart_update'));
-        alert(`${item.name} added to cart successfully!`);
+        window.showSuperlabToast(`${item.name} added to cart successfully!`);
       } else {
-        alert(`${item.name} is already in your cart.`);
+        window.showSuperlabToast(`${item.name} is already in your cart.`);
       }
     };
 

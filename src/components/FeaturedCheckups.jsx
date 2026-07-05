@@ -64,13 +64,18 @@ const FeaturedCheckups = () => {
     }
   };
 
+  const handleViewAll = () => {
+    sessionStorage.setItem('superlab_selected_category', 'Full Body Health');
+    window.location.hash = '#/lab-tests';
+  };
+
   return (
     <section className="featured-checkups-section">
       <div className="featured-checkups-container">
         {/* Header Row */}
         <div className="section-header-row">
           <h2 className="section-main-title">Full Body Health Checks</h2>
-          <button className="btn-view-all-packages" onClick={() => alert('Viewing all packages!')}>
+          <button className="btn-view-all-packages" onClick={handleViewAll}>
             View All
           </button>
         </div>
@@ -97,7 +102,7 @@ const FeaturedCheckups = () => {
               }}
             >
               {baseCheckups.map((check, index) => (
-                <div key={index} className="checkup-card">
+                <div key={index} className="checkup-card premium-tilt-card">
                   {/* Badges top bar */}
                   <div className="checkup-card-badges">
                     {check.badge ? (
@@ -137,7 +142,7 @@ const FeaturedCheckups = () => {
                         originalPrice: check.originalPrice || Math.round((check.discountedPrice || 999) / 0.75) 
                       })}
                     >
-                      BOOK
+                  ADD
                     </button>
                   </div>
                 </div>

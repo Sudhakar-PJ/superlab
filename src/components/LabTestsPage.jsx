@@ -12,15 +12,51 @@ import { testDatabase } from '../data/testDatabase';
 const LabTestsPage = () => {
 
   // States
-  const [viewType, setViewType] = useState('all'); // 'all', 'test', 'package'
-  const [searchQuery, setSearchQuery] = useState('');
+  const [viewType, setViewType] = useState(() => {
+    const viewTypePref = sessionStorage.getItem('superlab_view_type');
+    if (viewTypePref) {
+      sessionStorage.removeItem('superlab_view_type');
+      return viewTypePref;
+    }
+    return 'all';
+  }); // 'all', 'test', 'package'
+  const [searchQuery, setSearchQuery] = useState(() => {
+    const query = sessionStorage.getItem('superlab_search_query');
+    if (query) {
+      sessionStorage.removeItem('superlab_search_query');
+      return query;
+    }
+    return '';
+  });
   const [sortBy, setSortBy] = useState('popularity'); // 'popularity', 'low-to-high', 'high-to-low'
-  const [selectedCategories, setSelectedCategories] = useState([]);
+  const [selectedCategories, setSelectedCategories] = useState(() => {
+    const categoryPref = sessionStorage.getItem('superlab_selected_category');
+    if (categoryPref) {
+      sessionStorage.removeItem('superlab_selected_category');
+      return [categoryPref];
+    }
+    return [];
+  });
   const [addedItems, setAddedItems] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
   
   // Accordion toggle states
   const [isSortOpen, setIsSortOpen] = useState(true);
   const [isCategoryOpen, setIsCategoryOpen] = useState(true);
+
+  // Trigger skeleton loader on filter changes
+  useEffect(() => {
+    const startTimer = setTimeout(() => {
+      setIsLoading(true);
+    }, 0);
+    const timer = setTimeout(() => {
+      setIsLoading(false);
+    }, 600);
+    return () => {
+      clearTimeout(startTimer);
+      clearTimeout(timer);
+    };
+  }, [searchQuery, viewType, sortBy, selectedCategories]);
 
   // Sync addedItems state with localStorage cart on load & updates
   useEffect(() => {
@@ -48,7 +84,6 @@ const LabTestsPage = () => {
       }
     };
     window.addEventListener('superlab_search_trigger', syncSearchQuery);
-    syncSearchQuery();
     return () => window.removeEventListener('superlab_search_trigger', syncSearchQuery);
   }, []);
 
@@ -125,7 +160,11 @@ const LabTestsPage = () => {
       cart.push(newItem);
       localStorage.setItem('superlab_cart', JSON.stringify(cart));
       window.dispatchEvent(new Event('superlab_cart_update'));
-      alert(`${item.name} added to your cart!`);
+      if (window.showSuperlabToast) {
+        window.showSuperlabToast(`${item.name} added to your cart!`);
+      } else {
+        alert(`${item.name} added to your cart!`);
+      }
     }
   };
 
@@ -224,6 +263,7 @@ const LabTestsPage = () => {
           justify-content: space-between;
           min-height: 200px;
           transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+          cursor: default;
         }
         .lab-test-card:hover {
           transform: translateY(-2px);
@@ -408,11 +448,34 @@ const LabTestsPage = () => {
 
             {/* Cards Grid */}
             <div className="lab-tests-grid">
-              {filteredItems.length > 0 ? (
+              {isLoading ? (
+                // Shimmer Skeleton Loader Grid
+                Array.from({ length: 6 }).map((_, idx) => (
+                  <div key={idx} className="skeleton-card">
+                    <div className="skeleton-header">
+                      <div className="skeleton-badge shimmer-bg"></div>
+                      <div className="skeleton-discount shimmer-bg"></div>
+                    </div>
+                    <div className="skeleton-title shimmer-bg"></div>
+                    <div className="skeleton-subtitle shimmer-bg"></div>
+                    <div className="skeleton-meta-row">
+                      <div className="skeleton-meta-item shimmer-bg"></div>
+                      <div className="skeleton-meta-item shimmer-bg"></div>
+                    </div>
+                    <div className="skeleton-footer">
+                      <div className="skeleton-price-group">
+                        <div className="skeleton-price-strike shimmer-bg"></div>
+                        <div className="skeleton-price-active shimmer-bg"></div>
+                      </div>
+                      <div className="skeleton-btn shimmer-bg"></div>
+                    </div>
+                  </div>
+                ))
+              ) : filteredItems.length > 0 ? (
                 filteredItems.map((item) => {
                   const isAdded = addedItems.includes(item.id);
                   return (
-                    <div key={item.id} className="lab-test-card">
+                    <div key={item.id} className="lab-test-card premium-tilt-card">
                       <div>
                         {item.type === 'package' ? (
                           <span className="discount-badge">{item.discount}</span>

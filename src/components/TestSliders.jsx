@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from 'react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { testDatabase } from '../data/testDatabase';
 
-const CircularTestSlider = ({ title, items }) => {
+const CircularTestSlider = ({ title, category, items }) => {
   const scrollRef = useRef(null);
   const [canScrollLeft, setCanScrollLeft] = useState(false);
   const [canScrollRight, setCanScrollRight] = useState(true);
@@ -51,12 +51,17 @@ const CircularTestSlider = ({ title, items }) => {
     }
   };
 
+  const handleViewAll = () => {
+    sessionStorage.setItem('superlab_selected_category', category);
+    window.location.hash = '#/lab-tests';
+  };
+
   return (
     <div className="test-slider-category-wrapper" style={{ marginBottom: '32px' }}>
       {/* Header Row */}
       <div className="section-header-row">
         <h2 className="section-main-title">{title}</h2>
-        <button className="btn-view-all-packages" onClick={() => alert(`Viewing all ${title}!`)}>
+        <button className="btn-view-all-packages" onClick={handleViewAll}>
           View All
         </button>
       </div>
@@ -83,7 +88,7 @@ const CircularTestSlider = ({ title, items }) => {
             }}
           >
             {items.map((item, index) => (
-              <div key={index} className="test-item-card">
+              <div key={index} className="test-item-card premium-tilt-card">
                 <h3 className="test-card-title">{item.name}</h3>
                 
                 <div className="test-card-bottom">
@@ -165,9 +170,9 @@ const TestSliders = () => {
   return (
     <section className="test-sliders-section">
       <div className="test-sliders-container">
-        <CircularTestSlider title="Pregnancy Tests" items={pregnancyTests} />
-        <CircularTestSlider title="Vitamin Tests" items={vitaminTests} />
-        <CircularTestSlider title="HIV Tests" items={hivTests} />
+        <CircularTestSlider title="Pregnancy Tests" category="Pregnancy Test" items={pregnancyTests} />
+        <CircularTestSlider title="Vitamin Tests" category="Vitamin Test" items={vitaminTests} />
+        <CircularTestSlider title="HIV Tests" category="HIV Test" items={hivTests} />
       </div>
     </section>
   );

@@ -1468,10 +1468,10 @@ a {
   box-shadow: var(--shadow-sm);
   transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
   position: relative;
+  cursor: default;
 }
 
 .checkup-card:hover {
-  transform: translateY(-4px);
   background: #ffffff;
   box-shadow: var(--shadow-lg);
   border-color: var(--teal);
@@ -1578,7 +1578,7 @@ a {
 }
 
 .btn-book-checkup:hover {
-  transform: translateY(-1px);
+  cursor: pointer;
   box-shadow: 0 4px 10px rgba(255, 107, 0, 0.3);
 }
 
@@ -1934,10 +1934,10 @@ a {
   transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
   box-sizing: border-box;
   flex-shrink: 0;
+  cursor: default;
 }
 
 .test-item-card:hover {
-  transform: translateY(-2px);
   background: #ffffff;
   box-shadow: var(--shadow-lg);
   border-color: var(--teal);
@@ -2001,7 +2001,7 @@ a {
 
 .btn-add-test:hover {
   background-color: var(--orange-dark);
-  transform: scale(1.02);
+  cursor: pointer;
 }
 
 /* App Download Section Styling */
@@ -4805,6 +4805,168 @@ body {
   .btn-profile-download, .profile-awaiting-badge {
     width: 100% !important;
     justify-content: center !important;
+  }
+}
+
+/* Premium micro-interactions: 3D Hover Card Tilt */
+.premium-tilt-card {
+  transition: transform 0.4s cubic-bezier(0.165, 0.84, 0.44, 1), box-shadow 0.4s ease, border-color 0.3s ease !important;
+  transform-style: preserve-3d !important;
+  perspective: 1000px !important;
+}
+.premium-tilt-card:hover {
+  box-shadow: 0 12px 24px rgba(0, 60, 113, 0.1) !important;
+  border-color: rgba(0, 163, 173, 0.4) !important;
+}
+
+/* Cart badge shake & bounce animation */
+@keyframes cart-shake {
+  0%, 100% { transform: scale(1); }
+  20% { transform: scale(1.22) rotate(-10deg); }
+  40% { transform: scale(1.22) rotate(10deg); }
+  60% { transform: scale(1.15) rotate(-6deg); }
+  80% { transform: scale(1.15) rotate(6deg); }
+}
+.cart-animate-trigger {
+  animation: cart-shake 0.5s cubic-bezier(0.36, 0.07, 0.19, 0.97) both !important;
+}
+
+/* Shimmer Skeleton Screen Loaders */
+.shimmer-bg {
+  background: linear-gradient(90deg, #f1f5f9 25%, #e2e8f0 50%, #f1f5f9 75%) !important;
+  background-size: 200% 100% !important;
+  animation: shimmer-swipe 1.5s infinite linear !important;
+}
+@keyframes shimmer-swipe {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+.skeleton-card {
+  background: #ffffff !important;
+  border: 1.5px solid #f1f5f9 !important;
+  border-radius: 16px !important;
+  padding: 24px !important;
+  display: flex !important;
+  flex-direction: column !important;
+  height: 100% !important;
+  box-shadow: 0 4px 6px -1px rgba(0,0,0,0.02) !important;
+}
+.skeleton-header {
+  display: flex !important;
+  justify-content: space-between !important;
+  align-items: center !important;
+  margin-bottom: 16px !important;
+}
+.skeleton-badge {
+  width: 90px !important;
+  height: 22px !important;
+  border-radius: 20px !important;
+}
+.skeleton-discount {
+  width: 60px !important;
+  height: 20px !important;
+  border-radius: 4px !important;
+}
+.skeleton-title {
+  width: 80% !important;
+  height: 24px !important;
+  border-radius: 6px !important;
+  margin-bottom: 12px !important;
+}
+.skeleton-subtitle {
+  width: 50% !important;
+  height: 16px !important;
+  border-radius: 4px !important;
+  margin-bottom: 20px !important;
+}
+.skeleton-meta-row {
+  display: flex !important;
+  gap: 12px !important;
+  margin-bottom: 24px !important;
+  flex-wrap: wrap !important;
+}
+.skeleton-meta-item {
+  width: 70px !important;
+  height: 24px !important;
+  border-radius: 6px !important;
+}
+.skeleton-footer {
+  display: flex !important;
+  justify-content: space-between !important;
+  align-items: center !important;
+  margin-top: auto !important;
+  border-top: 1.5px solid #f8fafc !important;
+  padding-top: 16px !important;
+}
+.skeleton-price-group {
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 6px !important;
+}
+.skeleton-price-strike {
+  width: 50px !important;
+  height: 14px !important;
+  border-radius: 4px !important;
+}
+.skeleton-price-active {
+  width: 80px !important;
+  height: 22px !important;
+  border-radius: 4px !important;
+}
+.skeleton-btn {
+  width: 100px !important;
+  height: 38px !important;
+  border-radius: 10px !important;
+}
+
+/* Premium Toast Notifications */
+.superlab-toast {
+  position: fixed !important;
+  bottom: 24px !important;
+  right: 24px !important;
+  background-color: #002244 !important;
+  color: #ffffff !important;
+  padding: 14px 22px !important;
+  border-radius: 12px !important;
+  box-shadow: 0 10px 25px rgba(0, 34, 68, 0.2) !important;
+  display: flex !important;
+  align-items: center !important;
+  gap: 12px !important;
+  z-index: 999999 !important;
+  font-family: var(--sans) !important;
+  font-weight: 600 !important;
+  font-size: 0.95rem !important;
+  border-left: 4px solid var(--teal) !important;
+  transform: translateY(100px) !important;
+  opacity: 0 !important;
+  transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.3s ease !important;
+  pointer-events: none !important;
+}
+.superlab-toast.show {
+  transform: translateY(0) !important;
+  opacity: 1 !important;
+}
+.superlab-toast-success-icon {
+  width: 20px !important;
+  height: 20px !important;
+  border-radius: 50% !important;
+  background-color: rgba(0, 163, 173, 0.2) !important;
+  color: #00d2de !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  font-size: 0.85rem !important;
+  font-weight: bold !important;
+}
+
+@media (max-width: 480px) {
+  .superlab-toast {
+    left: 16px !important;
+    right: 16px !important;
+    bottom: 16px !important;
+    font-size: 0.85rem !important;
+    padding: 12px 16px !important;
   }
 }
 

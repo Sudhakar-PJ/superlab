@@ -15,6 +15,7 @@ const Header = ({ isIsoModalOpen, setIsIsoModalOpen }) => {
   const [selectedLocation, setSelectedLocation] = useState('Chennai');
   const [searchQuery, setSearchQuery] = useState('');
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isCartAnimating, setIsCartAnimating] = useState(false);
   const [isMegaMenuOpen, setIsMegaMenuOpen] = useState(false);
   const [isCheckupMenuOpen, setIsCheckupMenuOpen] = useState(false);
   const [activeCategory, setActiveCategory] = useState('Pregnancy Test');
@@ -46,6 +47,17 @@ const Header = ({ isIsoModalOpen, setIsIsoModalOpen }) => {
     handleCartUpdate();
     return () => window.removeEventListener('superlab_cart_update', handleCartUpdate);
   }, []);
+
+  const isInitialMount = useRef(true);
+  useEffect(() => {
+    if (isInitialMount.current) {
+      isInitialMount.current = false;
+      return;
+    }
+    setIsCartAnimating(true);
+    const timer = setTimeout(() => setIsCartAnimating(false), 500);
+    return () => clearTimeout(timer);
+  }, [cartCount]);
 
   useEffect(() => {
     if (isMobileMenuOpen) {
@@ -421,7 +433,7 @@ const Header = ({ isIsoModalOpen, setIsIsoModalOpen }) => {
       </button>
 
       {/* Shopping Cart Icon */}
-      <a href="#/cart" title="Shopping Cart" style={{ color: '#00a3ad', display: 'flex', alignItems: 'center', position: 'relative' }}>
+      <a href="#/cart" className={isCartAnimating ? 'cart-animate-trigger' : ''} title="Shopping Cart" style={{ color: '#00a3ad', display: 'flex', alignItems: 'center', position: 'relative' }}>
         <ShoppingCart size={24} />
         <span style={{
           position: 'absolute',
@@ -1012,7 +1024,7 @@ const Header = ({ isIsoModalOpen, setIsIsoModalOpen }) => {
               <span>User Account</span>
             </button>
             
-            <a href="#/cart" className="mobile-nav-item drawer-cart-link" style={{ display: 'flex', alignItems: 'center', gap: '8px' }} onClick={() => setIsMobileMenuOpen(false)}>
+            <a href="#/cart" className={`mobile-nav-item drawer-cart-link ${isCartAnimating ? 'cart-animate-trigger' : ''}`} style={{ display: 'flex', alignItems: 'center', gap: '8px' }} onClick={() => setIsMobileMenuOpen(false)}>
               <ShoppingCart size={18} style={{ color: '#00a3ad' }} />
               <span>Shopping Cart ({cartCount})</span>
             </a>
