@@ -48,3 +48,8 @@ Thumbs.db
 *.njsproj
 *.sln
 *.sw?
+
+# Agent Customizations & Demo Notes
+.agents/
+UI_WOW_IDEAS.md
+
