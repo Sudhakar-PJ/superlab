@@ -1517,5 +1517,17 @@ export const testDatabase = [
     "testsIncluded": 80,
     "popular": false,
     "hash": "#/lab-tests"
-  }
+  },
+  // {
+  //   "id": 1011,
+  //   "name": "Super Care Health Check 4",
+  //   "category": "Full Body Health",
+  //   "type": "package",
+  //   "price": 2700,
+  //   "originalPrice": 4500,
+  //   "discount": "40% OFF",
+  //   "testsIncluded": 80,
+  //   "popular": false,
+  //   "hash": "#/lab-tests"
+  // }
 ];
