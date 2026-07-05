@@ -131,34 +131,81 @@ a {
 
 .header-top-bar {
   background-color: var(--blue-soft);
-  padding: 10px 24px;
+  padding: 10px clamp(12px, 2vw, 24px);
   display: flex;
   align-items: center;
   justify-content: space-between;
   flex-wrap: wrap;
-  gap: 12px;
+  gap: clamp(8px, 1.5vw, 12px);
   border-bottom: 1px solid var(--line);
 }
 
 .header-top-search {
   flex: 1;
   max-width: 600px;
-  margin: 0 24px;
+  margin: 0 clamp(8px, 2vw, 24px);
   position: relative;
 }
 
-@media (max-width: 768px) {
+.mobile-only-utilities {
+  display: none !important;
+}
+
+.desktop-only-utilities {
+  display: flex !important;
+}
+
+@media (max-width: 992px) {
+  .header-iso-badge {
+    padding: 6px !important;
+    border-radius: 50% !important;
+    width: 28px !important;
+    height: 28px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    margin-left: 10px !important;
+  }
+  .header-iso-badge span {
+    display: none !important;
+  }
+  .header-iso-badge img {
+    margin-right: 0 !important;
+  }
+  .btn-book-test-header {
+    display: none !important;
+  }
+  .header-bottom-contacts {
+    display: none !important;
+  }
+}
+
+@media (max-width: 859px) {
   .header-top-bar {
     padding: 10px 16px;
-    flex-direction: column;
-    align-items: center;
-    gap: 8px;
-    text-align: center;
+    flex-direction: row !important;
+    flex-wrap: wrap !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+    gap: 12px !important;
+  }
+  .header-top-bar > div:first-child {
+    display: flex;
+    justify-content: flex-start;
+    width: auto !important;
   }
   .header-top-search {
-    width: 100%;
-    max-width: 100%;
-    margin: 8px 0;
+    flex: none !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 4px 0 0 0 !important;
+    order: 3;
+  }
+}
+
+@media (max-width: 480px) {
+  .mobile-only-utilities .header-location-picker {
+    display: none !important;
   }
 }
 
@@ -263,11 +310,11 @@ a {
 .nav-menu {
   display: flex;
   align-items: center;
-  gap: 30px;
+  gap: clamp(12px, 2.5vw, 30px);
 }
 
 .nav-item {
-  font-size: 0.95rem;
+  font-size: clamp(0.85rem, 0.9vw + 0.1rem, 0.95rem);
   font-weight: 600;
   color: var(--blue);
   position: relative;
@@ -403,7 +450,7 @@ a {
   height: 100%;
   background-color: white;
   box-shadow: -4px 0 20px rgba(0, 0, 0, 0.15);
-  z-index: 1000;
+  z-index: 100001;
   padding: 24px;
   display: flex;
   flex-direction: column;
@@ -422,7 +469,7 @@ a {
   width: 100%;
   height: 100%;
   background: rgba(0, 0, 0, 0.4);
-  z-index: 999;
+  z-index: 100000;
   display: none;
 }
 
@@ -462,20 +509,19 @@ a {
 /* Responsive Breakpoints */
 @media (max-width: 1024px) {
   .nav-menu {
-    gap: 16px;
-  }
-  .search-bar-container {
-    max-width: 320px;
-    margin: 0 16px;
-  }
-}
-
-@media (max-width: 868px) {
-  .nav-menu {
     display: none;
   }
   .menu-toggle {
     display: block;
+  }
+  .header-bottom-row {
+    display: none !important;
+  }
+  .mobile-only-utilities {
+    display: flex !important;
+  }
+  .desktop-only-utilities {
+    display: none !important;
   }
 }
 
@@ -828,7 +874,8 @@ a {
     height: auto;
   }
   .hero-slider {
-    height: 380px;
+    flex: none !important;
+    height: 380px !important;
   }
   .quick-booking-panel {
     position: relative;
@@ -864,7 +911,8 @@ a {
     font-size: 1rem;
   }
   .hero-slider {
-    height: 320px;
+    flex: none !important;
+    height: 320px !important;
   }
 }
 
@@ -1389,6 +1437,7 @@ a {
   transition: all 0.2s ease;
   box-shadow: 0 2px 6px rgba(255, 107, 0, 0.2);
   letter-spacing: 0.5px;
+  white-space: nowrap !important;
 }
 
 .btn-view-all-packages:hover {
@@ -3125,10 +3174,6 @@ a {
 
 /* Responsive Footer Layouts */
 @media (max-width: 1024px) {
-  .footer-header-row {
-    flex-direction: column;
-    align-items: flex-start;
-  }
   .footer-tabs-row {
     flex-direction: column;
     gap: 20px;
@@ -3149,6 +3194,9 @@ a {
 }
 
 @media (max-width: 768px) {
+  .footer-brand {
+    display: none !important;
+  }
   .footer-header-row {
     flex-direction: column;
     align-items: center;
@@ -3164,14 +3212,17 @@ a {
     gap: 16px;
   }
   .footer-tab-nav {
-    flex-direction: column;
+    flex-direction: row;
+    flex-wrap: wrap;
     width: 100%;
+    gap: 8px;
   }
   .footer-tab-btn {
-    width: 100%;
-    justify-content: flex-start;
-    padding: 10px 14px;
-    font-size: 0.95rem;
+    flex: 1;
+    min-width: 130px;
+    justify-content: center;
+    padding: 8px 12px;
+    font-size: 0.9rem;
   }
   .footer-tab-content-panel {
     padding: 16px;
@@ -3533,13 +3584,32 @@ a {
 }
 
 /* Reusable Ribbon Breadcrumbs */
+.breadcrumbs-container {
+  background-color: transparent;
+  padding: 16px 40px 0 40px;
+  text-align: left;
+}
+
+@media (max-width: 768px) {
+  .breadcrumbs-container {
+    padding: 16px 16px 0 16px;
+  }
+}
+
 .ribbon-breadcrumbs {
   display: inline-flex;
   align-items: center;
   max-width: 100%;
   overflow-x: auto;
+  scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
   padding: 10px 0;
   gap: 0;
+  flex-wrap: nowrap !important;
+}
+
+.ribbon-breadcrumbs::-webkit-scrollbar {
+  display: none;
 }
 
 .ribbon-breadcrumb-item {
@@ -3560,6 +3630,47 @@ a {
   margin-left: -12px;
   transition: all 0.2s ease;
   min-width: 125px;
+  flex-shrink: 0 !important;
+}
+
+@media (max-width: 580px) {
+  .ribbon-breadcrumbs {
+    display: flex !important;
+    flex-wrap: wrap !important;
+    overflow-x: visible !important;
+    gap: 6px !important;
+    padding: 6px 0 !important;
+  }
+  .ribbon-breadcrumb-item {
+    background: none !important;
+    color: var(--muted) !important;
+    clip-path: none !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    min-width: 0 !important;
+    font-size: 0.8rem !important;
+    font-weight: 500 !important;
+    text-transform: capitalize !important;
+    letter-spacing: 0 !important;
+    display: inline !important;
+    flex-shrink: 1 !important;
+  }
+  .ribbon-breadcrumb-item::after {
+    content: " /" !important;
+    margin-left: 6px !important;
+    color: var(--line-dark) !important;
+  }
+  .ribbon-breadcrumb-item:last-child::after {
+    content: "" !important;
+  }
+  .ribbon-breadcrumb-item.active {
+    color: var(--teal) !important;
+    font-weight: 700 !important;
+  }
+  .ribbon-breadcrumb-item:first-child {
+    border-radius: 0 !important;
+    padding-left: 0 !important;
+  }
 }
 
 /* First item: rounded left, no cutout */
@@ -3590,6 +3701,55 @@ a {
   background-color: var(--blue-dark);
   color: #ffffff;
   z-index: 10;
+}
+
+/* Responsive Page Section Containers */
+.page-section-container {
+  max-width: 100%;
+  margin: 40px auto;
+  padding: 0 40px;
+  box-sizing: border-box;
+}
+
+.page-section-container.no-margin-bottom {
+  margin: 40px auto 0 auto;
+}
+
+.page-section-container.text-left {
+  text-align: left;
+}
+
+@media (max-width: 768px) {
+  .page-section-container {
+    margin: 20px auto;
+    padding: 0 16px;
+  }
+  .page-section-container.no-margin-bottom {
+    margin: 20px auto 0 auto;
+  }
+}
+
+/* Test/Package Page Unified Hero Card */
+.test-hero-card {
+  background-color: #ffffff;
+  border-radius: 20px;
+  border: 1px solid var(--line);
+  padding: 28px 32px;
+  box-shadow: var(--shadow-sm);
+  margin-bottom: 30px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 24px;
+}
+
+@media (max-width: 768px) {
+  .test-hero-card {
+    padding: 20px 16px;
+    border-radius: 12px;
+    gap: 16px;
+  }
 }
 
 /* Reusable Page Buttons */
@@ -3944,11 +4104,709 @@ a {
   }
 }
 
+/* Responsive location dropdown select */
+.header-location-picker select {
+  font-size: 1rem;
+  font-weight: 700;
+}
 
+@media (max-width: 768px) {
+  .header-location-picker select {
+    font-size: 0.9rem !important;
+  }
+}
 
+@media (max-width: 480px) {
+  .header-location-picker select {
+    font-size: 0.82rem !important;
+  }
+}
 
+/* Hide duplicate user account and shopping cart from sandwich drawer since they are always in the mobile/tablet top header */
+.drawer-account-link,
+.drawer-cart-link {
+  display: none !important;
+}
 
+/* Hide location picker from sandwich drawer by default because it is in the top header */
+.drawer-location-picker {
+  display: none !important;
+}
 
+/* Hide drawer utilities wrapper section completely when empty (on viewports >= 480px) to prevent empty space */
+@media (min-width: 480px) {
+  .drawer-utilities-section {
+    display: none !important;
+  }
+}
+
+/* Only display location picker in drawer below 480px viewport width (when it is hidden from the top header) */
+@media (max-width: 480px) {
+  .drawer-location-picker {
+    display: flex !important;
+  }
+}
+
+/* Update body minimum width to support ultra-narrow screen testing down to 250px */
+body {
+  min-width: 250px !important;
+}
+
+/* Home Collection Workflow Tablet Vertical Stack Layout */
+@media (min-width: 601px) and (max-width: 1024px) {
+  .workflow-container {
+    padding: 40px 16px 40px 16px !important;
+  }
+  .workflow-steps-row {
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    gap: 36px !important;
+    padding-left: 10px !important;
+  }
+  .workflow-step-item {
+    flex-direction: row !important;
+    align-items: center !important;
+    justify-content: flex-start !important;
+    gap: 16px !important;
+    min-width: 100% !important;
+  }
+  .workflow-step-num {
+    margin-bottom: 0 !important;
+    font-size: 1rem !important;
+    min-width: 28px !important;
+    text-align: right !important;
+    color: var(--teal) !important;
+  }
+  .workflow-circle {
+    margin-bottom: 0 !important;
+    flex-shrink: 0 !important;
+    width: 64px !important;
+    height: 64px !important;
+    border-width: 4px !important;
+  }
+  .workflow-circle.step-1 { background-size: 28px !important; }
+  .workflow-circle.step-2 { background-size: 26px !important; }
+  .workflow-circle.step-3 { background-size: 28px !important; }
+  .workflow-circle.step-4 { background-size: 26px !important; }
+  .workflow-circle.step-5 { background-size: 28px !important; }
+  .workflow-circle.step-6 { background-size: 28px !important; }
+  .workflow-circle.step-7 { background-size: 26px !important; }
+
+  .workflow-tooltip {
+    position: static !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+    background: none !important;
+    color: var(--blue-dark) !important;
+    padding: 0 !important;
+    box-shadow: none !important;
+    transform: none !important;
+    white-space: normal !important;
+    pointer-events: auto !important;
+    text-align: left !important;
+    font-size: 0.95rem !important;
+    font-weight: 700 !important;
+    flex: 1 !important;
+  }
+  .workflow-tooltip::after {
+    display: none !important;
+  }
+  .workflow-line {
+    top: 50px !important;
+    bottom: 50px !important;
+    left: 102px !important;
+    right: auto !important;
+    width: 2px !important;
+    height: calc(100% - 100px) !important;
+    border-top: none !important;
+    border-left: 2px dashed #00a3ad !important;
+  }
+}
+
+/* Home Collection Workflow Mobile 2-Column Snake Layout */
+@media (max-width: 600px) {
+  .workflow-container {
+    padding: 40px 16px 40px 16px !important;
+  }
+  /* Hide the main absolute line */
+  .workflow-line {
+    display: none !important;
+  }
+  .workflow-steps-row {
+    display: grid !important;
+    grid-template-columns: 1fr 1fr !important;
+    gap: 48px 16px !important;
+    padding-left: 0 !important;
+    flex-direction: row !important;
+  }
+  .workflow-step-item {
+    flex-direction: column !important;
+    align-items: center !important;
+    min-width: 0 !important;
+    position: relative !important;
+  }
+  .workflow-circle {
+    width: 70px !important;
+    height: 70px !important;
+    border-width: 4px !important;
+    margin-bottom: 8px !important;
+    z-index: 2 !important;
+  }
+  .workflow-circle.step-1 { background-size: 32px !important; }
+  .workflow-circle.step-2 { background-size: 30px !important; }
+  .workflow-circle.step-3 { background-size: 32px !important; }
+  .workflow-circle.step-4 { background-size: 30px !important; }
+  .workflow-circle.step-5 { background-size: 32px !important; }
+  .workflow-circle.step-6 { background-size: 32px !important; }
+  .workflow-circle.step-7 { background-size: 30px !important; }
+
+  .workflow-step-num {
+    position: absolute !important;
+    top: -6px !important;
+    left: 50% !important;
+    transform: translateX(-50%) !important;
+    font-size: 0.8rem !important;
+    background: var(--blue) !important;
+    color: #ffffff !important;
+    padding: 2px 8px !important;
+    border-radius: 10px !important;
+    min-width: 0 !important;
+    text-align: center !important;
+    z-index: 10 !important;
+  }
+
+  .workflow-tooltip {
+    position: absolute !important;
+    top: -55px !important;
+    left: 50% !important;
+    transform: translateX(-50%) translateY(8px) scale(0.95) !important;
+    background-color: var(--blue-dark) !important;
+    color: #ffffff !important;
+    padding: 8px 14px !important;
+    border-radius: 8px !important;
+    font-size: 0.82rem !important;
+    font-weight: 700 !important;
+    white-space: nowrap !important;
+    box-shadow: 0 6px 20px rgba(0, 60, 113, 0.25) !important;
+    opacity: 0 !important;
+    visibility: hidden !important;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1) !important;
+    z-index: 100 !important;
+    pointer-events: none !important;
+    text-align: center !important;
+  }
+  .workflow-tooltip::after {
+    content: '' !important;
+    display: block !important;
+    position: absolute !important;
+    bottom: -6px !important;
+    left: 50% !important;
+    transform: translateX(-50%) !important;
+    border-width: 6px 6px 0 !important;
+    border-style: solid !important;
+    border-color: var(--blue-dark) transparent !important;
+    width: 0 !important;
+  }
+  .workflow-step-item:hover .workflow-tooltip,
+  .workflow-step-item:active .workflow-tooltip {
+    opacity: 1 !important;
+    visibility: visible !important;
+    transform: translateX(-50%) translateY(0) scale(1) !important;
+  }
+
+  /* Reorder steps visually to make Row 2 show Step 4 on left, Step 3 on right */
+  .workflow-steps-row > div:nth-child(1) { order: 1; }
+  .workflow-steps-row > div:nth-child(2) { order: 2; }
+  .workflow-steps-row > div:nth-child(3) { order: 4; } /* Step 3 placed on right of row 2 */
+  .workflow-steps-row > div:nth-child(4) { order: 3; } /* Step 4 placed on left of row 2 */
+  .workflow-steps-row > div:nth-child(5) { order: 5; }
+  .workflow-steps-row > div:nth-child(6) { order: 6; }
+  .workflow-steps-row > div:nth-child(7) { order: 7; }
+
+  /* Connecting lines for the snake path */
+  .workflow-step-item::after {
+    content: "" !important;
+    position: absolute !important;
+    border-color: #00a3ad !important;
+    border-style: dashed !important;
+    z-index: 1 !important;
+    opacity: 0.4 !important;
+  }
+
+  /* Step 1 (left) -> Step 2 (right): Horizontal right */
+  .workflow-steps-row > div:nth-child(1)::after {
+    top: 35px !important;
+    left: 50% !important;
+    width: calc(100% + 16px) !important;
+    height: 0 !important;
+    border-width: 2px 0 0 0 !important;
+  }
+
+  /* Step 2 (right) -> Step 3 (right, Row 2): Vertical down */
+  .workflow-steps-row > div:nth-child(2)::after {
+    top: 35px !important;
+    left: 50% !important;
+    width: 0 !important;
+    height: 118px !important;
+    border-width: 0 0 0 2px !important;
+  }
+
+  /* Step 3 (right, Row 2) -> Step 4 (left, Row 2): Horizontal left */
+  .workflow-steps-row > div:nth-child(3)::after {
+    top: 35px !important;
+    right: 50% !important;
+    width: calc(100% + 16px) !important;
+    height: 0 !important;
+    border-width: 2px 0 0 0 !important;
+  }
+
+  /* Step 4 (left, Row 2) -> Step 5 (left, Row 3): Vertical down */
+  .workflow-steps-row > div:nth-child(4)::after {
+    top: 35px !important;
+    left: 50% !important;
+    width: 0 !important;
+    height: 118px !important;
+    border-width: 0 0 0 2px !important;
+  }
+
+  /* Step 5 (left) -> Step 6 (right): Horizontal right */
+  .workflow-steps-row > div:nth-child(5)::after {
+    top: 35px !important;
+    left: 50% !important;
+    width: calc(100% + 16px) !important;
+    height: 0 !important;
+    border-width: 2px 0 0 0 !important;
+  }
+
+  /* Step 6 (right) -> Step 7 (left, Row 4): L-shape curved down-left (vertical down on right side, then horizontally left) */
+  .workflow-steps-row > div:nth-child(6)::after {
+    top: 35px !important;
+    right: 50% !important;
+    width: calc(100% + 16px) !important;
+    height: 118px !important;
+    border-width: 0 2px 2px 0 !important;
+    border-bottom-right-radius: 20px !important;
+  }
+
+  /* Step 7 (last): No connector line */
+  .workflow-steps-row > div:nth-child(7)::after {
+    display: none !important;
+  }
+}
+
+/* Hide copyright and subsidiary text on viewports < 413px to keep the footer compact */
+@media (max-width: 412px) {
+  .sticky-bar-text {
+    font-size: 0.84rem !important;
+  }
+}
+
+/* Profile Page Responsive Styles */
+.profile-page-container {
+  background-color: #f8fafc;
+  min-height: 100vh;
+  padding: 40px 20px;
+  font-family: var(--sans);
+}
+.profile-page-wrapper {
+  max-width: 1100px;
+  margin: 0 auto;
+}
+.profile-back-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--teal);
+  text-decoration: none;
+  font-weight: 700;
+  font-size: 0.95rem;
+  transition: color 0.2s;
+}
+.profile-back-link:hover {
+  color: var(--teal-dark);
+}
+.profile-grid-container {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 30px;
+}
+.profile-hero-card {
+  background: linear-gradient(135deg, #003c71 0%, #002244 100%);
+  border-radius: 20px;
+  padding: 30px;
+  color: #ffffff;
+  box-shadow: 0 10px 25px rgba(0, 60, 113, 0.15);
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  flex-wrap: wrap;
+}
+.profile-avatar-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  flex-wrap: wrap;
+}
+.profile-avatar-circle {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  background-color: rgba(255, 255, 255, 0.1);
+  border: 3px solid rgba(255, 255, 255, 0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+}
+.profile-user-info {
+  display: flex;
+  flex-direction: column;
+}
+.profile-user-name-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+.profile-user-name {
+  margin: 0;
+  font-size: 1.8rem;
+  font-weight: 800;
+  letter-spacing: -0.5px;
+}
+.profile-patient-id {
+  background-color: rgba(0, 163, 173, 0.2);
+  color: #00d2de;
+  padding: 4px 10px;
+  border-radius: 30px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  border: 1px solid rgba(0, 163, 173, 0.4);
+}
+.profile-member-since {
+  margin: 6px 0 0 0;
+  opacity: 0.8;
+  font-size: 0.95rem;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.profile-quick-details {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+.profile-quick-badge {
+  background-color: rgba(255, 255, 255, 0.08);
+  border-radius: 12px;
+  padding: 12px 18px;
+  text-align: center;
+  min-width: 70px;
+  flex: 1;
+}
+.profile-quick-badge-label {
+  display: block;
+  font-size: 0.75rem;
+  opacity: 0.7;
+  text-transform: uppercase;
+  font-weight: bold;
+}
+.profile-quick-badge-value {
+  font-size: 1.25rem;
+  font-weight: 800;
+}
+.profile-quick-badge-value.orange {
+  color: #ff6b00;
+}
+
+.profile-columns-layout {
+  display: grid;
+  grid-template-columns: 1fr 1.6fr;
+  gap: 30px;
+}
+
+.profile-left-column {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+}
+.profile-right-column {
+  display: flex;
+  flex-direction: column;
+}
+
+.profile-card {
+  background-color: #ffffff;
+  border-radius: 16px;
+  padding: 24px;
+  border: 1px solid #e2e8f0;
+  box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);
+}
+.profile-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  border-bottom: 1px solid #f1f5f9;
+  padding-bottom: 12px;
+}
+.profile-card-title {
+  margin: 0;
+  color: #003c71;
+  font-size: 1.2rem;
+  font-weight: 750;
+}
+.profile-card-title-border {
+  margin: 0 0 20px 0;
+  color: #003c71;
+  font-size: 1.2rem;
+  font-weight: 750;
+  border-bottom: 1px solid #f1f5f9;
+  padding-bottom: 12px;
+}
+
+.profile-info-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+.profile-info-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.profile-info-icon-wrapper {
+  background-color: #f0fdfa;
+  color: var(--teal);
+  border-radius: 8px;
+  padding: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+.profile-info-icon-wrapper.emergency {
+  background-color: #fff5f5;
+  color: #ef4444;
+}
+.profile-info-label {
+  display: block;
+  font-size: 0.75rem;
+  color: #64748b;
+  font-weight: bold;
+}
+.profile-info-value {
+  font-weight: 600;
+  color: #1e293b;
+}
+.profile-info-value.address {
+  font-size: 0.88rem;
+}
+.profile-info-value.emergency-phone {
+  display: block;
+  font-size: 0.8rem;
+  color: #ef4444;
+  font-weight: 600;
+}
+
+.profile-metrics-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.profile-metric-item {
+  background-color: #f8fafc;
+  border-radius: 12px;
+  padding: 12px 16px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.profile-metric-name {
+  display: block;
+  font-weight: 700;
+  color: #1e293b;
+  font-size: 0.9rem;
+}
+.profile-metric-range {
+  font-size: 0.75rem;
+  color: #64748b;
+}
+.profile-metric-value {
+  display: block;
+  font-weight: 800;
+  color: #003c71;
+  font-size: 1.1rem;
+}
+.profile-metric-unit {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #64748b;
+}
+.profile-metric-status {
+  font-size: 0.72rem;
+  background-color: #d1fae5;
+  color: #065f46;
+  padding: 2px 8px;
+  border-radius: 20px;
+  font-weight: bold;
+}
+
+.profile-bookings-list {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+.profile-booking-card {
+  border: 1.5px solid #e2e8f0;
+  border-radius: 16px;
+  padding: 20px;
+  transition: all 0.2s;
+  position: relative;
+}
+.profile-booking-card:hover {
+  border-color: var(--teal);
+}
+.profile-booking-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 8px;
+}
+.profile-booking-id {
+  font-size: 0.78rem;
+  font-weight: 800;
+  color: var(--muted);
+  display: block;
+}
+.profile-booking-name {
+  margin: 4px 0 0 0;
+  color: #003c71;
+  font-size: 1.05rem;
+  font-weight: 750;
+}
+.profile-booking-status {
+  font-size: 0.75rem;
+  font-weight: 750;
+  padding: 4px 10px;
+  border-radius: 20px;
+  color: #ffffff;
+}
+.profile-booking-desc {
+  margin: 0 0 12px 0;
+  font-size: 0.85rem;
+  color: #64748b;
+  font-weight: 600;
+}
+.profile-booking-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-top: 1px solid #f1f5f9;
+  padding-top: 12px;
+  margin-top: 12px;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+.profile-booking-meta-group {
+  display: flex;
+  gap: 16px;
+}
+.profile-booking-meta-label {
+  display: block;
+  font-size: 0.7rem;
+  color: #94a3b8;
+  font-weight: bold;
+}
+.profile-booking-meta-value {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: #475569;
+}
+.btn-profile-download {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background-color: transparent;
+  color: var(--teal);
+  border: 1.5px solid var(--teal);
+  border-radius: 8px;
+  padding: 8px 14px;
+  font-size: 0.82rem;
+  font-weight: 750;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.btn-profile-download:hover {
+  background-color: var(--teal);
+  color: #ffffff;
+}
+.profile-awaiting-badge {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.82rem;
+  color: #94a3b8;
+  font-weight: 600;
+}
+
+/* Responsiveness for Profile Page */
+@media (max-width: 900px) {
+  .profile-columns-layout {
+    grid-template-columns: 1fr !important;
+    gap: 30px !important;
+  }
+}
+
+@media (max-width: 768px) {
+  .profile-page-container {
+    padding: 20px 12px !important;
+  }
+  .profile-hero-card {
+    padding: 20px !important;
+    flex-direction: column !important;
+    align-items: flex-start !important;
+  }
+  .profile-quick-details {
+    width: 100% !important;
+  }
+  .profile-quick-badge {
+    padding: 10px !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .profile-avatar-wrapper {
+    flex-direction: column !important;
+    align-items: center !important;
+    text-align: center !important;
+    width: 100% !important;
+  }
+  .profile-user-name-row {
+    flex-direction: column !important;
+    align-items: center !important;
+    gap: 6px !important;
+  }
+  .profile-user-name {
+    font-size: 1.5rem !important;
+  }
+  .profile-booking-header {
+    flex-direction: column !important;
+    align-items: flex-start !important;
+  }
+  .profile-booking-footer {
+    flex-direction: column !important;
+    align-items: flex-start !important;
+  }
+  .btn-profile-download, .profile-awaiting-badge {
+    width: 100% !important;
+    justify-content: center !important;
+  }
+}
 
 
 

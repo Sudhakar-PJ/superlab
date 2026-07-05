@@ -167,7 +167,7 @@ const CategorySlider = () => {
         </div>
 
         {/* Dots Indicator */}
-        <div style={{ display: 'flex', justifyContent: 'center', gap: '8px', marginTop: '20px', flexWrap: 'wrap', padding: '0 20px' }}>
+        <div className="slider-dots-container" style={{ display: 'flex', justifyContent: 'center', gap: '8px', marginTop: '20px', flexWrap: 'wrap', padding: '0 20px' }}>
           {categories.map((_, index) => {
             // Since there are 50 categories, rendering 50 dots might be too many.
             // Let's render a dot for every 2 items to keep it clean and readable.

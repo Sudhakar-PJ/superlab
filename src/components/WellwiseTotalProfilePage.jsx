@@ -117,7 +117,7 @@ const WellwiseTotalProfilePage = ({ setIsIsoModalOpen }) => {
   return (
     <div className="test-detail-page-wrapper" style={{ backgroundColor: '#f8fafc', minHeight: '100vh', fontFamily: 'var(--sans)' }}>
       
-      <div style={{ backgroundColor: 'transparent', padding: '16px 40px 0 40px', textAlign: 'left' }}>
+      <div className="breadcrumbs-container">
         <div className="ribbon-breadcrumbs">
           <a href="#/" className="ribbon-breadcrumb-item">HOME</a>
           <a href="#/lab-tests" className="ribbon-breadcrumb-item">CATALOG</a>
@@ -125,21 +125,9 @@ const WellwiseTotalProfilePage = ({ setIsIsoModalOpen }) => {
         </div>
       </div>
 
-      <div style={{ maxWidth: '100%', margin: '40px auto', padding: '0 40px' }}>
-        <div style={{
-          backgroundColor: '#ffffff',
-          borderRadius: '20px',
-          border: '1px solid var(--line)',
-          padding: '28px 32px',
-          boxShadow: 'var(--shadow-sm)',
-          marginBottom: '30px',
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-          flexWrap: 'wrap',
-          gap: '24px'
-        }}>
-          <div style={{ flex: 1, minWidth: '300px' }}>
+      <div className="page-section-container">
+        <div className="test-hero-card">
+          <div style={{ flex: 1, minWidth: 'min(300px, 100%)' }}>
             <div style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', background: 'linear-gradient(135deg, #00b2b2 0%, #008080 100%)', color: 'white', padding: '6px 14px', borderRadius: '10px', fontSize: '0.82rem', fontWeight: '800', marginBottom: '14px' }}>
               <span>BEST VALUE Full Body Checkup</span>
             </div>
@@ -461,7 +449,7 @@ const WellwiseTotalProfilePage = ({ setIsIsoModalOpen }) => {
       </div>
 
       {/* Test Components Section (Full Width) */}
-      <div style={{ maxWidth: '100%', margin: '40px auto 0 auto', padding: '0 40px' }}>
+      <div className="page-section-container no-margin-bottom">
         <div style={{
           backgroundColor: '#ffffff',
           border: '1px solid var(--line)',
@@ -594,7 +582,7 @@ const WellwiseTotalProfilePage = ({ setIsIsoModalOpen }) => {
       </div>
 
       {/* FAQ Section (Full Width) */}
-      <div style={{ maxWidth: '100%', margin: '40px auto 0 auto', padding: '0 40px', textAlign: 'left' }}>
+      <div className="page-section-container no-margin-bottom text-left">
         <h2 style={{ fontSize: '1.8rem', fontWeight: '800', color: 'var(--blue)', marginBottom: '24px' }}>
           Frequently Asked Questions (FAQ's) About Wellwise Total Profile
         </h2>

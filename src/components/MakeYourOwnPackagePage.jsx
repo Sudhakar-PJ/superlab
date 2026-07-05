@@ -177,14 +177,14 @@ const MakeYourOwnPackagePage = () => {
         }
       `}</style>
 
-      <div style={{ backgroundColor: 'transparent', padding: '16px 40px 0 40px', textAlign: 'left' }}>
+      <div className="breadcrumbs-container">
         <div className="ribbon-breadcrumbs">
           <a href="#/" className="ribbon-breadcrumb-item">HOME</a>
           <div className="ribbon-breadcrumb-item active">CUSTOM PACKAGE</div>
         </div>
       </div>
 
-      <div style={{ maxWidth: '100%', margin: '40px auto', padding: '0 40px' }}>
+      <div className="page-section-container">
         
         {/* Header Title */}
         <div style={{ marginBottom: '32px', textAlign: 'left' }}>

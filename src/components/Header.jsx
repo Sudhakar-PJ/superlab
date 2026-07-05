@@ -27,6 +27,9 @@ const Header = ({ isIsoModalOpen, setIsIsoModalOpen }) => {
   const [registerGender, setRegisterGender] = useState('Male');
   const [registerBloodGroup, setRegisterBloodGroup] = useState('Unknown');
   const [isIsoHovered, setIsIsoHovered] = useState(false);
+  const [isMobileFindTestOpen, setIsMobileFindTestOpen] = useState(false);
+  const [isMobileCheckupOpen, setIsMobileCheckupOpen] = useState(false);
+  const [mobileActiveCategory, setMobileActiveCategory] = useState(null);
 
   const [cartCount, setCartCount] = useState(() => {
     return window.getSuperlabCart ? window.getSuperlabCart().length : 2;
@@ -43,6 +46,17 @@ const Header = ({ isIsoModalOpen, setIsIsoModalOpen }) => {
     handleCartUpdate();
     return () => window.removeEventListener('superlab_cart_update', handleCartUpdate);
   }, []);
+
+  useEffect(() => {
+    if (isMobileMenuOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+    }
+    return () => {
+      document.body.style.overflow = '';
+    };
+  }, [isMobileMenuOpen]);
 
   useEffect(() => {
     const handleKeyDown = (e) => {
@@ -361,6 +375,78 @@ const Header = ({ isIsoModalOpen, setIsIsoModalOpen }) => {
     }, 200);
   };
 
+  const renderUtilities = (additionalClassName = '') => (
+    <div className={`header-utilities ${additionalClassName}`} style={{ display: 'flex', alignItems: 'center', gap: 'clamp(12px, 2vw, 24px)' }}>
+      {/* Location Dropdown */}
+      <div className="header-location-picker" style={{ display: 'flex', alignItems: 'center', gap: '4px', color: '#003c71' }}>
+        <MapPin size={18} style={{ color: '#00a3ad' }} />
+        <select
+          value={selectedLocation}
+          onChange={(e) => setSelectedLocation(e.target.value)}
+          style={{
+            border: 'none',
+            background: 'transparent',
+            fontWeight: 'bold',
+            color: '#003c71',
+            cursor: 'pointer',
+            outline: 'none',
+            paddingRight: '4px'
+          }}
+        >
+          {locations.map((loc) => (
+            <option key={loc} value={loc}>{loc}</option>
+          ))}
+        </select>
+      </div>
+
+      {/* User Account Circular Icon */}
+      <button 
+        title="User Account" 
+        onClick={() => { setIsLoginOpen(true); setAuthMode('login'); }}
+        style={{
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          width: '32px',
+          height: '32px',
+          borderRadius: '50%',
+          border: '2px solid #00a3ad',
+          color: '#00a3ad',
+          background: 'transparent',
+          cursor: 'pointer',
+          padding: 0
+        }}
+      >
+        <User size={18} />
+      </button>
+
+      {/* Shopping Cart Icon */}
+      <a href="#/cart" title="Shopping Cart" style={{ color: '#00a3ad', display: 'flex', alignItems: 'center', position: 'relative' }}>
+        <ShoppingCart size={24} />
+        <span style={{
+          position: 'absolute',
+          top: '-8px',
+          right: '-8px',
+          backgroundColor: 'var(--orange)',
+          color: 'white',
+          borderRadius: '50%',
+          width: '18px',
+          height: '18px',
+          fontSize: '0.7rem',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          fontWeight: 'bold'
+        }}>{cartCount}</span>
+      </a>
+
+      {/* Mobile Menu Icon */}
+      <button className="menu-toggle" onClick={() => setIsMobileMenuOpen(true)}>
+        <Menu size={24} />
+      </button>
+    </div>
+  );
+
   const filteredSuggestions = searchQuery.trim() === '' 
     ? [] 
     : searchDatabase.filter(item => 
@@ -381,7 +467,7 @@ const Header = ({ isIsoModalOpen, setIsIsoModalOpen }) => {
             onClick={() => setIsIsoModalOpen(true)}
             onMouseEnter={() => setIsIsoHovered(true)}
             onMouseLeave={() => setIsIsoHovered(false)}
-            style={{marginLeft: '30px' ,
+            style={{marginLeft: 'clamp(10px, 2vw, 30px)' ,
               display: 'flex',
               alignItems: 'center',
               gap: '6px',
@@ -486,13 +572,15 @@ const Header = ({ isIsoModalOpen, setIsIsoModalOpen }) => {
             Book a Test
           </button>
         </div>
+
+        {renderUtilities('mobile-only-utilities')}
       </div>
 
       {/* 2. BOTTOM ROW: White Background */}
-      <div style={{
+      <div className="header-bottom-row" style={{
         backgroundColor: '#ffffff',
         borderBottom: '1px solid #e2e8f0',
-        padding: '0 24px',
+        padding: '0 clamp(12px, 2vw, 24px)',
         height: '60px',
         display: 'flex',
         alignItems: 'center',
@@ -500,7 +588,7 @@ const Header = ({ isIsoModalOpen, setIsIsoModalOpen }) => {
         position: 'relative'
       }}>
         {/* Bottom Left: WhatsApp & Phone */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: '20px' }} className="header-bottom-contacts">
+        <div style={{ display: 'flex', alignItems: 'center', gap: 'clamp(10px, 1.8vw, 20px)' }} className="header-bottom-contacts">
           <a href="https://wa.me/918754947759" target="_blank" rel="noopener noreferrer" style={{ display: 'flex', alignItems: 'center' }}>
             <FaWhatsapp size={22} style={{ color: '#25D366' }} />
           </a>
@@ -760,76 +848,7 @@ const Header = ({ isIsoModalOpen, setIsIsoModalOpen }) => {
         </nav>
 
         {/* Bottom Right: Location Picker, User Account, Shopping Cart */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: '24px' }}>
-          {/* Location Dropdown */}
-          <div style={{ display: 'flex', alignItems: 'center', gap: '4px', color: '#003c71' }}>
-            <MapPin size={18} style={{ color: '#00a3ad' }} />
-            <select
-              value={selectedLocation}
-              onChange={(e) => setSelectedLocation(e.target.value)}
-              style={{
-                border: 'none',
-                background: 'transparent',
-                fontSize: '1rem',
-                fontWeight: 'bold',
-                color: '#003c71',
-                cursor: 'pointer',
-                outline: 'none',
-                paddingRight: '4px'
-              }}
-            >
-              {locations.map((loc) => (
-                <option key={loc} value={loc}>{loc}</option>
-              ))}
-            </select>
-          </div>
-
-          {/* User Account Circular Icon */}
-          <button 
-            title="User Account" 
-            onClick={() => { setIsLoginOpen(true); setAuthMode('login'); }}
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              width: '32px',
-              height: '32px',
-              borderRadius: '50%',
-              border: '2px solid #00a3ad',
-              color: '#00a3ad',
-              background: 'transparent',
-              cursor: 'pointer',
-              padding: 0
-            }}
-          >
-            <User size={18} />
-          </button>
-
-          {/* Shopping Cart Icon */}
-          <a href="#/cart" title="Shopping Cart" style={{ color: '#00a3ad', display: 'flex', alignItems: 'center', position: 'relative' }}>
-            <ShoppingCart size={24} />
-            <span style={{
-              position: 'absolute',
-              top: '-8px',
-              right: '-8px',
-              backgroundColor: 'var(--orange)',
-              color: 'white',
-              borderRadius: '50%',
-              width: '18px',
-              height: '18px',
-              fontSize: '0.7rem',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              fontWeight: 'bold'
-            }}>{cartCount}</span>
-          </a>
-
-          {/* Mobile Menu Icon */}
-          <button className="menu-toggle" onClick={() => setIsMobileMenuOpen(true)}>
-            <Menu size={24} />
-          </button>
-        </div>
+        {renderUtilities('desktop-only-utilities')}
       </div>
 
       {/* Mobile Drawer Menu */}
@@ -837,25 +856,142 @@ const Header = ({ isIsoModalOpen, setIsIsoModalOpen }) => {
       <div className={`mobile-nav ${isMobileMenuOpen ? 'open' : ''}`}>
         <div className="mobile-nav-header">
           <span className="brand-name" style={{ color: '#003c71' }}>
-            SUPER<span style={{ color: '#00a3ad' }}>LAB</span>
+            SUPER<span style={{ color: 'var(--orange)' }}>LAB</span>
           </span>
           <button className="close-btn" onClick={() => setIsMobileMenuOpen(false)}>
             <X size={24} />
           </button>
         </div>
         <div className="mobile-nav-links" style={{ display: 'flex', flexDirection: 'column', gap: '16px', marginTop: '20px' }}>
-          <a href="#find-test" className="mobile-nav-item" onClick={() => setIsMobileMenuOpen(false)}>Find A Test</a>
-          <a href="#health-checkup" className="mobile-nav-item" onClick={() => setIsMobileMenuOpen(false)}>Full Body Health Checkup</a>
+          {/* Find A Test Collapsible Accordion */}
+          <div style={{ display: 'flex', flexDirection: 'column' }}>
+            <button 
+              className="mobile-nav-item" 
+              onClick={() => setIsMobileFindTestOpen(!isMobileFindTestOpen)}
+              style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', background: 'none', border: 'none', width: '100%', textAlign: 'left', cursor: 'pointer', font: 'inherit', color: 'inherit' }}
+            >
+              <span>Find A Test</span>
+              <ChevronDown size={18} style={{ transform: isMobileFindTestOpen ? 'rotate(180deg)' : 'rotate(0)', transition: 'transform 0.2s' }} />
+            </button>
+            {isMobileFindTestOpen && (
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', paddingLeft: '12px', marginTop: '8px', borderLeft: '2px solid var(--blue-soft)' }}>
+                {Object.keys(categoryData).map((cat) => (
+                  <div key={cat} style={{ display: 'flex', flexDirection: 'column' }}>
+                    <button
+                      onClick={() => setMobileActiveCategory(mobileActiveCategory === cat ? null : cat)}
+                      style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', width: '100%', background: 'none', border: 'none', padding: '6px 8px', color: 'var(--blue)', cursor: 'pointer', textAlign: 'left', fontWeight: '600' }}
+                    >
+                      <span>{cat}</span>
+                      <ChevronDown size={14} style={{ transform: mobileActiveCategory === cat ? 'rotate(180deg)' : 'rotate(0)', transition: 'transform 0.2s', color: 'var(--teal)' }} />
+                    </button>
+                    {mobileActiveCategory === cat && (
+                      <div style={{ display: 'flex', flexDirection: 'column', gap: '4px', paddingLeft: '8px', borderLeft: '1.5px dashed var(--teal-soft)', marginTop: '4px', marginBottom: '6px' }}>
+                        {categoryData[cat].tests.map((t) => (
+                          <a
+                            key={t}
+                            href={getTestHash(t)}
+                            onClick={() => {
+                              if (getTestHash(t) === '#/lab-tests') {
+                                sessionStorage.setItem('superlab_search_query', t);
+                                window.dispatchEvent(new Event('superlab_search_trigger'));
+                              }
+                              setIsMobileMenuOpen(false);
+                            }}
+                            style={{ display: 'block', width: '100%', textAlign: 'left', color: '#475569', padding: '4px 8px', textDecoration: 'none', fontWeight: '500', fontSize: '0.85rem' }}
+                          >
+                            {t}
+                          </a>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+
+          {/* Full Body Health Checkup Collapsible Accordion */}
+          <div style={{ display: 'flex', flexDirection: 'column' }}>
+            <button 
+              className="mobile-nav-item" 
+              onClick={() => setIsMobileCheckupOpen(!isMobileCheckupOpen)}
+              style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', background: 'none', border: 'none', width: '100%', textAlign: 'left', cursor: 'pointer', font: 'inherit', color: 'inherit' }}
+            >
+              <span>Full Body Health Checkup</span>
+              <ChevronDown size={18} style={{ transform: isMobileCheckupOpen ? 'rotate(180deg)' : 'rotate(0)', transition: 'transform 0.2s' }} />
+            </button>
+            {isMobileCheckupOpen && (
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', paddingLeft: '12px', marginTop: '8px', borderLeft: '2px solid var(--blue-soft)' }}>
+                <a 
+                  href="#/wellwise-total-profile" 
+                  onClick={() => setIsMobileMenuOpen(false)}
+                  style={{ color: '#475569', padding: '6px 8px', display: 'block', textDecoration: 'none', fontWeight: '500', textAlign: 'left' }}
+                >
+                  Wellwise Total Profile
+                </a>
+                <button 
+                  onClick={() => {
+                    sessionStorage.setItem('superlab_search_query', 'WellWise Exclusive Profile');
+                    setLocationHash('#/lab-tests');
+                    window.dispatchEvent(new Event('superlab_search_trigger'));
+                    setIsMobileMenuOpen(false);
+                  }}
+                  style={{ display: 'block', width: '100%', textAlign: 'left', background: 'none', border: 'none', color: '#475569', padding: '6px 8px', cursor: 'pointer', font: 'inherit', fontWeight: '500' }}
+                >
+                  WellWise Exclusive Profile
+                </button>
+                <button 
+                  onClick={() => {
+                    sessionStorage.setItem('superlab_search_query', 'Wellwise Platinum');
+                    setLocationHash('#/lab-tests');
+                    window.dispatchEvent(new Event('superlab_search_trigger'));
+                    setIsMobileMenuOpen(false);
+                  }}
+                  style={{ display: 'block', width: '100%', textAlign: 'left', background: 'none', border: 'none', color: '#475569', padding: '6px 8px', cursor: 'pointer', font: 'inherit', fontWeight: '500' }}
+                >
+                  Wellwise Platinum
+                </button>
+                <button 
+                  onClick={() => {
+                    sessionStorage.setItem('superlab_search_query', 'Active Full Body Checkup');
+                    setLocationHash('#/lab-tests');
+                    window.dispatchEvent(new Event('superlab_search_trigger'));
+                    setIsMobileMenuOpen(false);
+                  }}
+                  style={{ display: 'block', width: '100%', textAlign: 'left', background: 'none', border: 'none', color: '#475569', padding: '6px 8px', cursor: 'pointer', font: 'inherit', fontWeight: '500' }}
+                >
+                  Active Full Body Checkup
+                </button>
+                <button 
+                  onClick={() => {
+                    sessionStorage.setItem('superlab_search_query', 'Premium Full Body Checkup');
+                    setLocationHash('#/lab-tests');
+                    window.dispatchEvent(new Event('superlab_search_trigger'));
+                    setIsMobileMenuOpen(false);
+                  }}
+                  style={{ display: 'block', width: '100%', textAlign: 'left', background: 'none', border: 'none', color: '#475569', padding: '6px 8px', cursor: 'pointer', font: 'inherit', fontWeight: '500' }}
+                >
+                  Premium Full Body Checkup
+                </button>
+                <button 
+                  onClick={() => { setLocationHash('#/lab-tests'); setIsMobileMenuOpen(false); }}
+                  style={{ width: '100%', padding: '8px', border: '1px solid var(--blue)', color: 'var(--blue)', fontWeight: 'bold', backgroundColor: '#fff', borderRadius: '6px', cursor: 'pointer', textTransform: 'uppercase', letterSpacing: '0.5px', marginTop: '4px' }}
+                >
+                  View All Packages
+                </button>
+              </div>
+            )}
+          </div>
           <a href="#download-report" className="mobile-nav-item" onClick={() => setIsMobileMenuOpen(false)}>Download Report</a>
           <a href="#/make-package" className="mobile-nav-item" onClick={() => setIsMobileMenuOpen(false)}>Make Your Own Package</a>
           
-          <div style={{ borderTop: '1px solid var(--line)', paddingTop: '16px', marginTop: '8px' }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '8px', padding: '8px 0' }}>
+          <div className="drawer-utilities-section" style={{ borderTop: '1px solid var(--line)', paddingTop: '16px', marginTop: '8px' }}>
+            <div className="drawer-location-picker" style={{ display: 'flex', alignItems: 'center', gap: '8px', padding: '8px 0' }}>
               <MapPin size={18} style={{ color: '#00a3ad' }} />
               <select
                 value={selectedLocation}
                 onChange={(e) => setSelectedLocation(e.target.value)}
-                style={{ fontSize: '1rem', border: 'none', background: 'none', fontWeight: 'bold', color: '#003c71' }}
+                style={{ border: 'none', background: 'none', fontWeight: 'bold', color: '#003c71' }}
               >
                 {locations.map((loc) => (
                   <option key={loc} value={loc}>{loc}</option>
@@ -864,7 +1000,7 @@ const Header = ({ isIsoModalOpen, setIsIsoModalOpen }) => {
             </div>
             
             <button 
-              className="mobile-nav-item" 
+              className="mobile-nav-item drawer-account-link" 
               style={{ display: 'flex', alignItems: 'center', gap: '8px', background: 'none', border: 'none', width: '100%', textAlign: 'left', padding: '8px 0', cursor: 'pointer', color: 'inherit', font: 'inherit' }} 
               onClick={() => {
                 setIsMobileMenuOpen(false);
@@ -876,9 +1012,21 @@ const Header = ({ isIsoModalOpen, setIsIsoModalOpen }) => {
               <span>User Account</span>
             </button>
             
-            <a href="#/cart" className="mobile-nav-item" style={{ display: 'flex', alignItems: 'center', gap: '8px' }} onClick={() => setIsMobileMenuOpen(false)}>
+            <a href="#/cart" className="mobile-nav-item drawer-cart-link" style={{ display: 'flex', alignItems: 'center', gap: '8px' }} onClick={() => setIsMobileMenuOpen(false)}>
               <ShoppingCart size={18} style={{ color: '#00a3ad' }} />
               <span>Shopping Cart ({cartCount})</span>
+            </a>
+          </div>
+          
+          <div style={{ borderTop: '1px solid var(--line)', paddingTop: '16px', marginTop: '8px', display: 'flex', flexDirection: 'column', gap: '12px' }}>
+            <span style={{ fontWeight: '800', color: 'var(--muted)', textTransform: 'uppercase', letterSpacing: '0.5px' }}>Contact Support</span>
+            <a href="https://wa.me/918754947759" target="_blank" rel="noopener noreferrer" style={{ display: 'flex', alignItems: 'center', gap: '8px', color: '#25D366', fontWeight: 'bold' }}>
+              <FaWhatsapp size={20} />
+              <span>Chat on WhatsApp</span>
+            </a>
+            <a href="tel:+918754947759" style={{ display: 'flex', alignItems: 'center', gap: '8px', color: 'var(--blue)', fontWeight: 'bold', fontSize: '0.95rem' }}>
+              <Phone size={18} />
+              <span>Call +91 8754947759</span>
             </a>
           </div>
         </div>
@@ -1072,9 +1220,26 @@ const Header = ({ isIsoModalOpen, setIsIsoModalOpen }) => {
               from { transform: scale(0.95) translateY(20px); opacity: 0; }
               to { transform: scale(1) translateY(0); opacity: 1; }
             }
+            @media (max-width: 480px) {
+              .iso-modal-content {
+                padding: 16px !important;
+                border-radius: 12px !important;
+              }
+              .iso-modal-title {
+                font-size: 1.1rem !important;
+                margin-bottom: 12px !important;
+              }
+              .iso-modal-close-btn {
+                top: 12px !important;
+                right: 12px !important;
+                width: 28px !important;
+                height: 28px !important;
+              }
+            }
           `}</style>
           <div 
             onClick={(e) => e.stopPropagation()}
+            className="iso-modal-content"
             style={{
               position: 'relative',
               backgroundColor: '#ffffff',
@@ -1091,6 +1256,7 @@ const Header = ({ isIsoModalOpen, setIsIsoModalOpen }) => {
           >
             <button 
               onClick={() => setIsIsoModalOpen(false)}
+              className="iso-modal-close-btn"
               style={{
                 position: 'absolute',
                 top: '16px',
@@ -1113,7 +1279,7 @@ const Header = ({ isIsoModalOpen, setIsIsoModalOpen }) => {
               <X size={18} />
             </button>
             
-            <h3 style={{ fontSize: '1.25rem', fontWeight: '800', color: 'var(--blue)', marginTop: 0, marginBottom: '16px', textAlign: 'center' }}>
+            <h3 className="iso-modal-title" style={{ fontSize: '1.25rem', fontWeight: '800', color: 'var(--blue)', marginTop: 0, marginBottom: '16px', textAlign: 'center' }}>
               ISO 9001:2015 Certificate
             </h3>
             

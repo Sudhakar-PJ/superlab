@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { testDatabase } from '../data/testDatabase';
 
@@ -130,7 +130,7 @@ const CircularTestSlider = ({ title, items }) => {
       </div>
 
       {/* Dots Indicator */}
-      <div style={{ display: 'flex', justifyContent: 'center', gap: '8px', marginTop: '16px' }}>
+      <div className="slider-dots-container" style={{ display: 'flex', justifyContent: 'center', gap: '8px', marginTop: '16px' }}>
         {items.map((_, index) => (
           <button
             key={index}

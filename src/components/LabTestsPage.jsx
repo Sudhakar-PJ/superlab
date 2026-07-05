@@ -197,8 +197,21 @@ const LabTestsPage = () => {
         }
         .lab-tests-grid {
           display: grid;
-          grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+          grid-template-columns: repeat(auto-fill, minmax(min(280px, 100%), 1fr));
           gap: 20px;
+        }
+        @media (max-width: 580px) {
+          .view-type-toggle-bar {
+            width: 100% !important;
+            display: flex !important;
+            box-sizing: border-box !important;
+          }
+          .view-type-toggle-btn {
+            flex: 1 !important;
+            font-size: 0.8rem !important;
+            padding: 8px 4px !important;
+            text-align: center !important;
+          }
         }
         .lab-test-card {
           background: linear-gradient(135deg, var(--blue-soft) 0%, #e3f0fc 100%);
@@ -245,14 +258,14 @@ const LabTestsPage = () => {
         }
       `}</style>
 
-      <div style={{ backgroundColor: 'transparent', padding: '16px 40px 0 40px', textAlign: 'left' }}>
+      <div className="breadcrumbs-container">
         <div className="ribbon-breadcrumbs">
           <a href="#/" className="ribbon-breadcrumb-item">HOME</a>
           <div className="ribbon-breadcrumb-item active">CATALOG</div>
         </div>
       </div>
 
-      <div style={{ maxWidth: '100%', margin: '40px auto', padding: '0 40px' }}>
+      <div className="page-section-container">
         
         {/* Header Section */}
         {/* Header Section */}
@@ -368,7 +381,7 @@ const LabTestsPage = () => {
               </div>
 
               {/* Inner Search bar */}
-              <div style={{ position: 'relative', flex: 1, minWidth: '280px' }}>
+              <div style={{ position: 'relative', flex: 1, minWidth: 'min(280px, 100%)' }}>
                 <Search style={{ position: 'absolute', left: '12px', top: '50%', transform: 'translateY(-50%)', color: 'var(--muted)' }} size={18} />
                 <input 
                   type="text" 

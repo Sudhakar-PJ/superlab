@@ -157,7 +157,7 @@ const FeaturedCheckups = () => {
         </div>
 
         {/* Dots Indicator */}
-        <div style={{ display: 'flex', justifyContent: 'center', gap: '8px', marginTop: '20px' }}>
+        <div className="slider-dots-container" style={{ display: 'flex', justifyContent: 'center', gap: '8px', marginTop: '20px' }}>
           {baseCheckups.map((_, index) => (
             <button
               key={index}
