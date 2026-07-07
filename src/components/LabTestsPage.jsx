@@ -277,7 +277,7 @@ const LabTestsPage = () => {
           font-size: 0.75rem;
           font-weight: 800;
           padding: 4px 8px;
-          border-radius: 12px;
+          border-radius: 5px;
           align-self: flex-start;
           margin-bottom: 10px;
         }
@@ -482,8 +482,15 @@ const LabTestsPage = () => {
                         ) : (
                           <span className="category-pill">{item.category}</span>
                         )}
-                        <h3 style={{ fontSize: '1.15rem', fontWeight: '800', color: 'var(--blue)', margin: '0 0 8px 0', minHeight: '44px', lineHeight: '1.4' }}>
-                          {item.name}
+                        <h3 style={{ fontSize: '1.15rem', fontWeight: '800', margin: '0 0 8px 0', minHeight: '44px', lineHeight: '1.4' }}>
+                          <a 
+                            href={item.type === 'package' ? '#/wellwise-total-profile' : '#/haemoglobin-estimation'}
+                            style={{ color: 'var(--blue)', textDecoration: 'none', transition: 'color 0.2s' }}
+                            onMouseEnter={(e) => e.target.style.color = 'var(--teal)'}
+                            onMouseLeave={(e) => e.target.style.color = 'var(--blue)'}
+                          >
+                            {item.name}
+                          </a>
                         </h3>
                         {item.type === 'package' && (
                           <p style={{ color: 'var(--muted)', fontSize: '0.85rem', margin: '0 0 12px 0' }}>
@@ -492,31 +499,19 @@ const LabTestsPage = () => {
                         )}
                       </div>
 
-                      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: '16px', borderTop: '1px solid var(--line)', paddingTop: '16px' }}>
-                        <div>
+                      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: '16px', borderTop: '1px solid var(--line)', paddingTop: '16px', gap: '8px' }}>
+                        <div style={{ flexShrink: 0 }}>
                           {item.type === 'package' && (
-                            <span style={{ fontSize: '0.85rem', textDecoration: 'line-through', color: 'var(--muted)', display: 'block' }}>
+                            <span style={{ fontSize: '0.85rem', textDecoration: 'line-through', color: 'var(--muted)', display: 'block', whiteSpace: 'nowrap' }}>
                               ₹ {item.originalPrice}
                             </span>
                           )}
-                          <span style={{ fontSize: '1.25rem', fontWeight: '800', color: 'var(--teal)' }}>
+                          <span style={{ fontSize: '1.25rem', fontWeight: '800', color: 'var(--teal)', whiteSpace: 'nowrap' }}>
                             ₹ {item.price}
                           </span>
                         </div>
 
-                        <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-                          <a 
-                            href={item.hash || '#'} 
-                            onClick={(e) => {
-                              if (!item.hash) {
-                                e.preventDefault();
-                                alert(`Detailed page for ${item.name} is coming soon!`);
-                              }
-                            }}
-                            style={{ fontSize: '0.85rem', color: 'var(--muted)', fontWeight: '600', textDecoration: 'underline' }}
-                          >
-                            Know More
-                          </a>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '12px', flexShrink: 0 }}>
                           <button
                             onClick={() => handleItemToggle(item.id)}
                             style={{
@@ -531,7 +526,8 @@ const LabTestsPage = () => {
                               transition: 'all 0.2s',
                               display: 'flex',
                               alignItems: 'center',
-                              gap: '4px'
+                              gap: '4px',
+                              whiteSpace: 'nowrap'
                             }}
                           >
                             {isAdded ? (

@@ -71,20 +71,7 @@ const Footer = ({ isIsoModalOpen }) => {
         
         {/* Footer Top Header: Brand, Socials, App Download */}
         <div className="footer-header-row">
-          <div className="footer-brand" style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
-            <div>
-              <span className="footer-logo-text-blue">Super</span>
-              <span className="footer-logo-text-orange">Lab</span>
-            </div>
-            <span style={{ fontSize: '0.75rem', color: '#d97706', fontWeight: 'bold', display: 'flex', alignItems: 'center', gap: '6px' }}>
-              <img 
-                src="/iso-logo.png" 
-                alt="ISO Logo" 
-                style={{ width: '16px', height: '16px', borderRadius: '2px', objectFit: 'contain', flexShrink: 0 }}
-              />
-              ISO 9001:2015 Certified Lab
-            </span>
-          </div>
+          
 
           {/* Social Links */}
           <div className="footer-socials-col">

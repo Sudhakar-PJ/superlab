@@ -140,28 +140,13 @@ const AnimatedLogo3 = ({ height = 40, showText = true, dark = false }) => {
 
       {/* Brand Text */}
       {showText && (
-        <div style={{ display: 'flex', flexDirection: 'column', lineHeight: 1.1, textAlign: 'left', justifyContent: 'center' }}>
-          <div style={{ fontSize: `${height * 0.54}px`, fontWeight: 'bold', fontFamily: "Georgia, serif", display: 'flex', alignItems: 'center' }}>
+        <div style={{ display: 'flex', flexDirection: 'column', lineHeight: 1.0, textAlign: 'left' }}>
+          <div style={{ fontSize: `${height * 0.48}px`, fontWeight: '800', fontFamily: 'var(--sans)', letterSpacing: '-0.3px' }}>
             <span style={{ color: primaryColor }}>Super</span>
-            <span style={{ color: '#f98007', marginLeft: '6px' }}>Lab</span>
-            <sup style={{ fontSize: '0.28em', alignSelf: 'flex-start', marginTop: '-0.15em', marginLeft: '3px', display: 'inline-flex', alignItems: 'center' }}>
-              <svg viewBox="0 0 100 100" style={{ width: '11px', height: '11px', fill: 'none', stroke: 'currentColor', strokeWidth: '10' }}>
-                <circle cx="50" cy="50" r="42" />
-                <path d="M22 38 H44 M33 38 V64 M52 64 V38 L62 54 L72 38 V64" strokeLinecap="round" strokeLinejoin="round" />
-              </svg>
-            </sup>
+            <span style={{ color: '#ff6b00' }}>Lab</span>
           </div>
-          <div style={{ fontSize: `${height * 0.32}px`, marginTop: '1px', display: 'flex', alignItems: 'baseline', paddingLeft: `${height * 1.17}px` }}>
-            <span style={{ fontFamily: '"Helvetica Neue", Helvetica, Arial, sans-serif', color: dark ? '#cbd5e1' : '#222222', marginRight: '6px', fontSize: '0.8em', fontStyle: 'normal', fontWeight: '500' }}>by</span>
-            <span style={{ fontFamily: "'Apple Chancery', 'Zapf Chancery', 'Monotype Corsiva', 'Georgia', serif", color: subtextColor, fontSize: '1.35em', letterSpacing: '0.5px', position: 'relative', top: '1px', fontStyle: 'italic' }}>
-              Phlebee
-            </span>
-            <sup style={{ fontSize: '0.45em', color: subtextColor, marginLeft: '2px', display: 'inline-flex', alignItems: 'center', alignSelf: 'flex-start', marginTop: '-0.1em' }}>
-              <svg viewBox="0 0 100 100" style={{ width: '10px', height: '10px', fill: 'none', stroke: 'currentColor', strokeWidth: '10' }}>
-                <circle cx="50" cy="50" r="42" />
-                <path d="M38 72 V28 H56 C68 28 68 46 56 46 H38 M52 46 L68 72" strokeLinecap="round" strokeLinejoin="round" />
-              </svg>
-            </sup>
+          <div style={{ fontSize: `${height * 0.28}px`, fontFamily: 'Georgia, serif', fontStyle: 'italic', color: subtextColor, marginTop: '2px', fontWeight: 'bold' }}>
+            by Phlebee
           </div>
         </div>
       )}
