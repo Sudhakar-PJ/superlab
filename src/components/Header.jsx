@@ -36,6 +36,20 @@ const Header = ({ isIsoModalOpen, setIsIsoModalOpen }) => {
     return window.getSuperlabCart ? window.getSuperlabCart().length : 2;
   });
 
+  const [isStickyCart, setIsStickyCart] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      if (window.scrollY > 80) {
+        setIsStickyCart(true);
+      } else {
+        setIsStickyCart(false);
+      }
+    };
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
   useEffect(() => {
     const handleCartUpdate = () => {
       if (window.getSuperlabCart) {
@@ -436,12 +450,38 @@ const Header = ({ isIsoModalOpen, setIsIsoModalOpen }) => {
       </button>
 
       {/* Shopping Cart Icon */}
-      <a href="#/cart" className={isCartAnimating ? 'cart-animate-trigger' : ''} title="Shopping Cart" style={{ color: '#00a3ad', display: 'flex', alignItems: 'center', position: 'relative' }}>
-        <ShoppingCart size={24} />
+      <a 
+        href="#/cart" 
+        className={isCartAnimating ? 'cart-animate-trigger' : ''} 
+        title="Shopping Cart" 
+        style={isStickyCart ? {
+          color: '#00a3ad',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          position: 'fixed',
+          top: '16px',
+          right: '24px',
+          zIndex: 99999,
+          backgroundColor: '#ffffff',
+          width: '42px',
+          height: '42px',
+          borderRadius: '50%',
+          boxShadow: '0 4px 12px rgba(0, 163, 173, 0.25)',
+          border: '1.5px solid #e2e8f0',
+          transition: 'all 0.2s ease-in-out'
+        } : {
+          color: '#00a3ad',
+          display: 'flex',
+          alignItems: 'center',
+          position: 'relative'
+        }}
+      >
+        <ShoppingCart size={isStickyCart ? 20 : 24} />
         <span style={{
           position: 'absolute',
-          top: '-8px',
-          right: '-8px',
+          top: isStickyCart ? '-2px' : '-8px',
+          right: isStickyCart ? '-2px' : '-8px',
           backgroundColor: 'var(--orange)',
           color: 'white',
           borderRadius: '50%',
@@ -451,7 +491,8 @@ const Header = ({ isIsoModalOpen, setIsIsoModalOpen }) => {
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
-          fontWeight: 'bold'
+          fontWeight: 'bold',
+          border: isStickyCart ? '1.5px solid #ffffff' : 'none'
         }}>{cartCount}</span>
       </a>
 

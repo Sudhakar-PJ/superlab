@@ -180,6 +180,12 @@ a {
   }
 }
 
+@media (max-width: 397px) {
+  .header-iso-badge {
+    display: none !important;
+  }
+}
+
 @media (max-width: 859px) {
   .header-top-bar {
     padding: 10px 16px;
@@ -203,7 +209,7 @@ a {
   }
 }
 
-@media (max-width: 480px) {
+@media (max-width: 530px) {
   .mobile-only-utilities .header-location-picker {
     display: none !important;
   }
@@ -4218,15 +4224,15 @@ a {
   display: none !important;
 }
 
-/* Hide drawer utilities wrapper section completely when empty (on viewports >= 480px) to prevent empty space */
-@media (min-width: 480px) {
+/* Hide drawer utilities wrapper section completely when empty (on viewports >= 530px) to prevent empty space */
+@media (min-width: 530px) {
   .drawer-utilities-section {
     display: none !important;
   }
 }
 
-/* Only display location picker in drawer below 480px viewport width (when it is hidden from the top header) */
-@media (max-width: 480px) {
+/* Only display location picker in drawer below 530px viewport width (when it is hidden from the top header) */
+@media (max-width: 530px) {
   .drawer-location-picker {
     display: flex !important;
   }
