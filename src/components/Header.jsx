@@ -323,9 +323,12 @@ const Header = ({ isIsoModalOpen, setIsIsoModalOpen }) => {
   };
 
   const getTestHash = (testName) => {
-    if (testName === 'Haemoglobin Estimation Test') return '#/haemoglobin-estimation';
-    if (testName === 'Beta HCG Test') return '#/beta-hcg';
-    return `#test-${encodeURIComponent(testName.toLowerCase().replace(/\s+/g, '-'))}`;
+    if (!testName) return '#/haemoglobin-estimation';
+    const lowerName = testName.toLowerCase();
+    if (lowerName.includes('wellwise')) {
+      return '#/wellwise-total-profile';
+    }
+    return '#/haemoglobin-estimation';
   };
 
   const [showSuggestions, setShowSuggestions] = useState(false);
@@ -814,7 +817,7 @@ const Header = ({ isIsoModalOpen, setIsIsoModalOpen }) => {
                   <span className="package-name">WellWise Exclusive Profile</span>
                 </div>
                 <span className="package-tests-count">Includes 95 Tests</span>
-                <button className="package-details-btn" onClick={() => { sessionStorage.setItem('superlab_search_query', 'WellWise Exclusive Profile'); setLocationHash('#/lab-tests'); window.dispatchEvent(new Event('superlab_search_trigger')); setIsCheckupMenuOpen(false); }}>See Details</button>
+                <button className="package-details-btn" onClick={() => { setLocationHash('#/wellwise-total-profile'); setIsCheckupMenuOpen(false); }}>See Details</button>
                 <button className="package-book-outline-btn" onClick={() => { window.addToSuperlabCart({ id: 1002, name: 'WellWise Exclusive Profile', category: 'Full Body Health', type: 'package', price: 3119 }); setIsCheckupMenuOpen(false); }}>Book Now</button>
                 <span className="package-price-text">₹3119</span>
               </div>
@@ -824,7 +827,7 @@ const Header = ({ isIsoModalOpen, setIsIsoModalOpen }) => {
                   <span className="package-name">Wellwise Platinum</span>
                 </div>
                 <span className="package-tests-count">Includes 103 Tests</span>
-                <button className="package-details-btn" onClick={() => { sessionStorage.setItem('superlab_search_query', 'Wellwise Platinum'); setLocationHash('#/lab-tests'); window.dispatchEvent(new Event('superlab_search_trigger')); setIsCheckupMenuOpen(false); }}>See Details</button>
+                <button className="package-details-btn" onClick={() => { setLocationHash('#/wellwise-total-profile'); setIsCheckupMenuOpen(false); }}>See Details</button>
                 <button className="package-book-outline-btn" onClick={() => { window.addToSuperlabCart({ id: 1003, name: 'Wellwise Platinum', category: 'Full Body Health', type: 'package', price: 4499 }); setIsCheckupMenuOpen(false); }}>Book Now</button>
                 <span className="package-price-text">₹4499</span>
               </div>
@@ -834,7 +837,7 @@ const Header = ({ isIsoModalOpen, setIsIsoModalOpen }) => {
                   <span className="package-name">Wellwise Advanced Profile</span>
                 </div>
                 <span className="package-tests-count">Includes 81 Tests</span>
-                <button className="package-details-btn" onClick={() => { sessionStorage.setItem('superlab_search_query', 'Wellwise Advanced Profile'); setLocationHash('#/lab-tests'); window.dispatchEvent(new Event('superlab_search_trigger')); setIsCheckupMenuOpen(false); }}>See Details</button>
+                <button className="package-details-btn" onClick={() => { setLocationHash('#/wellwise-total-profile'); setIsCheckupMenuOpen(false); }}>See Details</button>
                 <button className="package-book-outline-btn" onClick={() => { window.addToSuperlabCart({ id: 1004, name: 'Wellwise Advanced Profile', category: 'Full Body Health', type: 'package', price: 1799 }); setIsCheckupMenuOpen(false); }}>Book Now</button>
                 <span className="package-price-text">₹1799</span>
               </div>
@@ -844,7 +847,7 @@ const Header = ({ isIsoModalOpen, setIsIsoModalOpen }) => {
                   <span className="package-name">Super Fit Full Body Panel</span>
                 </div>
                 <span className="package-tests-count">Includes 60 Tests</span>
-                <button className="package-details-btn" onClick={() => { sessionStorage.setItem('superlab_search_query', 'Super Fit Full Body Panel'); setLocationHash('#/lab-tests'); window.dispatchEvent(new Event('superlab_search_trigger')); setIsCheckupMenuOpen(false); }}>See Details</button>
+                <button className="package-details-btn" onClick={() => { setLocationHash('#/wellwise-total-profile'); setIsCheckupMenuOpen(false); }}>See Details</button>
                 <button className="package-book-outline-btn" onClick={() => { window.addToSuperlabCart({ id: 1005, name: 'Super Fit Full Body Panel', category: 'Full Body Health', type: 'package', price: 1499 }); setIsCheckupMenuOpen(false); }}>Book Now</button>
                 <span className="package-price-text">₹1499</span>
               </div>
@@ -943,9 +946,7 @@ const Header = ({ isIsoModalOpen, setIsIsoModalOpen }) => {
                 </a>
                 <button 
                   onClick={() => {
-                    sessionStorage.setItem('superlab_search_query', 'WellWise Exclusive Profile');
-                    setLocationHash('#/lab-tests');
-                    window.dispatchEvent(new Event('superlab_search_trigger'));
+                    setLocationHash('#/wellwise-total-profile');
                     setIsMobileMenuOpen(false);
                   }}
                   style={{ display: 'block', width: '100%', textAlign: 'left', background: 'none', border: 'none', color: '#475569', padding: '6px 8px', cursor: 'pointer', font: 'inherit', fontWeight: '500' }}
@@ -954,9 +955,7 @@ const Header = ({ isIsoModalOpen, setIsIsoModalOpen }) => {
                 </button>
                 <button 
                   onClick={() => {
-                    sessionStorage.setItem('superlab_search_query', 'Wellwise Platinum');
-                    setLocationHash('#/lab-tests');
-                    window.dispatchEvent(new Event('superlab_search_trigger'));
+                    setLocationHash('#/wellwise-total-profile');
                     setIsMobileMenuOpen(false);
                   }}
                   style={{ display: 'block', width: '100%', textAlign: 'left', background: 'none', border: 'none', color: '#475569', padding: '6px 8px', cursor: 'pointer', font: 'inherit', fontWeight: '500' }}
@@ -965,9 +964,7 @@ const Header = ({ isIsoModalOpen, setIsIsoModalOpen }) => {
                 </button>
                 <button 
                   onClick={() => {
-                    sessionStorage.setItem('superlab_search_query', 'Active Full Body Checkup');
-                    setLocationHash('#/lab-tests');
-                    window.dispatchEvent(new Event('superlab_search_trigger'));
+                    setLocationHash('#/wellwise-total-profile');
                     setIsMobileMenuOpen(false);
                   }}
                   style={{ display: 'block', width: '100%', textAlign: 'left', background: 'none', border: 'none', color: '#475569', padding: '6px 8px', cursor: 'pointer', font: 'inherit', fontWeight: '500' }}
@@ -976,9 +973,7 @@ const Header = ({ isIsoModalOpen, setIsIsoModalOpen }) => {
                 </button>
                 <button 
                   onClick={() => {
-                    sessionStorage.setItem('superlab_search_query', 'Premium Full Body Checkup');
-                    setLocationHash('#/lab-tests');
-                    window.dispatchEvent(new Event('superlab_search_trigger'));
+                    setLocationHash('#/wellwise-total-profile');
                     setIsMobileMenuOpen(false);
                   }}
                   style={{ display: 'block', width: '100%', textAlign: 'left', background: 'none', border: 'none', color: '#475569', padding: '6px 8px', cursor: 'pointer', font: 'inherit', fontWeight: '500' }}
