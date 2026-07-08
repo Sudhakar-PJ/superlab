@@ -8,6 +8,20 @@ const CircularTestSlider = ({ title, category, items }) => {
   const [canScrollRight, setCanScrollRight] = useState(true);
   const [activeDot, setActiveDot] = useState(0);
 
+  const [cartItems, setCartItems] = useState(() => {
+    return window.getSuperlabCart ? window.getSuperlabCart() : [];
+  });
+
+  useEffect(() => {
+    const handleCartUpdate = () => {
+      if (window.getSuperlabCart) {
+        setCartItems(window.getSuperlabCart());
+      }
+    };
+    window.addEventListener('superlab_cart_update', handleCartUpdate);
+    return () => window.removeEventListener('superlab_cart_update', handleCartUpdate);
+  }, []);
+
   const checkScroll = () => {
     if (scrollRef.current) {
       const { scrollLeft, scrollWidth, clientWidth } = scrollRef.current;
@@ -104,18 +118,34 @@ const CircularTestSlider = ({ title, category, items }) => {
                     >
                       Know More
                     </a>
-                    <button
-                      className="btn-add-test"
-                      onClick={() => window.addToSuperlabCart({ 
-                        id: item.id || item.name.toLowerCase().replace(/\s+/g, '-'), 
+                    {(() => {
+                      const itemId = item.id || item.name.toLowerCase().replace(/\s+/g, '-');
+                      const isAdded = cartItems.some(i => 
+                        (i.id != null && itemId != null && String(i.id).trim() === String(itemId).trim()) || 
+                        (i.name && item.name && i.name.toLowerCase().trim() === item.name.toLowerCase().trim())
+                      );
+                      const itemPayload = { 
+                        id: itemId, 
                         name: item.name, 
                         category: item.category || 'Diagnostic Test', 
                         price: item.price || 150, 
                         originalPrice: item.originalPrice || Math.round((item.price || 150) / 0.75) 
-                      })}
-                    >
-                      ADD
-                    </button>
+                      };
+                      return (
+                        <button
+                          className={`btn-add-test ${isAdded ? 'added' : ''}`}
+                          onClick={() => {
+                            if (isAdded) {
+                              window.removeFromSuperlabCart(itemPayload);
+                            } else {
+                              window.addToSuperlabCart(itemPayload);
+                            }
+                          }}
+                        >
+                          {isAdded ? 'ADDED' : 'ADD'}
+                        </button>
+                      );
+                    })()}
                   </div>
                 </div>
               </div>

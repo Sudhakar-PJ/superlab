@@ -419,6 +419,10 @@ a {
   transform: translateY(0);
 }
 
+.btn-book-test-drawer {
+  display: block !important;
+}
+
 .btn-upload-rx {
   background-color: var(--orange);
   color: white;
@@ -1633,6 +1637,17 @@ a {
   box-shadow: 0 4px 10px rgba(255, 107, 0, 0.3);
 }
 
+.btn-book-checkup.added {
+  background: #fff3e0;
+  color: var(--orange-dark);
+  border: 1px solid var(--orange);
+  box-shadow: none;
+}
+
+.btn-book-checkup.added:hover {
+  background: #ffe0b2;
+}
+
 .grid-arrow-left-floating,
 .grid-arrow-right-floating {
   position: absolute;
@@ -2054,6 +2069,17 @@ a {
 .btn-add-test:hover {
   background-color: var(--orange-dark);
   cursor: pointer;
+}
+
+.btn-add-test.added {
+  background-color: #fff3e0;
+  color: var(--orange-dark);
+  border: 1px solid var(--orange);
+  box-shadow: none;
+}
+
+.btn-add-test.added:hover {
+  background-color: #ffe0b2;
 }
 
 /* App Download Section Styling */

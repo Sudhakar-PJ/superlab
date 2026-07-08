@@ -20,6 +20,19 @@ const FeaturedCheckups = () => {
   const [canScrollLeft, setCanScrollLeft] = useState(false);
   const [canScrollRight, setCanScrollRight] = useState(true);
   const [activeDot, setActiveDot] = useState(0);
+  const [cartItems, setCartItems] = useState(() => {
+    return window.getSuperlabCart ? window.getSuperlabCart() : [];
+  });
+
+  useEffect(() => {
+    const handleCartUpdate = () => {
+      if (window.getSuperlabCart) {
+        setCartItems(window.getSuperlabCart());
+      }
+    };
+    window.addEventListener('superlab_cart_update', handleCartUpdate);
+    return () => window.removeEventListener('superlab_cart_update', handleCartUpdate);
+  }, []);
 
   const checkScroll = () => {
     if (scrollRef.current) {
@@ -132,18 +145,34 @@ const FeaturedCheckups = () => {
                     <a href={check.link} className="link-know-more">
                       Know More
                     </a>
-                    <button 
-                      className="btn-book-checkup" 
-                      onClick={() => window.addToSuperlabCart({ 
-                        id: check.id || check.name.toLowerCase().replace(/\s+/g, '-'), 
+                    {(() => {
+                      const checkId = check.id || check.name.toLowerCase().replace(/\s+/g, '-');
+                      const isAdded = cartItems.some(item => 
+                        (item.id != null && checkId != null && String(item.id).trim() === String(checkId).trim()) || 
+                        (item.name && check.name && item.name.toLowerCase().trim() === check.name.toLowerCase().trim())
+                      );
+                      const itemPayload = { 
+                        id: checkId, 
                         name: check.name, 
                         category: 'Health Checkup', 
                         price: check.discountedPrice || 999, 
                         originalPrice: check.originalPrice || Math.round((check.discountedPrice || 999) / 0.75) 
-                      })}
-                    >
-                  ADD
-                    </button>
+                      };
+                      return (
+                        <button 
+                          className={`btn-book-checkup ${isAdded ? 'added' : ''}`}
+                          onClick={() => {
+                            if (isAdded) {
+                              window.removeFromSuperlabCart(itemPayload);
+                            } else {
+                              window.addToSuperlabCart(itemPayload);
+                            }
+                          }}
+                        >
+                          {isAdded ? 'ADDED' : 'ADD'}
+                        </button>
+                      );
+                    })()}
                   </div>
                 </div>
               ))}

@@ -30,55 +30,67 @@ const App = () => {
   const [currentHash, setCurrentHash] = useState(window.location.hash);
   const [isIsoModalOpen, setIsIsoModalOpen] = useState(false);
 
+  // If not initialized in localStorage, set it to an empty cart
+  if (!localStorage.getItem('superlab_cart')) {
+    localStorage.setItem('superlab_cart', JSON.stringify([]));
+  }
+
+  window.getSuperlabCart = () => {
+    try {
+      return JSON.parse(localStorage.getItem('superlab_cart') || '[]');
+    } catch {
+      return [];
+    }
+  };
+
+  window.showSuperlabToast = (message) => {
+    const oldToast = document.querySelector('.superlab-toast');
+    if (oldToast) {
+      oldToast.remove();
+    }
+    const toast = document.createElement('div');
+    toast.className = 'superlab-toast';
+    toast.innerHTML = `
+      <div class="superlab-toast-success-icon">✓</div>
+      <span>${message}</span>
+    `;
+    document.body.appendChild(toast);
+    // force reflow
+    toast.offsetHeight;
+    toast.classList.add('show');
+    setTimeout(() => {
+      toast.classList.remove('show');
+      setTimeout(() => toast.remove(), 300);
+    }, 3000);
+  };
+
+  window.addToSuperlabCart = (item) => {
+    const cart = window.getSuperlabCart();
+    const exists = cart.find(i => i.id === item.id || i.name === item.name);
+    if (!exists) {
+      cart.push({ ...item, quantity: 1 });
+      localStorage.setItem('superlab_cart', JSON.stringify(cart));
+      window.dispatchEvent(new Event('superlab_cart_update'));
+      window.showSuperlabToast(`${item.name} added to cart successfully!`);
+    } else {
+      window.showSuperlabToast(`${item.name} is already in your cart.`);
+    }
+  };
+
+  window.removeFromSuperlabCart = (item) => {
+    const cart = window.getSuperlabCart();
+    const updated = cart.filter(i => {
+      const idMatch = (i.id != null && item.id != null && String(i.id).trim() === String(item.id).trim());
+      const nameMatch = (i.name && item.name && i.name.toLowerCase().trim() === item.name.toLowerCase().trim());
+      return !(idMatch || nameMatch);
+    });
+    localStorage.setItem('superlab_cart', JSON.stringify(updated));
+    window.dispatchEvent(new Event('superlab_cart_update'));
+    window.showSuperlabToast(`${item.name} removed from cart.`);
+  };
+
   // Initialize global cart helper functions
   useEffect(() => {
-    // If not initialized in localStorage, set it to an empty cart
-    if (!localStorage.getItem('superlab_cart')) {
-      localStorage.setItem('superlab_cart', JSON.stringify([]));
-    }
-
-    window.getSuperlabCart = () => {
-      try {
-        return JSON.parse(localStorage.getItem('superlab_cart') || '[]');
-      } catch {
-        return [];
-      }
-    };
-
-    window.showSuperlabToast = (message) => {
-      const oldToast = document.querySelector('.superlab-toast');
-      if (oldToast) {
-        oldToast.remove();
-      }
-      const toast = document.createElement('div');
-      toast.className = 'superlab-toast';
-      toast.innerHTML = `
-        <div class="superlab-toast-success-icon">✓</div>
-        <span>${message}</span>
-      `;
-      document.body.appendChild(toast);
-      // force reflow
-      toast.offsetHeight;
-      toast.classList.add('show');
-      setTimeout(() => {
-        toast.classList.remove('show');
-        setTimeout(() => toast.remove(), 300);
-      }, 3000);
-    };
-
-    window.addToSuperlabCart = (item) => {
-      const cart = window.getSuperlabCart();
-      const exists = cart.find(i => i.id === item.id || i.name === item.name);
-      if (!exists) {
-        cart.push({ ...item, quantity: 1 });
-        localStorage.setItem('superlab_cart', JSON.stringify(cart));
-        window.dispatchEvent(new Event('superlab_cart_update'));
-        window.showSuperlabToast(`${item.name} added to cart successfully!`);
-      } else {
-        window.showSuperlabToast(`${item.name} is already in your cart.`);
-      }
-    };
-
     // Force a dispatch to update components on mount
     window.dispatchEvent(new Event('superlab_cart_update'));
 

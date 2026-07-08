@@ -42,23 +42,24 @@ const WellwiseTotalProfilePage = ({ setIsIsoModalOpen }) => {
     const checkCart = () => {
       if (window.getSuperlabCart) {
         const cart = window.getSuperlabCart();
-        setIsAdded(cart.some(item => item.id === packageInfo.id));
+        setIsAdded(cart.some(item => 
+          (item.id != null && packageInfo.id != null && String(item.id).trim() === String(packageInfo.id).trim()) ||
+          (item.name && packageInfo.name && item.name.toLowerCase().trim() === packageInfo.name.toLowerCase().trim())
+        ));
       }
     };
     checkCart();
     window.addEventListener('superlab_cart_update', checkCart);
     return () => window.removeEventListener('superlab_cart_update', checkCart);
-  }, [packageInfo.id]);
+  }, [packageInfo.id, packageInfo.name]);
 
   const handleToggleCart = () => {
-    if (window.addToSuperlabCart && window.getSuperlabCart) {
-      const cart = window.getSuperlabCart();
-      const exists = cart.some(item => item.id === packageInfo.id);
-      if (exists) {
-        const updatedCart = cart.filter(item => item.id !== packageInfo.id);
-        localStorage.setItem('superlab_cart', JSON.stringify(updatedCart));
-        window.dispatchEvent(new Event('superlab_cart_update'));
-      } else {
+    if (isAdded) {
+      if (window.removeFromSuperlabCart) {
+        window.removeFromSuperlabCart(packageInfo);
+      }
+    } else {
+      if (window.addToSuperlabCart) {
         window.addToSuperlabCart(packageInfo);
       }
     }

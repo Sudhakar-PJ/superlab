@@ -52,7 +52,9 @@ const HaemoglobinTestPage = ({ setIsIsoModalOpen }) => {
     const checkCart = () => {
       if (window.getSuperlabCart) {
         const cart = window.getSuperlabCart();
-        setIsAdded(cart.some(item => item.name === 'Haemoglobin Estimation Test'));
+        setIsAdded(cart.some(item => 
+          item.name && item.name.toLowerCase().trim() === 'haemoglobin estimation test'
+        ));
       }
     };
     checkCart();
@@ -480,15 +482,15 @@ const HaemoglobinTestPage = ({ setIsIsoModalOpen }) => {
 
               <button 
                 onClick={() => {
+                  const testPayload = { id: 1, name: 'Haemoglobin Estimation Test', category: 'Anemia Test', price: 130, originalPrice: 173 };
                   if (isAdded) {
-                    if (window.getSuperlabCart) {
-                      const cart = window.getSuperlabCart();
-                      const updated = cart.filter(item => item.name !== 'Haemoglobin Estimation Test');
-                      localStorage.setItem('superlab_cart', JSON.stringify(updated));
-                      window.dispatchEvent(new Event('superlab_cart_update'));
+                    if (window.removeFromSuperlabCart) {
+                      window.removeFromSuperlabCart(testPayload);
                     }
                   } else {
-                    window.addToSuperlabCart({ id: 1, name: 'Haemoglobin Estimation Test', category: 'Anemia Test', price: 130, originalPrice: 173 });
+                    if (window.addToSuperlabCart) {
+                      window.addToSuperlabCart(testPayload);
+                    }
                   }
                 }}
                 className={`btn-action-block ${isAdded ? 'added' : ''}`}

@@ -919,6 +919,13 @@ const Header = ({ isIsoModalOpen, setIsIsoModalOpen }) => {
           </button>
         </div>
         <div className="mobile-nav-links" style={{ display: 'flex', flexDirection: 'column', gap: '16px', marginTop: '20px' }}>
+          <button 
+            onClick={() => { setLocationHash('#/lab-tests'); setIsMobileMenuOpen(false); }}
+            className="btn-book-test-header btn-book-test-drawer"
+            style={{ width: '100%', padding: '12px', fontSize: '1rem', textAlign: 'center', marginBottom: '8px' }}
+          >
+            Book a Test
+          </button>
           {/* Find A Test Collapsible Accordion */}
           <div style={{ display: 'flex', flexDirection: 'column' }}>
             <button 

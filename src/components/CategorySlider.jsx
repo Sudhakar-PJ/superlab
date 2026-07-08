@@ -111,7 +111,7 @@ const CategorySlider = () => {
         {/* Header Row */}
         <div className="section-header-row">
           <h2 className="section-main-title">Popular Health-Checkup Categories</h2>
-          <button className="btn-view-all-packages" onClick={() => alert('Viewing all categories!')}>
+          <button className="btn-view-all-packages" onClick={() => window.location.hash = '#/lab-tests'}>
             View All
           </button>
         </div>
