@@ -4,7 +4,6 @@ import { FaWhatsapp } from 'react-icons/fa';
 
 // import AnimatedLogo from './AnimatedLogo';
 // import AnimatedLogo3 from './AnimatedLogo3';
-import AnimatedLogo2 from './AnimatedLogo2';
 // import StaticLogo from './StaticLogo';
 import { testDatabase } from '../data/testDatabase';
 
@@ -12,7 +11,7 @@ const setLocationHash = (hash) => {
   window.location.hash = hash;
 };
 
-const Header = ({ isIsoModalOpen, setIsIsoModalOpen }) => {
+const UpdatedHeader = ({ isIsoModalOpen, setIsIsoModalOpen }) => {
   const [selectedLocation, setSelectedLocation] = useState('Chennai');
   const [searchQuery, setSearchQuery] = useState('');
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -512,12 +511,88 @@ const Header = ({ isIsoModalOpen, setIsIsoModalOpen }) => {
 
   return (
     <header style={{ width: '100%', fontFamily: 'var(--sans)', position: 'relative', zIndex: 1000 }}>
+      <style>{`
+        .superlab-header-logo-link {
+          display: flex;
+          align-items: center;
+          height: 42px;
+          position: relative;
+          z-index: 2;
+        }
+
+        .superlab-header-logo {
+          display: block;
+          width: auto;
+          height: 71px;
+          max-width: min(400px, 45vw);
+          animation: superlabHeartbeat 3s infinite ease-in-out,
+                     superlabShine 3s infinite ease-in-out;
+          transform-origin: center;
+          will-change: transform, filter;
+        }
+
+        @keyframes superlabHeartbeat {
+          0%, 30%, 100% { transform: scale(1); }
+          10% { transform: scale(1.035); }
+          20% { transform: scale(1.015); }
+          25% { transform: scale(1.04); }
+        }
+
+        @keyframes superlabShine {
+          0%, 30%, 100% {
+            filter: drop-shadow(0 0 1px rgba(7, 137, 250, 0.15))
+                    brightness(1);
+          }
+          10% {
+            filter: drop-shadow(0 0 8px rgba(7, 137, 250, 0.75))
+                    brightness(1.12);
+          }
+          20% {
+            filter: drop-shadow(0 0 4px rgba(249, 128, 7, 0.55))
+                    brightness(1.06);
+          }
+          25% {
+            filter: drop-shadow(0 0 10px rgba(7, 137, 250, 0.85))
+                    brightness(1.15);
+          }
+        }
+
+        @media (max-width: 768px) {
+          .superlab-header-logo-link {
+            height: 38px;
+          }
+          .superlab-header-logo {
+            height: 65px;
+            max-width: 320px;
+          }
+        }
+
+        @media (max-width: 480px) {
+          .superlab-header-logo-link {
+            height: 32px;
+          }
+          .superlab-header-logo {
+            height: 54px;
+            max-width: 270px;
+          }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+          .superlab-header-logo {
+            animation: none;
+          }
+        }
+      `}</style>
       {/* 1. TOP ROW: Brand Soft Background */}
       <div className="header-top-bar">
         {/* Top Left: Animated Logo Block & ISO badge */}
         <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
-          <a href="#/" style={{ display: 'flex', alignItems: 'center', height: '42px', position: 'relative', zIndex: 1010 }}>
-            <AnimatedLogo2 height={42} />
+          <a href="#/" className="superlab-header-logo-link">
+            <img
+              src="/superlab-logo-transparent.png"
+              alt="SuperLab by Phlebee"
+              className="superlab-header-logo"
+            />
             {/* <StaticLogo height={42} /> */}
           </a>
           <div 
@@ -642,7 +717,8 @@ const Header = ({ isIsoModalOpen, setIsIsoModalOpen }) => {
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'space-between',
-        position: 'relative'
+        position: 'relative',
+        zIndex: 5
       }}>
         {/* Bottom Left: WhatsApp & Phone */}
         <div style={{ display: 'flex', alignItems: 'center', gap: 'clamp(10px, 1.8vw, 20px)' }} className="header-bottom-contacts">
@@ -1357,4 +1433,4 @@ const Header = ({ isIsoModalOpen, setIsIsoModalOpen }) => {
   );
 };
 
-export default Header;
+export default UpdatedHeader;

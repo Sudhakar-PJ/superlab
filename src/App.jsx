@@ -2,7 +2,8 @@
 
 
 import { useState, useEffect } from 'react';
-import Header from './components/Header';
+// import Header from './components/Header';
+import UpdatedHeader from './components/Header_updated';
 import HeroSlider from './components/HeroSlider';
 import QuickActions from './components/QuickActions';
 import CategorySlider from './components/CategorySlider';
@@ -26,11 +27,8 @@ import CartPage from './components/CartPage';
 import WellwiseTotalProfilePage from './components/WellwiseTotalProfilePage';
 import ProfilePage from './components/ProfilePage';
 
-const App = () => {
-  const [currentHash, setCurrentHash] = useState(window.location.hash);
-  const [isIsoModalOpen, setIsIsoModalOpen] = useState(false);
-
-  // If not initialized in localStorage, set it to an empty cart
+// Initialize global cart helper functions and localStorage setup
+if (typeof window !== 'undefined') {
   if (!localStorage.getItem('superlab_cart')) {
     localStorage.setItem('superlab_cart', JSON.stringify([]));
   }
@@ -88,8 +86,11 @@ const App = () => {
     window.dispatchEvent(new Event('superlab_cart_update'));
     window.showSuperlabToast(`${item.name} removed from cart.`);
   };
+}
 
-  // Initialize global cart helper functions
+const App = () => {
+  const [currentHash, setCurrentHash] = useState(window.location.hash);
+  const [isIsoModalOpen, setIsIsoModalOpen] = useState(false);
   useEffect(() => {
     // Force a dispatch to update components on mount
     window.dispatchEvent(new Event('superlab_cart_update'));
@@ -151,7 +152,8 @@ const App = () => {
 
   return (
     <div className="app-container">
-      <Header isIsoModalOpen={isIsoModalOpen} setIsIsoModalOpen={setIsIsoModalOpen} />
+      {/* <Header isIsoModalOpen={isIsoModalOpen} setIsIsoModalOpen={setIsIsoModalOpen} /> */}
+      <UpdatedHeader isIsoModalOpen={isIsoModalOpen} setIsIsoModalOpen={setIsIsoModalOpen} />
       {renderContent()}
       <Footer isIsoModalOpen={isIsoModalOpen} />
     </div>
