@@ -1,17 +1,17 @@
 import {
-  Calendar,
-  Check,
-  ChevronDown,
-  ChevronUp,
-  Clock,
-  Droplet,
-  FileText,
-  HelpCircle,
-  Home,
-  Info,
-  Layers,
-  ShoppingCart,
-  Users
+    Calendar,
+    Check,
+    ChevronDown,
+    ChevronUp,
+    Clock,
+    Droplet,
+    FileText,
+    HelpCircle,
+    Home,
+    Info,
+    Layers,
+    ShoppingCart,
+    Users
 } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import HomeCollectionWorkflow from './HomeCollectionWorkflow';
@@ -239,7 +239,7 @@ const HaemoglobinTestPage = ({ setIsIsoModalOpen }) => {
               </div>
               <div style={{ display: 'flex', alignItems: 'center', gap: '8px', padding: '6px 12px', backgroundColor: '#e0f7fa', border: '1px solid #b2ebf2', borderRadius: '20px', fontSize: '0.8rem', fontWeight: '700', color: '#006064' }}>
                 <span style={{ display: 'inline-block', width: '6px', height: '6px', backgroundColor: '#006064', borderRadius: '50%' }}></span>
-                <span>ISO 9001:2015 Certified</span>
+                <span>ISO-15189:2022  Certified</span>
               </div>
             </div>
           </div>
@@ -658,7 +658,7 @@ const HaemoglobinTestPage = ({ setIsIsoModalOpen }) => {
               </svg>
             </div>
             <div style={{ display: 'flex', flexDirection: 'column', textAlign: 'left', lineHeight: '1.2' }}>
-              <span style={{ fontWeight: '800', color: '#0f172a', fontSize: '0.95rem' }}>ISO 9001:2015</span>
+              <span style={{ fontWeight: '800', color: '#0f172a', fontSize: '0.95rem' }}>ISO-15189:2022 </span>
               <span style={{ color: 'var(--muted)', fontSize: '0.85rem' }}>Certified Lab</span>
             </div>
           </div>

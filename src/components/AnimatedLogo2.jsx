@@ -155,19 +155,15 @@ const AnimatedLogo2 = ({ height = 40, showText = true, dark = false }) => {
         @keyframes heartbeat {
           0%, 30%, 100% {
             transform: scale(1);
-            filter: drop-shadow(0 0 2px ${glowColor});
           }
           10% {
             transform: scale(1.03);
-            filter: drop-shadow(0 0 10px ${glowColor});
           }
           20% {
             transform: scale(1.015);
-            filter: drop-shadow(0 0 5px ${glowColor});
           }
           25% {
             transform: scale(1.035);
-            filter: drop-shadow(0 0 12px ${glowColor});
           }
         }
         @keyframes starPulse {

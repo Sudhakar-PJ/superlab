@@ -548,7 +548,7 @@ const Header = ({ isIsoModalOpen, setIsIsoModalOpen }) => {
               alt="ISO Logo" 
               style={{ width: '16px', height: '16px', borderRadius: '2px', objectFit: 'contain', marginRight: '4px', flexShrink: 0 }}
             />
-            <span>ISO 9001:2015 Certified</span>
+            <span>ISO-15189:2022  Certified</span>
           </div>
         </div>
 
@@ -1336,12 +1336,12 @@ const Header = ({ isIsoModalOpen, setIsIsoModalOpen }) => {
             </button>
             
             <h3 className="iso-modal-title" style={{ fontSize: '1.25rem', fontWeight: '800', color: 'var(--blue)', marginTop: 0, marginBottom: '16px', textAlign: 'center' }}>
-              ISO 9001:2015 Certificate
+              ISO-15189:2022  Certificate
             </h3>
             
             <img 
               src="/iso-certificate.png" 
-              alt="ISO 9001:2015 Certificate" 
+              alt="ISO-15189:2022  Certificate" 
               style={{ 
                 width: '100%', 
                 maxHeight: '70vh', 

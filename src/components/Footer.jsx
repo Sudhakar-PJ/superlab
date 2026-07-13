@@ -96,8 +96,13 @@ const Footer = ({ isIsoModalOpen }) => {
           </div>
 
           <div className="footer-app-col" style={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-end' }}>
-            <a href="#/" style={{ textDecoration: 'none' }}>
-              <AnimatedLogo height={50} dark={true} />
+            <a href="#/" style={{ display: 'inline-flex', alignItems: 'center', gap: '10px', textDecoration: 'none' }}>
+              <AnimatedLogo height={50} showText={false} dark={true} />
+              <img 
+                src="/footer-logo.png" 
+                alt="SuperLab by Phlebee" 
+                style={{ height: '80px', width: 'auto', objectFit: 'contain', marginLeft: '15px', scale: 1.7 }} 
+              />
             </a>
           </div>
         </div>
@@ -138,10 +143,7 @@ const Footer = ({ isIsoModalOpen }) => {
         {/* Bottom copyrights row */}
         <div className="footer-bottom-row">
           <div className="footer-copy-text">
-            © 2026 Super Lab . All rights reserved
-          </div>
-          <div className="footer-subsidiary-text">
-            Super Lab Limited (a wholly owned subsidiary of Super Lab Healthcare Institute Limited)
+            © 2026 Super Lab – Unit of Phlebee Healthcare Network Pvt Ltd.
           </div>
           <div className="footer-bottom-brand-logo">
             <span className="footer-brand-logo-main">Super</span>

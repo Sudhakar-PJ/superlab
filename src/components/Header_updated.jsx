@@ -525,10 +525,9 @@ const UpdatedHeader = ({ isIsoModalOpen, setIsIsoModalOpen }) => {
           width: auto;
           height: 71px;
           max-width: min(400px, 45vw);
-          animation: superlabHeartbeat 3s infinite ease-in-out,
-                     superlabShine 3s infinite ease-in-out;
+          animation: superlabHeartbeat 3s infinite ease-in-out;
           transform-origin: center;
-          will-change: transform, filter;
+          will-change: transform;
         }
 
         @keyframes superlabHeartbeat {
@@ -536,25 +535,6 @@ const UpdatedHeader = ({ isIsoModalOpen, setIsIsoModalOpen }) => {
           10% { transform: scale(1.035); }
           20% { transform: scale(1.015); }
           25% { transform: scale(1.04); }
-        }
-
-        @keyframes superlabShine {
-          0%, 30%, 100% {
-            filter: drop-shadow(0 0 1px rgba(7, 137, 250, 0.15))
-                    brightness(1);
-          }
-          10% {
-            filter: drop-shadow(0 0 8px rgba(7, 137, 250, 0.75))
-                    brightness(1.12);
-          }
-          20% {
-            filter: drop-shadow(0 0 4px rgba(249, 128, 7, 0.55))
-                    brightness(1.06);
-          }
-          25% {
-            filter: drop-shadow(0 0 10px rgba(7, 137, 250, 0.85))
-                    brightness(1.15);
-          }
         }
 
         @media (max-width: 768px) {
@@ -623,7 +603,7 @@ const UpdatedHeader = ({ isIsoModalOpen, setIsIsoModalOpen }) => {
               alt="ISO Logo" 
               style={{ width: '16px', height: '16px', borderRadius: '2px', objectFit: 'contain', marginRight: '4px', flexShrink: 0 }}
             />
-            <span>ISO 9001:2015 Certified</span>
+            <span>ISO-15189:2022  Certified</span>
           </div>
         </div>
 
@@ -1412,12 +1392,12 @@ const UpdatedHeader = ({ isIsoModalOpen, setIsIsoModalOpen }) => {
             </button>
             
             <h3 className="iso-modal-title" style={{ fontSize: '1.25rem', fontWeight: '800', color: 'var(--blue)', marginTop: 0, marginBottom: '16px', textAlign: 'center' }}>
-              ISO 9001:2015 Certificate
+              ISO-15189:2022  Certificate
             </h3>
             
             <img 
               src="/iso-certificate.png" 
-              alt="ISO 9001:2015 Certificate" 
+              alt="ISO-15189:2022  Certificate" 
               style={{ 
                 width: '100%', 
                 maxHeight: '70vh', 
