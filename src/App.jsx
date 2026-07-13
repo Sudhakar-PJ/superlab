@@ -26,6 +26,7 @@ import LabTestsPage from './components/LabTestsPage';
 import CartPage from './components/CartPage';
 import WellwiseTotalProfilePage from './components/WellwiseTotalProfilePage';
 import ProfilePage from './components/ProfilePage';
+import LISPortal from './components/LISPortal';
 
 // Initialize global cart helper functions and localStorage setup
 if (typeof window !== 'undefined') {
@@ -149,6 +150,10 @@ const App = () => {
       </>
     );
   };
+
+  if (currentHash === '#/lis-portal') {
+    return <LISPortal />;
+  }
 
   return (
     <div className="app-container">

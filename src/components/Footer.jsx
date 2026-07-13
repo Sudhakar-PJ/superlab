@@ -142,8 +142,12 @@ const Footer = ({ isIsoModalOpen }) => {
 
         {/* Bottom copyrights row */}
         <div className="footer-bottom-row">
-          <div className="footer-copy-text">
-            © 2026 Super Lab – Unit of Phlebee Healthcare Network Pvt Ltd.
+          <div className="footer-copy-text" style={{ display: 'flex', gap: '15px', alignItems: 'center', flexWrap: 'wrap' }}>
+            <span>© 2026 Super Lab – Unit of Phlebee Healthcare Network Pvt Ltd.</span>
+            <span style={{ color: '#94a3b8' }}>|</span>
+            <a href="#/lis-portal" style={{ color: '#cbd5e1', textDecoration: 'underline', fontSize: '0.8rem', fontWeight: 600 }}>
+              Employee Portal (LIS Access)
+            </a>
           </div>
           <div className="footer-bottom-brand-logo">
             <span className="footer-brand-logo-main">Super</span>
