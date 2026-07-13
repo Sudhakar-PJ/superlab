@@ -15,6 +15,7 @@ import {
 } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import HomeCollectionWorkflow from './HomeCollectionWorkflow';
+import ReviewsSection from './ReviewsSection';
 
 
 const WellwiseTotalProfilePage = ({ setIsIsoModalOpen }) => {
@@ -630,6 +631,9 @@ const WellwiseTotalProfilePage = ({ setIsIsoModalOpen }) => {
           })}
         </div>
       </div>
+
+      {/* Reviews Section */}
+      <ReviewsSection testName="Wellwise Total Profile" />
 
       {/* How Does Home Sample Collection work? */}
       <HomeCollectionWorkflow />

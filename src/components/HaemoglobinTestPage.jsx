@@ -15,6 +15,7 @@ import {
 } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import HomeCollectionWorkflow from './HomeCollectionWorkflow';
+import ReviewsSection from './ReviewsSection';
 
 
 const HaemoglobinTestPage = ({ setIsIsoModalOpen }) => {
@@ -770,6 +771,9 @@ const HaemoglobinTestPage = ({ setIsIsoModalOpen }) => {
           })}
         </div>
       </div>
+
+      {/* Reviews Section */}
+      <ReviewsSection testName="Haemoglobin Estimation Test" />
 
       {/* How Does Home Sample Collection work? */}
       <HomeCollectionWorkflow />

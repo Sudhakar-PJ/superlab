@@ -16,6 +16,7 @@ import CustomPackageBanner from './components/CustomPackageBanner';
 import TestSliders from './components/TestSliders';
 // import AppDownloadBanner from './components/AppDownloadBanner';
 import WhyChooseUs from './components/WhyChooseUs';
+import HomepageReviews from './components/HomepageReviews';
 import ExpandingFootprints from './components/ExpandingFootprints';
 import Footer from './components/Footer';
 import HaemoglobinTestPage from './components/HaemoglobinTestPage';
@@ -143,6 +144,7 @@ const App = () => {
         <LifestyleDiseaseSlider />
         <RequestCallbackBanner />
         <WhyChooseUs />
+        <HomepageReviews />
         <ExpandingFootprints />
       </>
     );
