@@ -108,10 +108,6 @@ const WellwiseTotalProfilePage = ({ setIsIsoModalOpen }) => {
     {
       q: "How soon will I get my reports?",
       a: "At Super Lab, we process samples quickly. You will receive your digital reports via email and WhatsApp within 12 hours of sample collection (Same Day)."
-    },
-    {
-      q: "What is included in the home collection service?",
-      a: "A highly trained, certified phlebotomist will visit your home at your scheduled time slot to collect your blood and urine samples in a sterile, safe manner using our Zero-Contamination QualiCare Kit."
     }
   ];
 
