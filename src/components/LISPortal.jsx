@@ -1,18 +1,13 @@
-import  { useState } from 'react';
+import { useState } from 'react';
 import { 
   Activity, 
-  BookOpen, 
   CheckCircle, 
   Clock, 
   Database, 
-  FileText, 
-  Layers, 
+  FileText,  
   LogOut, 
-  Search, 
   ShieldAlert, 
-  Sliders, 
-  UserCheck, 
-  Users 
+  Sliders 
 } from 'lucide-react';
 
 const LISPortal = () => {
@@ -519,7 +514,7 @@ const LISPortal = () => {
             marginBottom: '30px'
           }}>
             <div style={{ backgroundColor: '#ffffff', borderRadius: '12px', padding: '20px', border: '1px solid #e2e8f0', boxShadow: 'var(--shadow-sm)', display: 'flex', alignItems: 'center', gap: '14px' }}>
-              <div style={{ backgroundColor: '#e0f2fe', color: '#0284c7', width: '40px', height: '40px', borderRadius: '8px', display: 'flex', alignItems: 'center', justifyCentert: 'center', justifyContent: 'center' }}>
+              <div style={{ backgroundColor: '#e0f2fe', color: '#0284c7', width: '40px', height: '40px', borderRadius: '8px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                 <Database size={20} />
               </div>
               <div style={{ textAlign: 'left', lineHeight: 1.2 }}>
@@ -529,7 +524,7 @@ const LISPortal = () => {
             </div>
             
             <div style={{ backgroundColor: '#ffffff', borderRadius: '12px', padding: '20px', border: '1px solid #e2e8f0', boxShadow: 'var(--shadow-sm)', display: 'flex', alignItems: 'center', gap: '14px' }}>
-              <div style={{ backgroundColor: '#fef3c7', color: '#d97706', width: '40px', height: '40px', borderRadius: '8px', display: 'flex', alignItems: 'center', justifyCentert: 'center', justifyContent: 'center' }}>
+              <div style={{ backgroundColor: '#fef3c7', color: '#d97706', width: '40px', height: '40px', borderRadius: '8px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                 <Clock size={20} />
               </div>
               <div style={{ textAlign: 'left', lineHeight: 1.2 }}>
@@ -539,7 +534,7 @@ const LISPortal = () => {
             </div>
 
             <div style={{ backgroundColor: '#ffffff', borderRadius: '12px', padding: '20px', border: '1px solid #e2e8f0', boxShadow: 'var(--shadow-sm)', display: 'flex', alignItems: 'center', gap: '14px' }}>
-              <div style={{ backgroundColor: '#fee2e2', color: '#ef4444', width: '40px', height: '40px', borderRadius: '8px', display: 'flex', alignItems: 'center', justifyCentert: 'center', justifyContent: 'center' }}>
+              <div style={{ backgroundColor: '#fee2e2', color: '#ef4444', width: '40px', height: '40px', borderRadius: '8px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                 <ShieldAlert size={20} />
               </div>
               <div style={{ textAlign: 'left', lineHeight: 1.2 }}>
@@ -549,7 +544,7 @@ const LISPortal = () => {
             </div>
 
             <div style={{ backgroundColor: '#ffffff', borderRadius: '12px', padding: '20px', border: '1px solid #e2e8f0', boxShadow: 'var(--shadow-sm)', display: 'flex', alignItems: 'center', gap: '14px' }}>
-              <div style={{ backgroundColor: '#dcfce7', color: '#16a34a', width: '40px', height: '40px', borderRadius: '8px', display: 'flex', alignItems: 'center', justifyCentert: 'center', justifyContent: 'center' }}>
+              <div style={{ backgroundColor: '#dcfce7', color: '#16a34a', width: '40px', height: '40px', borderRadius: '8px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                 <CheckCircle size={20} />
               </div>
               <div style={{ textAlign: 'left', lineHeight: 1.2 }}>
@@ -850,7 +845,7 @@ const LISPortal = () => {
                   </div>
 
                   {/* Submission row */}
-                  <div style={{ display: 'flex', justifyCentert: 'flex-end', justifyContent: 'flex-end', gap: '12px' }}>
+                  <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '12px' }}>
                     <button
                       onClick={() => setActiveTestEdit(null)}
                       style={{
